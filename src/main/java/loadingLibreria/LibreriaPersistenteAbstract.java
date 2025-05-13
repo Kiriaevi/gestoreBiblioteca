@@ -10,7 +10,6 @@ import java.util.LinkedList;
  */
 public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente{
 
-    protected final String[] template = {"titolo", "autore", "isbn", "genere", "valutazione", "stato"};
     protected LinkedList<String> libri = new LinkedList<>();
     protected final String fileName = "libri.csv";
     /**

@@ -17,6 +17,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	}
 	@Override
 	public List<Libro> leggiLibro(int size) throws IOException {
+		// FIXME: gestire meglio il lettore da file
 		BufferedReader reader = new BufferedReader(new FileReader(super.fileName));
 		for (int i = 0; i < size; i++) {
 			String book = reader.readLine();
@@ -39,10 +40,9 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	}
 	private Libro convertiInLibro(String libro) {
 		String[] splitLibro = libro.split(",");
-		if(splitLibro.length < 6){
+		if(splitLibro.length < 6)
 			throw new DocumentoMalFormatoException("Il documento passato non è correttamente formattato, dovrebbero esserci 6 campi!");
-		}
-		Libro ret = null;
+		//FIXME: tutti i dati dovrebbero venire compilati?
 		Libro.LibroBuilder libroBuilder = Libro.builder();
 		String titolo = splitLibro[0].isEmpty() ? "Nessun titolo trovato" : splitLibro[0];
 		String autor = splitLibro[1].isEmpty() ? "Nessun autore" : splitLibro[1];
@@ -57,7 +57,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		libroBuilder.setGenere(genere);
 		libroBuilder.setValutazione(valutazione);
 		libroBuilder.setStato(stato);
-		ret = libroBuilder.build();
-		return ret;
+		return libroBuilder.build();
 	}
 }
