@@ -1,9 +1,11 @@
+package entities;
+
 public class Libro {
     private final String titolo, autore, ISBN, genere;
     private final int valutazione;
     private final Stato stato;
 
-    private static LibroBuilder builder() {
+    public static LibroBuilder builder() {
         return new LibroBuilder();
     }
     private Libro(String titolo, String autore, String ISBN, String genere, int valutazione, Stato stato) {
