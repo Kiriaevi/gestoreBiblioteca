@@ -40,10 +40,5 @@ public class LibreriaImpl extends LibreriaAbstract {
 		throw new UnsupportedOperationException("Unimplemented method 'onChange'");
 	}
     private void loadBooks() {
-        // Simulazione del caricamento dei libri
-        //libriTmp.add(new Libro("Il Signore degli Anelli", "J.R.R. Tolkien"));
-        //libriTmp.add(new Libro("1984", "George Orwell"));
-        //libriTmp.add(new Libro("Il Grande Gatsby", "F. Scott Fitzgerald"));
-        // Aggiunta dei libri alla libreria principale
 	}
 }
