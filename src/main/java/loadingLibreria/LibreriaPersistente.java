@@ -2,9 +2,7 @@ package loadingLibreria;
 
 import entities.Libro;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +15,7 @@ public interface LibreriaPersistente {
      * Legge un numero specifico di libri da una sorgente persistente.
      * 
      * @param size Il numero di libri da leggere.
+     * pre: size >= 0 && < numero di elementi (libri) presenti in memoria secondaria
      */
     List<Libro> leggiLibro(int size) throws IOException;
     /**
@@ -25,6 +24,8 @@ public interface LibreriaPersistente {
      * @param libro il libro modificato
      * @param ISBN L'ISBN del libro da modificare.
      * @return true se la modifica è avvenuta con successo, false altrimenti.
+     * pre: ISBN != null && Libro != null
+     *
      */
     boolean modificaLibro(Libro libro, String ISBN);
     /**
@@ -32,7 +33,21 @@ public interface LibreriaPersistente {
      * 
      * @param libro Il libro da eliminare.
      * @return true se l'eliminazione è avvenuta con successo, false altrimenti.
+     * pre: libro != null
      */
     boolean eliminaLibro(Libro libro);
 
+    /**
+     * Salva un libro all'interno della struttura persistente.
+     *
+     * @param libro, il libro da salvare.
+     * @return il libro salvato nella struttura persistente sotto forma di stringa
+     */
+    String salvaLibro(Libro libro);
+
+    /**
+     * Restituisce il numero di libri totali presenti nella sorgente persistente.
+     * @return il numero di libri presenti nella sorgente persistente
+     */
+    int getSize();
 }
