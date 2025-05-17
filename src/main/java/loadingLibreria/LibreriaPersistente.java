@@ -38,10 +38,14 @@ public interface LibreriaPersistente {
     boolean eliminaLibro(Libro libro);
 
     /**
-     * Salva un libro all'interno della struttura persistente.
+     * Salva un libro nella libreria persistente. Se l'operazione va a buon fine,
+     * restituisce una stringa che rappresenta il libro passato in input e formattato
+     * secondo la specifica.
      *
-     * @param libro, il libro da salvare.
-     * @return il libro salvato nella struttura persistente sotto forma di stringa
+     * @param libro Il libro da salvare nella libreria persistente.
+     *              Deve contenere informazioni valide e complete.
+     * @return Una stringa che rappresenta l'oggetto sotto forma di stringa formattata secondo
+     *         la specifica (CSV, JSON, ecc...)
      */
     String salvaLibro(Libro libro);
 
@@ -50,13 +54,4 @@ public interface LibreriaPersistente {
      * @return il numero di libri presenti nella sorgente persistente
      */
     int getSize();
-
-    /**
-     * Salva lo stato corrente della libreria persistente in memoria permanente.
-     * Questo metodo garantisce che tutte le modifiche apportate alla libreria
-     * vengano scritte nella sorgente di memorizzazione persistente, assicurando
-     * la consistenza dei dati tra memoria temporanea e memoria permanente.
-     * post: Lo stato della sorgente persistente è aggiornato rispetto all'ultimo stato della libreria in memoria.
-     */
-    void persist();
 }

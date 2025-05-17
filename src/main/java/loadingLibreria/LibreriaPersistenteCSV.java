@@ -62,11 +62,10 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	// FIXME: o salvi il singolo libro o salvi tutti i libri
 	@Override
 	public String salvaLibro(Libro libro) {
-		if(libro != null && pw != null) {
-			String line = convertiInCSV(libro);
-			pw.println(convertiInCSV(libro));
-			super.size++;
-			return line;
+		if(libro != null) {
+			super.libri.add(libro);
+			System.out.println("MEMORIA SECONDARIA: "+super.libri);
+			persist();
 		}
 		return null;
 	}
@@ -105,6 +104,8 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	public List<Libro> leggiLibro(int size) throws IOException {
 		if(size < 0)
 			throw new IllegalArgumentException("La size non può essere negativa");
+		if(!super.libri.isEmpty())
+			return super.libri.stream().toList();
 		List<String> libriInStringhe = new LinkedList<>();
 		for (int i = 0; i < size; i++) {
 			// se l'ingresso ricevuto `size` è più grande del numero di linee del file allora fermiamoci
@@ -118,30 +119,29 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		return ret;
 	}
 
-	//TODO: viene solo modificato in RAM, implementare salvataggio persistente definitivo
 	@Override
 	public boolean modificaLibro(Libro libro, String ISBN) {
 		if (libro == null || ISBN == null) return false;
 		int found = cercaLibroPerISBN(ISBN);
 		if(found == -1) return false;
 		super.libri.set(found, libro);
+		persist();
 		return true;
 	}
 
-	// TODO: anche qua, modificato in RAM ma non salvato in maniera persistente
 	@Override
 	public boolean eliminaLibro(Libro libro) {
 		if(libro == null) return false;
 		int found = cercaLibroPerISBN(libro.getISBN());
 		if(found == -1) return false;
 		super.libri.remove(found);
+		persist();
 		return true;
 	}
 	private Libro convertiInLibro(String libro) {
 		String[] splitLibro = libro.split(",");
 		if(splitLibro.length < 6)
 			throw new DocumentoMalFormatoException("Il documento passato non è correttamente formattato, dovrebbero esserci 6 campi!");
-		//FIXME: tutti i dati dovrebbero venire compilati?
 		String titolo = splitLibro[0].isEmpty() ? "Nessun titolo trovato" : splitLibro[0];
 		String autor = splitLibro[1].isEmpty() ? "Nessun autore" : splitLibro[1];
 		String isbn = splitLibro[2].isEmpty() ? "Nessun ISBN" : splitLibro[2];
@@ -182,9 +182,10 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			throw new RuntimeException(e);
 		}
 	}
+
 	@Override
-	public void persist() {
-		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) { // Sovrascrive il file
+	protected void persist() {
+		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
 			for (Libro libro : super.libri) {
 				writer.println(convertiInCSV(libro));
 			}

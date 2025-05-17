@@ -24,5 +24,10 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
      */
     protected abstract void onClose();
 
+    protected abstract void persist();
+
+    public List<Libro> getLibri() {
+        return libri;
+    }
 
 }

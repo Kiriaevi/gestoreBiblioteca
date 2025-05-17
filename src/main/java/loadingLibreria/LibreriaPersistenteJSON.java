@@ -41,6 +41,11 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 	}
 
 	@Override
+	protected void persist() {
+
+	}
+
+	@Override
 	public ArrayList<Libro> leggiLibro(int size) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'leggiLibro'");
@@ -68,8 +73,4 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 		return 0;
 	}
 
-	@Override
-	public void persist() {
-
-	}
 }

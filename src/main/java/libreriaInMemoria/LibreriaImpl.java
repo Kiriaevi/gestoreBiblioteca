@@ -3,6 +3,7 @@ package libreriaInMemoria;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import entities.Libro;
 import loadingLibreria.LibreriaPersistenteCSV;
@@ -43,15 +44,11 @@ public class LibreriaImpl extends LibreriaAbstract {
             return Collections.unmodifiableCollection(super.libri);
         return Collections.unmodifiableCollection(super.libri.subList(0, size));
     }
-	@Override
+
+    @Override
 	protected void onClose() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'onClose'");
 	}
 
-	@Override
-	protected void onChange() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'onChange'");
-	}
 }

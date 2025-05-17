@@ -5,6 +5,7 @@ import java.util.List;
 
 import entities.Libro;
 import loadingLibreria.LibreriaPersistente;
+import loadingLibreria.LibreriaPersistenteAbstract;
 
 public abstract class LibreriaAbstract implements Libreria {
 
@@ -15,6 +16,19 @@ public abstract class LibreriaAbstract implements Libreria {
     }
     protected abstract void onInit(String type);
     protected abstract void onClose();
-    protected abstract void onChange();
 
+    //FIXME: come sincronizzo le due liste? Ogni modifica fatta ad una va fatta all'altra
+    // oppure cercare di fare aliasing.
+    @Override
+    public boolean modificaLibro(Libro l, String ISBN) {
+        return lib.modificaLibro(l, ISBN);
+    }
+    @Override
+    public boolean eliminaLibro(Libro l) {
+        return lib.eliminaLibro(l);
+    }
+    @Override
+    public void aggiungiLibro(Libro l) {
+        lib.salvaLibro(l);
+    }
 }

@@ -2,6 +2,7 @@ package libreriaInMemoria;
 
 
 import entities.Libro;
+import loadingLibreria.LibreriaPersistente;
 
 import java.util.Collection;
 
@@ -24,4 +25,35 @@ public interface Libreria {
      * @throws IllegalArgumentException se il parametro size è negativo
      */
     Collection<Libro> getLibri(int size);
+
+    /**
+     * Modifica le informazioni di un libro esistente nella libreria, identificandolo tramite l'ISBN.
+     *
+     * @param l    il libro con le nuove informazioni da aggiornare
+     * @param ISBN l'ISBN del libro esistente che deve essere modificato
+     * @return true se la modifica ha avuto successo, false altrimenti
+     */
+    boolean modificaLibro(Libro l, String ISBN);
+
+    /**
+     * Rimuove un libro specifico dalla libreria interna, se presente.
+     * Il libro da eliminare viene identificato dall'oggetto passato come parametro.
+     * Se il libro non è presente nella libreria, non verrà effettuata alcuna modifica.
+     *
+     * @param l il libro da rimuovere dalla libreria; non può essere null
+     * @return true se il libro è stato rimosso con successo, false se il libro non era presente
+     *         nella libreria o se l'operazione di rimozione non è stata possibile
+     */
+    boolean eliminaLibro(Libro l);
+
+    /**
+     * Aggiunge un nuovo libro alla libreria. Se il libro è già presente
+     * in base all'ISBN, l'operazione potrebbe non avere effetto,
+     * in base all'implementazione concreta.
+     *
+     * @param l il libro da aggiungere alla libreria; non può essere null
+     * pre: il libro non deve già esistere nell'elemento persistente TODO
+     */
+    void aggiungiLibro(Libro l);
+
 }
