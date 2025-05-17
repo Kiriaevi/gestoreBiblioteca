@@ -22,7 +22,7 @@
           <execution>
             <id>default-cli</id>
             <configuration>
-              <mainClass>gui.Applicazione</mainClass>
+              <mainClass>gui.Gui</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
@@ -45,7 +45,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>gui.Applicazione</mainClass>
+                  <mainClass>gui.Gui</mainClass>
                 </transformer>
               </transformers>
               <filters>

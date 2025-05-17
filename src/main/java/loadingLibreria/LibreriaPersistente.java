@@ -50,4 +50,13 @@ public interface LibreriaPersistente {
      * @return il numero di libri presenti nella sorgente persistente
      */
     int getSize();
+
+    /**
+     * Salva lo stato corrente della libreria persistente in memoria permanente.
+     * Questo metodo garantisce che tutte le modifiche apportate alla libreria
+     * vengano scritte nella sorgente di memorizzazione persistente, assicurando
+     * la consistenza dei dati tra memoria temporanea e memoria permanente.
+     * post: Lo stato della sorgente persistente è aggiornato rispetto all'ultimo stato della libreria in memoria.
+     */
+    void persist();
 }

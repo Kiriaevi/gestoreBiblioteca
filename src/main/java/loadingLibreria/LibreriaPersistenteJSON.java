@@ -31,7 +31,7 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 	}
 
 	@Override
-	public void onClose() {
+    protected void onClose() {
 		if(jsonGen != null) {
 			jsonGen.close();
 		}
@@ -66,5 +66,10 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 	@Override
 	public int getSize() {
 		return 0;
+	}
+
+	@Override
+	public void persist() {
+
 	}
 }

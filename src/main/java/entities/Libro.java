@@ -37,4 +37,16 @@ public class Libro {
     public Stato getStato() {
         return stato;
     }
+
+    @Override
+    public String toString() {
+        return "Libro{" +
+                "titolo='" + titolo + '\'' +
+                ", autore='" + autore + '\'' +
+                ", ISBN='" + ISBN + '\'' +
+                ", genere='" + genere + '\'' +
+                ", valutazione=" + valutazione +
+                ", stato=" + stato +
+                '}';
+    }
 }

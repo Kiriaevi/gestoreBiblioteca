@@ -1,25 +1,13 @@
 package gui;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import com.formdev.flatlaf.util.SystemInfo;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class Applicazione extends JFrame {
+public class Gui extends JFrame {
 
     private final JTextField searchField = new JTextField();
     private final JComboBox<String> authorCombo = new JComboBox<>();
@@ -27,7 +15,7 @@ public class Applicazione extends JFrame {
     private final JTable table = new JTable();
     private final DefaultTableModel model;
 
-    public Applicazione() {
+    public Gui() {
         super("Library Manager");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(600, 500);
@@ -110,7 +98,7 @@ public class Applicazione extends JFrame {
             System.err.println("FlatLaf non supportato");
         }
 
-        SwingUtilities.invokeLater(() -> new Applicazione().setVisible(true));
+        SwingUtilities.invokeLater(() -> new Gui().setVisible(true));
     }
 }
 

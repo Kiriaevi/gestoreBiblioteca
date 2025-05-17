@@ -7,8 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import entities.Libro;
 import entities.Stato;
@@ -23,15 +21,22 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 
 	public LibreriaPersistenteCSV() {
 		super();
+		onInit();
+		super.size = this.getSize();
 	}
 
 	@Override
 	protected boolean onInit() {
 		try {
-			if(pw == null)
-				pw = new PrintWriter(new FileWriter(fileName), true);
+			File file = new File(fileName);
+			if(!file.exists()) {
+				System.out.println("Il file non esiste, lo creo");
+				file.createNewFile();
+			}
 			if (br == null)
-				br = new BufferedReader(new FileReader(fileName));
+				br = new BufferedReader(new FileReader(file));
+			//if(pw == null)
+			//	pw = new PrintWriter(new FileWriter(file, true), true);
 			if(sb == null)
 				sb = new StringBuilder();
 		} catch (IOException e) {
@@ -43,7 +48,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 
 	//FIXME: nel file JSON non lancia eccezioni e qui si?
 	@Override
-	public void onClose() {
+	protected void onClose() {
 		try {
 			if (br != null)
 				br.close();
@@ -54,9 +59,10 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		}
 	}
 
+	// FIXME: o salvi il singolo libro o salvi tutti i libri
 	@Override
 	public String salvaLibro(Libro libro) {
-		if(libro != null) {
+		if(libro != null && pw != null) {
 			String line = convertiInCSV(libro);
 			pw.println(convertiInCSV(libro));
 			super.size++;
@@ -102,7 +108,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		List<String> libriInStringhe = new LinkedList<>();
 		for (int i = 0; i < size; i++) {
 			// se l'ingresso ricevuto `size` è più grande del numero di linee del file allora fermiamoci
-			if(super.size < i)
+			if(super.size <= i)
 				break;
 			String book = br.readLine();
 			libriInStringhe.add(book);
@@ -166,10 +172,24 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		// per ottimizzazione: apprendiamo il numero di linee del file solo la prima volta
 		if(super.size != -1)
 			return super.size;
-		try {
-			return Math.toIntExact(Files.lines(Paths.get(fileName)).count());
+		try(BufferedReader brLines = new BufferedReader(new FileReader(fileName))) {
+			int cnt = 0;
+			while(brLines.readLine() != null)
+				cnt++;
+			System.out.println(cnt);
+			return cnt;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		}
+	}
+	@Override
+	public void persist() {
+		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) { // Sovrascrive il file
+			for (Libro libro : super.libri) {
+				writer.println(convertiInCSV(libro));
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Errore nel salvare i libri nel file", e);
 		}
 	}
 }
