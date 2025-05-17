@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="proggettoIng:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/proggettoIng_jar</output-path>
+    <root id="archive" name="proggettoIng.jar">
+      <element id="module-output" name="proggettoIng" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/googlecode/lanterna/lanterna/3.1.1/lanterna-3.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/javax/json/javax.json-api/1.1.4/javax.json-api-1.1.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/formdev/flatlaf/3.2/flatlaf-3.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
