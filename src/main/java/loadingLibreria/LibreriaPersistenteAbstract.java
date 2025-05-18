@@ -33,8 +33,4 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
 
     protected abstract void persist();
 
-    public List<Libro> getLibri() {
-        return this.libri;
-    }
-
 }

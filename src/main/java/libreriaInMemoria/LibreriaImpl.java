@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import comparators.OrdinamentoValutazione;
 import entities.Libro;
 import loadingLibreria.LibreriaPersistenteCSV;
 import loadingLibreria.LibreriaPersistenteJSON;
@@ -42,8 +43,8 @@ public class LibreriaImpl extends LibreriaAbstract {
         if (size < 0)
             throw new IllegalArgumentException("size non può essere un valore negativo");
         if(size > super.lib.getSize())
-            return Collections.unmodifiableCollection(super.libri);
-        return Collections.unmodifiableCollection(super.libri.subList(0, size));
+            return super.libri.stream().sorted(new OrdinamentoValutazione(false).ottieniComparatore()).toList();
+        return super.libri.subList(0, size).stream().sorted(new OrdinamentoValutazione(false).ottieniComparatore()).toList();
     }
 
     @Override
