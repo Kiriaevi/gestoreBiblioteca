@@ -6,12 +6,12 @@ public class Libro {
     private final Stato stato;
 
     public Libro(String titolo, String autore, String ISBN, String genere, int valutazione, Stato stato) {
-        this.titolo = titolo;
-        this.autore = autore;
-        this.ISBN = ISBN;
-        this.genere = genere;
-        this.valutazione = valutazione;
-        this.stato = stato;
+        this.titolo = titolo.isEmpty() ? "Titolo sconosciuto" : titolo;
+        this.autore = autore.isEmpty() ? "Autore sconosciuto" : autore;
+        this.ISBN = ISBN.isEmpty() ? "ISBN non disponibile" : ISBN;
+        this.genere = genere.isEmpty() ? "Genere non impostato" : genere;
+        this.valutazione = Math.max(valutazione, 0);
+        this.stato = stato == null ? Stato.DA_LEGGERE : stato;
     }
 
     public String getTitolo() {
