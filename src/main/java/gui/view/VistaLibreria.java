@@ -1,4 +1,4 @@
-package gui.vista;
+package gui.view;
 
 import entities.Libro;
 import entities.Stato;
@@ -27,7 +27,7 @@ public class VistaLibreria extends JFrame{
         }, 0);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(900, 700);
+        setSize(400, 400);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
@@ -74,7 +74,6 @@ public class VistaLibreria extends JFrame{
         }
         updateFilters();
         refreshCards();
-        System.out.println(libri);
     }
     private JPanel createFilterPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -109,6 +108,10 @@ public class VistaLibreria extends JFrame{
 
         return panel;
     }
+    public void libroAggiunto(Libro l) {
+        JOptionPane.showMessageDialog(this, "Libro aggiunto: " + l);
+        // qui aggiorni la lista o la vista se serve
+    }
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         JButton addBtn = new JButton("Add Book");
@@ -116,12 +119,17 @@ public class VistaLibreria extends JFrame{
         JButton toggleViewBtn = new JButton("Toggle View");
 
 
+        addBtn.addActionListener(e -> apriForm());
         panel.add(addBtn);
         panel.add(editBtn);
         panel.add(deleteBtn);
         panel.add(toggleViewBtn);
 
         return panel;
+    }
+    private void apriForm() {
+        VistaAggiungi form = new VistaAggiungi(this);
+        form.setVisible(true);
     }
     private void refreshCards() {
         cardsPanel.removeAll();
