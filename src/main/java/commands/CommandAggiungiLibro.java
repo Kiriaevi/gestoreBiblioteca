@@ -13,5 +13,6 @@ public class CommandAggiungiLibro extends CommandAbstract{
     @Override
     public void execute() {
         super.libreria.aggiungiLibro(l);
+        System.out.println("Funziona: "+l);
     }
 }
