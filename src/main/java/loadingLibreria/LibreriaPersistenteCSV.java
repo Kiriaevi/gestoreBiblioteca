@@ -3,13 +3,10 @@ package loadingLibreria;
 import java.io.*;
 
 import java.io.FileReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-import comparatori.OrdinamentoAutore;
-import comparatori.OrdinamentoValutazione;
+import comparators.OrdinamentoValutazione;
 import entities.Libro;
 import entities.Stato;
 import exceptions.DocumentoMalFormatoException;
@@ -150,11 +147,11 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		String[] splitLibro = libro.split(",");
 		if(splitLibro.length < 6)
 			throw new DocumentoMalFormatoException("Il documento passato non è correttamente formattato, dovrebbero esserci 6 campi!");
-		String titolo = splitLibro[0].isEmpty() ? "Nessun titolo trovato" : splitLibro[0];
-		String autor = splitLibro[1].isEmpty() ? "Nessun autore" : splitLibro[1];
-		String isbn = splitLibro[2].isEmpty() ? "Nessun ISBN" : splitLibro[2];
-		String genere = splitLibro[3].isEmpty() ? "Nessun genere" : splitLibro[3];
-		int valutazione = !splitLibro[4].isEmpty() ? Integer.parseInt(splitLibro[4]) : 0;
+		String titolo = splitLibro[0];
+		String autor = splitLibro[1];
+		String isbn = splitLibro[2];
+		String genere = splitLibro[3];
+		int valutazione = Integer.parseInt(splitLibro[4]);
 		Stato stato = splitLibro[5].isEmpty() ? Stato.DA_LEGGERE : Stato.valueOf(splitLibro[5]);
 		return new Libro(titolo, autor, isbn, genere, valutazione, stato);
 	}
