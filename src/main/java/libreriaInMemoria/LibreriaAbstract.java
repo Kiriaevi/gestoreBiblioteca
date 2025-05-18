@@ -10,9 +10,8 @@ import loadingLibreria.LibreriaPersistenteAbstract;
 public abstract class LibreriaAbstract implements Libreria {
 
     protected LibreriaPersistente lib = null;
-    protected List<Libro> libri = null;
-    public LibreriaAbstract(String type) {
-        onInit(type);
+    protected List<Libro> libri = new LinkedList<>();
+    public LibreriaAbstract() {
     }
     protected abstract void onInit(String type);
     protected abstract void onClose();
@@ -30,5 +29,7 @@ public abstract class LibreriaAbstract implements Libreria {
     @Override
     public void aggiungiLibro(Libro l) {
         lib.salvaLibro(l);
+        System.out.println("IN MEMORIA: "+this.libri);
     }
+    public List<Libro> getLibreria() { return this.libri; }
 }

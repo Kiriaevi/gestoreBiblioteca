@@ -12,16 +12,17 @@ import loadingLibreria.LibreriaPersistenteJSON;
 public class LibreriaImpl extends LibreriaAbstract {
 
     public LibreriaImpl(String type) {
-        super(type);
+        super();
+        onInit(type);
     }
 	@Override
 	protected void onInit(String type) {
         switch (type) {
             case "csv":
-                super.lib = new LibreriaPersistenteCSV();
+                super.lib = new LibreriaPersistenteCSV(this);
                 break;
             case "json":
-                super.lib = new LibreriaPersistenteJSON();
+                super.lib = new LibreriaPersistenteJSON(this);
                 break;
             default:
                 throw new IllegalArgumentException("Sistema compatibile solo con file CSV e JSON");

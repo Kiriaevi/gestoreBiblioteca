@@ -2,6 +2,7 @@ package loadingLibreria;
 
 import entities.Libro;
 import entities.Stato;
+import libreriaInMemoria.LibreriaImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,13 +15,15 @@ public class LibreriaPersistenteCSVTest {
 
     private LibreriaPersistenteCSV libreriaPersistenteCSV;
     @BeforeEach
+    //FIXME
     public void setup() {
-        libreriaPersistenteCSV = new LibreriaPersistenteCSV();
+        libreriaPersistenteCSV = new LibreriaPersistenteCSV(new LibreriaImpl("csv"));
         libreriaPersistenteCSV.onInit();
     }
     @Test
+    //FIXME
     public void initializationShouldBeSuccessful() {
-        LibreriaPersistenteCSV istanza = new LibreriaPersistenteCSV();
+        LibreriaPersistenteCSV istanza = new LibreriaPersistenteCSV(new LibreriaImpl("csv"));
         assertTrue(istanza.onInit());
     }
 

@@ -11,6 +11,7 @@ import java.util.List;
 import entities.Libro;
 import entities.Stato;
 import exceptions.DocumentoMalFormatoException;
+import libreriaInMemoria.LibreriaAbstract;
 
 public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 
@@ -19,8 +20,8 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	private PrintWriter pw = null;
 	private StringBuilder sb = null;
 
-	public LibreriaPersistenteCSV() {
-		super();
+	public LibreriaPersistenteCSV(LibreriaAbstract lib) {
+		super(lib);
 		onInit();
 		super.size = this.getSize();
 	}
@@ -43,6 +44,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			System.out.println("Errore nell'inizializzazione del CSV: " + e.getMessage());
 			return false;
 		}
+		super.libri = super.libInMemoria.getLibreria();
 		return true;
 	}
 
@@ -63,7 +65,9 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	@Override
 	public String salvaLibro(Libro libro) {
 		if(libro != null) {
+			super.nuoveAggiunte.add(libro);
 			super.libri.add(libro);
+			agggiunte++;
 			System.out.println("MEMORIA SECONDARIA: "+super.libri);
 			persist();
 		}
@@ -116,7 +120,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		}
 		List<Libro> ret =  libriInStringhe.stream().map(this::convertiInLibro).toList();
 		super.libri.addAll(ret);
-		return ret;
+		return super.libri;
 	}
 
 	@Override
@@ -125,6 +129,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		int found = cercaLibroPerISBN(ISBN);
 		if(found == -1) return false;
 		super.libri.set(found, libro);
+		super.hasBeenModified = true;
 		persist();
 		return true;
 	}
@@ -135,6 +140,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		int found = cercaLibroPerISBN(libro.getISBN());
 		if(found == -1) return false;
 		super.libri.remove(found);
+		super.hasBeenModified = true;
 		persist();
 		return true;
 	}
@@ -183,14 +189,39 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		}
 	}
 
+	/**
+	 * Salva i dati della libreria persistente su un file CSV.
+	 * Se i libri sono stati modificati o eliminati il file attuale viene sovrascritto con
+	 * il contenuto aggiornato dei libri. Se sono stati aggiunti file allora questi vengono appesi
+	 *
+	 *
+	 * Il metodo verifica se vi sono stati cambiamenti nei dati della libreria (tramite il flag `hasBeenModified`).
+	 * Se sono presenti modifiche si effettua una sovrascrittura totale.
+	 * Per le nuove aggiunte registrate, il metodo aggiorna il file CSV in modalità di
+	 * accodamento, aggiungendo esclusivamente i dati dei nuovi libri.
+	 *
+	 * @throws RuntimeException Se si verifica un errore di I/O durante l'accesso o la scrittura del file CSV.
+	 */
 	@Override
 	protected void persist() {
-		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
-			for (Libro libro : super.libri) {
+		if(hasBeenModified) {
+			hasBeenModified = false;
+			try(PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+				for(Libro libro : super.libri)
+					writer.println(convertiInCSV(libro));
+			} catch (IOException e) {
+				throw new RuntimeException("Errore nel salvare i libri nel file", e);
+			}
+		}
+		if(agggiunte == 0) return;
+		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+			for (Libro libro : super.nuoveAggiunte) {
+				agggiunte--;
 				writer.println(convertiInCSV(libro));
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("Errore nel salvare i libri nel file", e);
 		}
+		super.nuoveAggiunte.clear();
 	}
 }

@@ -1,6 +1,8 @@
 package loadingLibreria;
 
 import entities.Libro;
+import libreriaInMemoria.LibreriaAbstract;
+import libreriaInMemoria.LibreriaImpl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,9 +11,14 @@ import java.util.List;
  * LibreriaPersistenteAbstract
  */
 public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente{
-    protected LinkedList<Libro> libri = new LinkedList<>();
+    protected List<Libro> libri = null;
+    protected List<Libro> nuoveAggiunte = new LinkedList<>();
+    protected LibreriaAbstract libInMemoria = null;
+    protected boolean hasBeenModified = false;
+    protected int agggiunte = 0;
     protected int size = -1;
-    public LibreriaPersistenteAbstract() {
+    public LibreriaPersistenteAbstract(LibreriaAbstract lib) {
+        this.libInMemoria = lib;
     }
     /**
      * Metodo per la gestione dell'inizializzazione della struttura persistente.
@@ -27,7 +34,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
     protected abstract void persist();
 
     public List<Libro> getLibri() {
-        return libri;
+        return this.libri;
     }
 
 }

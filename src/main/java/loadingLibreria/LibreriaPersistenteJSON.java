@@ -1,6 +1,7 @@
 package loadingLibreria;
 
 import entities.Libro;
+import libreriaInMemoria.LibreriaAbstract;
 
 import javax.json.Json;
 import javax.json.JsonReader;
@@ -16,6 +17,11 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 	private final String fileName = "libri.json";
 	private JsonGenerator jsonGen = null;
 	private JsonReader jsonReader = null;
+
+	public LibreriaPersistenteJSON(LibreriaAbstract lib) {
+		super(lib);
+	}
+
 	@Override
 	public boolean onInit() {
 		try {
