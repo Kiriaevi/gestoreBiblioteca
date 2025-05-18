@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
+import comparatori.OrdinamentoAutore;
+import comparatori.OrdinamentoValutazione;
 import entities.Libro;
 import entities.Stato;
 import exceptions.DocumentoMalFormatoException;
@@ -118,7 +120,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			String book = br.readLine();
 			libriInStringhe.add(book);
 		}
-		List<Libro> ret =  libriInStringhe.stream().map(this::convertiInLibro).toList();
+		List<Libro> ret =  libriInStringhe.stream().map(this::convertiInLibro).sorted(new OrdinamentoValutazione(false).ottieniComparatore()).toList();
 		super.libri.addAll(ret);
 		return super.libri;
 	}

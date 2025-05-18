@@ -1,35 +1,16 @@
 package gui;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import gui.controller.ControllerLibreria;
+import gui.vista.VistaLibreria;
+import libreriaInMemoria.LibreriaAbstract;
+import libreriaInMemoria.LibreriaImpl;
 
 import javax.swing.*;
-import javax.swing.table.*;
 import java.awt.*;
-import java.util.*;
 
-import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.util.Vector;
-import com.formdev.flatlaf.FlatLightLaf;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.Vector;
-import com.formdev.flatlaf.FlatLightLaf;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.Vector;
-import com.formdev.flatlaf.FlatLightLaf;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.Vector;
-import com.formdev.flatlaf.FlatLightLaf;
 
 public class Gui extends JFrame {
 
@@ -117,6 +98,7 @@ public class Gui extends JFrame {
 
         addBtn.addActionListener(e -> showAddBookDialog());
         toggleViewBtn.addActionListener(e -> toggleView());
+        editBtn.addActionListener(e -> editDialog());
 
         panel.add(addBtn);
         panel.add(editBtn);
@@ -124,6 +106,14 @@ public class Gui extends JFrame {
         panel.add(toggleViewBtn);
 
         return panel;
+    }
+
+    private void editDialog() {
+        // dici al controller di modificare il libro
+
+        // recupera i libri
+
+        // aggiorna
     }
 
     private void addSampleBooks() {
@@ -356,6 +346,10 @@ public class Gui extends JFrame {
             System.err.println("FlatLaf not supported");
         }
 
-        SwingUtilities.invokeLater(() -> new Gui().setVisible(true));
+        LibreriaAbstract libreria = new LibreriaImpl("csv");
+        VistaLibreria v = new VistaLibreria();
+        libreria.loadAll();
+        ControllerLibreria c = new ControllerLibreria(libreria, v);
+        SwingUtilities.invokeLater(() -> v.setVisible(true));
     }
 }
