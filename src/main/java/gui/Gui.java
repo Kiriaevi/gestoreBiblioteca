@@ -2,7 +2,7 @@ package gui;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import gui.controller.ControllerLibreria;
-import gui.vista.VistaLibreria;
+import gui.view.VistaLibreria;
 import libreriaInMemoria.LibreriaAbstract;
 import libreriaInMemoria.LibreriaImpl;
 

@@ -1,6 +1,6 @@
 package gui.controller;
 
-import gui.vista.VistaLibreria;
+import gui.view.VistaLibreria;
 import libreriaInMemoria.LibreriaAbstract;
 
 public class ControllerLibreria {
@@ -13,6 +13,9 @@ public class ControllerLibreria {
 
         vista.setEditButtonListener(e -> modificaLibro());
         vista.addBooks(libreria.getLibri(Integer.MAX_VALUE));
+    }
+    private void aggiungiLibro() {
+
     }
     private void modificaLibro() {
 
