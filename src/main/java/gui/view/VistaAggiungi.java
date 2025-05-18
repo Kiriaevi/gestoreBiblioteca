@@ -5,6 +5,7 @@ import entities.Stato;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.Consumer;
 
 public class VistaAggiungi extends JDialog {
     private final JTextField titoloField;
@@ -13,12 +14,13 @@ public class VistaAggiungi extends JDialog {
     private final JTextField genereField;
     private final JSpinner valutazione;
     private final JComboBox<Stato> statoField;
+    private final Consumer<Libro> onSalvaCallback;
 
-    public VistaAggiungi(VistaLibreria parent) {
+    public VistaAggiungi(VistaLibreria parent, Consumer<Libro> onSalvaCallback) {
         super(parent, "Nuovo Libro", true);
+        this.onSalvaCallback = onSalvaCallback;
         setSize(600, 550);
         
-        // Creiamo il pannello principale con il suo BoxLayout
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
 
@@ -29,24 +31,11 @@ public class VistaAggiungi extends JDialog {
         valutazione = new JSpinner(new SpinnerNumberModel(0,0,5,1));
         statoField = new JComboBox<>(Stato.values());
 
-        JButton salva = new JButton("Salva");
-        salva.addActionListener(e -> {
-            String titolo = titoloField.getText();
-            String autore = autoreField.getText();
-            String isbn = isbnField.getText();
-            String genere = genereField.getText();
-            int rating = (int) valutazione.getValue();
-            Stato stato = (Stato) statoField.getSelectedItem();
-
-            Libro l = new Libro(titolo, autore, isbn, genere, rating, stato);
-            parent.libroAggiunto(l);
-            dispose();
-        });
+        JButton salva = getJButton(parent);
 
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         formPanel.setBackground(Color.WHITE);
         
-        // Aggiungiamo i componenti al pannello
         formPanel.add(new JLabel("Titolo:"));
         formPanel.add(titoloField);
         formPanel.add(new JLabel("Autore:"));
@@ -72,7 +61,25 @@ public class VistaAggiungi extends JDialog {
         formPanel.add(Box.createVerticalStrut(10));
         formPanel.add(bottoniPanel);
 
-        // Aggiungiamo il pannello principale al dialog
         add(formPanel);
+    }
+
+    private JButton getJButton(VistaLibreria parent) {
+        JButton salva = new JButton("Salva");
+        salva.addActionListener(e -> {
+            Libro l = recuperaDati();
+            onSalvaCallback.accept(l);
+            dispose();
+        });
+        return salva;
+    }
+    private Libro recuperaDati() {
+        String titolo = titoloField.getText();
+        String autore = autoreField.getText();
+        String isbn = isbnField.getText();
+        String genere = genereField.getText();
+        int rating = (int) valutazione.getValue();
+        Stato stato = (Stato) statoField.getSelectedItem();
+        return new Libro(titolo,autore,isbn,genere,rating,stato);
     }
 }

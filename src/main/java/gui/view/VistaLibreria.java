@@ -19,7 +19,8 @@ public class VistaLibreria extends JFrame{
     private final JComboBox<String> statusCombo = new JComboBox<>();
     private final JPanel cardsPanel = new JPanel();
     private final DefaultTableModel model;
-    JButton editBtn = new JButton("Edit Book");
+    private final JButton editBtn = new JButton("Modifica libro");
+    private final JButton addBtn = new JButton("Aggiungi libro");
     public VistaLibreria() {
         super("Libreria");
         model = new DefaultTableModel(new String[]{
@@ -60,8 +61,10 @@ public class VistaLibreria extends JFrame{
     public void setEditButtonListener(ActionListener listener) {
         editBtn.addActionListener(listener);
     }
+    public void setAddButtonListener(ActionListener listener) {
+        addBtn.addActionListener(listener);
+    }
     public void addBooks(Collection<Libro> libri) {
-        model.setRowCount(0);
         for (Libro l : libri) {
             model.addRow(new Object[] {
                     l.getTitolo(),
@@ -110,26 +113,19 @@ public class VistaLibreria extends JFrame{
     }
     public void libroAggiunto(Libro l) {
         JOptionPane.showMessageDialog(this, "Libro aggiunto: " + l);
-        // qui aggiorni la lista o la vista se serve
     }
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        JButton addBtn = new JButton("Add Book");
         JButton deleteBtn = new JButton("Delete Book");
         JButton toggleViewBtn = new JButton("Toggle View");
 
 
-        addBtn.addActionListener(e -> apriForm());
         panel.add(addBtn);
         panel.add(editBtn);
         panel.add(deleteBtn);
         panel.add(toggleViewBtn);
 
         return panel;
-    }
-    private void apriForm() {
-        VistaAggiungi form = new VistaAggiungi(this);
-        form.setVisible(true);
     }
     private void refreshCards() {
         cardsPanel.removeAll();
@@ -227,12 +223,7 @@ public class VistaLibreria extends JFrame{
     private Dimension calculateCardSize() {
         int baseWidth = 250;
         int baseHeight = 180;
-        int maxWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().width * 0.3);
 
-        if ((this.getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-            baseWidth = Math.min(350, maxWidth);
-            baseHeight = 220;
-        }
         return new Dimension(baseWidth, baseHeight);
     }
     private JLabel createDetailLabel(String text) {
@@ -256,5 +247,11 @@ public class VistaLibreria extends JFrame{
 
         authorCombo.setModel(new DefaultComboBoxModel<>(authors));
         categoryCombo.setModel(new DefaultComboBoxModel<>(categories));
+    }
+    public void ricaricaLibri(Collection<Libro> libri) {
+        model.setRowCount(0);
+        addBooks(libri);
+        updateFilters();
+        refreshCards();
     }
 }
