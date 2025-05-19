@@ -21,8 +21,8 @@ public class Applicazione {
         //Libro l = new Libro("学生 の学園", "sus", "12231-2112-12", "brainrot",5, Stato.LETTO);
         //libreria.aggiungiLibro(l); // <-- non posso richiamare modifica libro
 
-       // Collection<Libro> libreriaData = libreria.getLibri(Integer.MAX_VALUE);
-       // Filtro filtro = new FiltroAutore(new FiltroTitolo(new FiltroBase(), "学生"), "sus");
-        //System.out.println(libreriaData.stream().filter(filtro::filtro).toList());
+        Collection<Libro> libreriaData = libreria.getLibri(Integer.MAX_VALUE);
+        Filtro filtro = new FiltroAutore(new FiltroTitolo(new FiltroBase(), "viaggio"), "luca");
+        System.out.println(libreriaData.stream().filter(filtro::filtro).toList());
     }
 }

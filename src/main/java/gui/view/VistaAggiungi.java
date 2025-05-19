@@ -8,16 +8,16 @@ import java.awt.*;
 import java.util.function.Consumer;
 
 public class VistaAggiungi extends JDialog {
-    private final JTextField titoloField;
-    private final JTextField autoreField;
-    private final JTextField isbnField;
-    private final JTextField genereField;
-    private final JSpinner valutazione;
-    private final JComboBox<Stato> statoField;
+    private JTextField titoloField;
+    private JTextField autoreField;
+    private JTextField isbnField;
+    private JTextField genereField;
+    private JSpinner valutazione;
+    private JComboBox<Stato> statoField;
     private final Consumer<Libro> onSalvaCallback;
 
-    public VistaAggiungi(VistaLibreria parent, Consumer<Libro> onSalvaCallback) {
-        super(parent, "Nuovo Libro", true);
+    public VistaAggiungi(VistaLibreria parent, Consumer<Libro> onSalvaCallback, String titolo) {
+        super(parent, titolo, true);
         this.onSalvaCallback = onSalvaCallback;
         setSize(600, 550);
         
@@ -81,5 +81,22 @@ public class VistaAggiungi extends JDialog {
         int rating = (int) valutazione.getValue();
         Stato stato = (Stato) statoField.getSelectedItem();
         return new Libro(titolo,autore,isbn,genere,rating,stato);
+    }
+    public void setTitoloField(String titolo) {
+        this.titoloField.setText(titolo);
+    }
+    public void setAutoreField(String autore) {
+        this.autoreField.setText(autore);
+    }
+    public void setIsbnField(String ISBN) {
+        this.isbnField.setText(ISBN);
+    }
+    public void setGenereField(String genere) {
+        this.genereField.setText(genere);
+    }
+    public void setValutazione(int valutazione) {
+        this.valutazione.setValue(valutazione);
+    }
+    public void setStatoField(Stato stato) {
     }
 }

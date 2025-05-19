@@ -18,9 +18,9 @@ public class Gui {
         }
 
         LibreriaAbstract libreria = new LibreriaImpl("csv");
-        VistaLibreria v = new VistaLibreria();
         libreria.loadAll();
-        ControllerLibreria c = new ControllerLibreria(libreria, v);
+        VistaLibreria v = new VistaLibreria();
         SwingUtilities.invokeLater(() -> v.setVisible(true));
+        ControllerLibreria c = new ControllerLibreria(libreria, v);
     }
 }

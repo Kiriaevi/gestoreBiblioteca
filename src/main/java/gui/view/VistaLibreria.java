@@ -7,8 +7,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.Collection;
-import java.util.Vector;
+import java.util.*;
+import java.util.List;
 
 public class VistaLibreria extends JFrame{
 
@@ -19,8 +19,12 @@ public class VistaLibreria extends JFrame{
     private final JComboBox<String> statusCombo = new JComboBox<>();
     private final JPanel cardsPanel = new JPanel();
     private final DefaultTableModel model;
-    private final JButton editBtn = new JButton("Modifica libro");
+    private final List<JButton> editBtns = new LinkedList<>();
+    private final List<JButton> deleteBtns = new LinkedList<>();
     private final JButton addBtn = new JButton("Aggiungi libro");
+    private final HashMap<JButton, Libro> libroBottone = new HashMap<>();
+    private Libro libroAttuale = null;
+
     public VistaLibreria() {
         super("Libreria");
         model = new DefaultTableModel(new String[]{
@@ -31,6 +35,7 @@ public class VistaLibreria extends JFrame{
         setSize(400, 400);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
+
 
         // NORTH PANEL - Filters
         JPanel filterPanel = createFilterPanel();
@@ -49,7 +54,6 @@ public class VistaLibreria extends JFrame{
 
         updateFilters();
         refreshCards();
-
     }
     @Override
     public void setExtendedState(int state) {
@@ -59,7 +63,15 @@ public class VistaLibreria extends JFrame{
         }
     }
     public void setEditButtonListener(ActionListener listener) {
-        editBtn.addActionListener(listener);
+        for (JButton button : editBtns) {
+            button.addActionListener(listener);
+        }
+
+    }
+    // TODO: ridurre la ridondanza? editButton listener e deletebutton listener fanno la stessa cosa
+    public void setDeleteButtonListener(ActionListener listener) {
+        for (JButton button : deleteBtns)
+            button.addActionListener(listener);
     }
     public void setAddButtonListener(ActionListener listener) {
         addBtn.addActionListener(listener);
@@ -116,13 +128,10 @@ public class VistaLibreria extends JFrame{
     }
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        JButton deleteBtn = new JButton("Delete Book");
         JButton toggleViewBtn = new JButton("Toggle View");
 
 
         panel.add(addBtn);
-        panel.add(editBtn);
-        panel.add(deleteBtn);
         panel.add(toggleViewBtn);
 
         return panel;
@@ -141,7 +150,10 @@ public class VistaLibreria extends JFrame{
             int rating = (int) model.getValueAt(i, 4);
             Stato status = (Stato) model.getValueAt(i, 5);
 
+            libroAttuale = new Libro(title, author, isbn, category, rating, status);
             JPanel card = createBookCard(title, author, category, isbn, rating, status);
+
+
             cardsPanel.add(card);
         }
 
@@ -208,13 +220,22 @@ public class VistaLibreria extends JFrame{
                 break;
         }
         JButton edit = new JButton("Modifica");
-
+        JButton delete = new JButton("Elimina");
+        this.editBtns.add(edit);
+        this.deleteBtns.add(delete);
+        libroBottone.put(edit, libroAttuale);
         card.add(titleLabel, BorderLayout.NORTH);
         card.add(detailsPanel, BorderLayout.CENTER);
 
         JPanel inferiore = new JPanel(new BorderLayout());
+        JPanel sceltaInferiore = new JPanel(new BorderLayout());
         inferiore.add(statusLabel, BorderLayout.WEST);
-        inferiore.add(edit, BorderLayout.EAST);
+
+        sceltaInferiore.add(edit, BorderLayout.WEST);
+        sceltaInferiore.add(delete, BorderLayout.EAST);
+        sceltaInferiore.setBackground(Color.WHITE);
+
+        inferiore.add(sceltaInferiore, BorderLayout.EAST);
         inferiore.setBackground(Color.WHITE);
 
         card.add(inferiore, BorderLayout.SOUTH);
@@ -253,5 +274,15 @@ public class VistaLibreria extends JFrame{
         addBooks(libri);
         updateFilters();
         refreshCards();
+    }
+
+    public Libro getLibroSelezionato(JButton sourceButton) {
+        return libroBottone.get(sourceButton);
+    }
+    public void pulisci() {
+        this.deleteBtns.clear();
+        this.editBtns.clear();
+        libroAttuale = null;
+        libroBottone.clear();
     }
 }
