@@ -12,6 +12,7 @@ import libreriaInMemoria.LibreriaAbstract;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ControllerLibreria {
     private  final LibreriaAbstract libreria;
@@ -38,26 +39,33 @@ public class ControllerLibreria {
         vistaAggiungi.setVisible(true);
 
     }
+    private Libro ottieniLibro(JButton bottone) {
+        return vista.getLibroSelezionato(bottone);
+    }
     private void modificaLibro(ActionEvent e) {
-        JButton sourceButton = (JButton) e.getSource();
-        Libro libroSorg = vista.getLibroSelezionato(sourceButton);
-
+        Libro libroSorg = ottieniLibro((JButton) e.getSource());
         VistaModifica vistaModifica = new VistaModifica(vista, libro -> {
             Command cmd = new CommandModificaLibro(libreria, libro, libroSorg.getISBN());
             cmd.execute();
-            vista.pulisci();
-            vista.ricaricaLibri(libreria.getLibri(Integer.MAX_VALUE));
-            aggiungiListeners();
-
+            aggiorna();
         }, libroSorg);
         vistaModifica.setVisible(true);
     }
-    private void eliminaLibro() {
+    private void eliminaLibro(ActionEvent e) {
+        Libro libroSorg = ottieniLibro((JButton) e.getSource());
+        Command cmd = new CommandRimuoviLibro(libreria, libroSorg);
+        cmd.execute();
+        aggiorna();
         System.out.println("Elimina libro");
+    }
+    private void aggiorna() {
+        vista.pulisci();
+        vista.ricaricaLibri(libreria.getLibri(Integer.MAX_VALUE));
+        aggiungiListeners();
     }
     private void aggiungiListeners() {
         vista.setEditButtonListener(this::modificaLibro);
         vista.setAddButtonListener(e -> aggiungiLibro());
-        vista.setDeleteButtonListener(e -> eliminaLibro());
+        vista.setDeleteButtonListener(this::eliminaLibro);
     }
 }

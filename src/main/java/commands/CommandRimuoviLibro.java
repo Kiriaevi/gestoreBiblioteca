@@ -12,7 +12,6 @@ public class CommandRimuoviLibro extends CommandAbstract{
 
     @Override
     public void execute() {
-        System.out.println(l);
-       // super.libreria.eliminaLibro(l);
+        super.libreria.eliminaLibro(l);
     }
 }

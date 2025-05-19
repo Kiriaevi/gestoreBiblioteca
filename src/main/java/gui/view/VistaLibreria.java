@@ -224,6 +224,7 @@ public class VistaLibreria extends JFrame{
         this.editBtns.add(edit);
         this.deleteBtns.add(delete);
         libroBottone.put(edit, libroAttuale);
+        libroBottone.put(delete, libroAttuale);
         card.add(titleLabel, BorderLayout.NORTH);
         card.add(detailsPanel, BorderLayout.CENTER);
 
