@@ -4,6 +4,9 @@ import commands.Command;
 import commands.CommandAggiungiLibro;
 import commands.CommandModificaLibro;
 import commands.CommandRimuoviLibro;
+import comparators.OrdinamentoAutore;
+import comparators.OrdinamentoTitolo;
+import comparators.OrdinamentoValutazione;
 import entities.Libro;
 import entities.Query;
 import gui.view.VistaAggiungi;
@@ -15,6 +18,7 @@ import ricerca.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -27,6 +31,7 @@ public class ControllerLibreria {
     private final VistaLibreria vista;
     private Collection<Libro> libri = null;
     private boolean backHome = false;
+    private Comparator<Libro> comparatore = new OrdinamentoValutazione(false).ottieniComparatore();
     public ControllerLibreria(LibreriaAbstract libreria, VistaLibreria vista) {
         this.libreria = libreria;
         this.vista = vista;
@@ -34,14 +39,41 @@ public class ControllerLibreria {
     }
     private void onInit() {
         this.vista.setSearchButtonListener(this::cercaLibro);
+        this.vista.setAutoreOnClickListener(e -> ordinamento("autore"));
+        this.vista.setTitoloOnClickListener(e -> ordinamento("titolo"));
+        this.vista.setStatoOnClickListener(e -> ordinamento("stato"));
         popolaLibreria();
     }
+    private void ordinamento(String criterio) {
+        switch (criterio) {
+            case "autore":
+                this.comparatore = new OrdinamentoAutore(false).ottieniComparatore();
+                break;
+            case "titolo":
+                this.comparatore = new OrdinamentoTitolo(false).ottieniComparatore();
+                break;
+            case "stato":
+                this.comparatore = new OrdinamentoValutazione(false).ottieniComparatore();
+                break;
+            default:
+                this.comparatore = new OrdinamentoValutazione(true).ottieniComparatore();
+        }
+        vista.mostraRisultatiRicerca(libri.stream().sorted(comparatore).toList());
 
+    }
+    /**
+     * Gestisce l'azione di ricerca dei libri in base ai criteri definiti dall'utente e aggiorna la vista di conseguenza.
+     * Se viene avviata la ricerca, applica una serie di filtri alla lista dei libri.
+     * Se viene premuto il pulsante "Torna alla Home", reimposta i criteri di ricerca e i risultati, tornando allo stato iniziale.
+     *
+     */
     private void cercaLibro(ActionEvent actionEvent) {
         Query q = vista.recuperaDatiDiRicerca();
         Filtro filtro = new FiltroBase();
 
+        //TODO: SE AGGIUNGI VIRGOLETTE NON CERCA ', FARE ESCAPING DEI CARATTERI
         if(backHome) {
+            libri = ottieniLibriDallaLibreria();
             vista.setSearchButtonText("Cerca");
             vista.mostraRisultatiRicerca(libri.stream().filter(filtro::filtro).toList());
             vista.pulisciRicerca();
@@ -58,9 +90,9 @@ public class ControllerLibreria {
         if (q.stato() != null)
             filtro = new FiltroStato(filtro, q.stato());
 
-        List<Libro> ret = libri.stream().filter(filtro::filtro).toList();
+        libri = libri.stream().filter(filtro::filtro).sorted(comparatore).toList();
         vista.setSearchButtonText("Torna alla Home");
-        vista.mostraRisultatiRicerca(ret);
+        vista.mostraRisultatiRicerca(libri);
         backHome = true;
     }
     private void aggiungiLibro() {
@@ -87,7 +119,7 @@ public class ControllerLibreria {
         aggiorna();
     }
     private void popolaLibreria() {
-        libri = libreria.getLibri(Integer.MAX_VALUE);
+        libri = ottieniLibriDallaLibreria();
         vista.addBooks(libri);
         aggiungiListeners();
     }
@@ -101,7 +133,7 @@ public class ControllerLibreria {
     }
     private void aggiorna() {
         vista.pulisciMatrice();
-        libri = libreria.getLibri(Integer.MAX_VALUE);
+        libri = ottieniLibriDallaLibreria();
         vista.addBooks(libri);
         aggiungiListeners();
     }
@@ -109,5 +141,8 @@ public class ControllerLibreria {
         vista.setEditButtonListener(this::modificaLibro);
         vista.setAddButtonListener(e -> aggiungiLibro());
         vista.setDeleteButtonListener(this::eliminaLibro);
+    }
+    private Collection<Libro> ottieniLibriDallaLibreria() {
+        return libreria.getLibri(Integer.MAX_VALUE).stream().sorted(this.comparatore).toList();
     }
 }
