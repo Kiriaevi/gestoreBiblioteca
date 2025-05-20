@@ -12,7 +12,7 @@ public class OrdinamentoValutazione extends OrdinamentoAbstract{
 
     @Override
     public Comparator<Libro> ottieniComparatore() {
-        return super.discendente ? Comparator.comparing(Libro::getValutazione).reversed() :
-                Comparator.comparing(Libro::getValutazione);
+        return super.discendente ? Comparator.comparing(Libro::valutazione).reversed() :
+                Comparator.comparing(Libro::valutazione);
     }
 }

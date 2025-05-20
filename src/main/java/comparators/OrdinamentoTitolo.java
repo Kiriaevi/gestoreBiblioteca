@@ -12,7 +12,7 @@ public class OrdinamentoTitolo extends OrdinamentoAbstract{
 
     @Override
     public Comparator<Libro> ottieniComparatore() {
-        return super.discendente ? Comparator.comparing(Libro::getTitolo).reversed() :
-                Comparator.comparing(Libro::getTitolo);
+        return super.discendente ? Comparator.comparing(Libro::titolo).reversed() :
+                Comparator.comparing(Libro::titolo);
     }
 }
