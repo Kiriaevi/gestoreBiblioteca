@@ -1,82 +1,81 @@
 package loadingLibreria;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import entities.Libro;
+import exceptions.DocumentoMalFormatoException;
+import exceptions.ErroreNellaCreazioneDelFile;
 import libreriaInMemoria.LibreriaAbstract;
+import java.io.File;
 
-import javax.json.Json;
-import javax.json.JsonReader;
-import javax.json.stream.JsonGenerator;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 
-	private final String fileName = "libri.json";
-	private JsonGenerator jsonGen = null;
-	private JsonReader jsonReader = null;
-
+	private final File file = new File("libri.json");
+	private final ObjectMapper mapper = new ObjectMapper();
 	public LibreriaPersistenteJSON(LibreriaAbstract lib) {
 		super(lib);
+		onInit();
 	}
 
 	@Override
 	public boolean onInit() {
-		try {
-			if (jsonGen == null)
-				jsonGen = Json.createGenerator(new FileWriter(fileName));
-			if (jsonReader == null)
-				jsonReader = Json.createReader(Files.newInputStream(Paths.get(fileName)));
-		} catch (IOException e) {
-			System.out.println("Errore nell'inizializzazione del componente JSON: " + e.getMessage());
-			return false;
-		}
+		if(!file.exists()) {
+            try {
+                boolean isCreated = file.createNewFile();
+				if(!isCreated)
+					throw new ErroreNellaCreazioneDelFile("Non è stato possibile creare il file libri.json");
+				 mapper.createArrayNode();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 		return true;
 	}
 
 	@Override
     protected void onClose() {
-		if(jsonGen != null) {
-			jsonGen.close();
-		}
-		if(jsonReader != null) {
-			jsonReader.close();
-		}
+		System.out.println("Sistema in chiusura...");
 	}
 
 	@Override
 	protected void persist() {
-
-	}
-
-	@Override
-	public ArrayList<Libro> leggiLibro(int size) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'leggiLibro'");
-	}
-
-	@Override
-	public boolean modificaLibro(Libro libro, String ISBN) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'modificaLibro'");
-	}
-
-	@Override
-	public boolean eliminaLibro(Libro libro) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'eliminaLibro'");
-	}
-
-	@Override
-	public String salvaLibro(Libro libro) {
-        return null;
+        try {
+            mapper.writerWithDefaultPrettyPrinter().writeValue(file, libri);
+			super.aggiunte = 0;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 	@Override
+	public List<Libro> leggiLibro(int size) {
+		List<Libro> ret;
+        try {
+            JsonNode root = mapper.readTree(file);
+			if(root.isArray()) {
+				ret = mapper.readValue(file, new TypeReference<>() {});
+			} else {
+				throw new DocumentoMalFormatoException("Mi aspetto come parametro di root un array");
+			}
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+		super.libri = new ArrayList<>(ret);
+		return super.libri;
+    }
+	@Override
 	public int getSize() {
-		return 0;
-	}
-
+		if(super.libri != null)
+			return super.libri.size();
+        try {
+            return mapper.readValue(file, new TypeReference<List<Libro>>() {}).size();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

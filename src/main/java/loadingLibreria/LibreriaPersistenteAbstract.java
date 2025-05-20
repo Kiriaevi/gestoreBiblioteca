@@ -2,9 +2,7 @@ package loadingLibreria;
 
 import entities.Libro;
 import libreriaInMemoria.LibreriaAbstract;
-import libreriaInMemoria.LibreriaImpl;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,11 +10,10 @@ import java.util.List;
  */
 public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente{
     protected List<Libro> libri = null;
-    protected List<Libro> nuoveAggiunte = new LinkedList<>();
     protected LibreriaAbstract libInMemoria = null;
-    protected boolean hasBeenModified = false;
-    protected int agggiunte = 0;
+    protected int aggiunte = 0;
     protected int size = -1;
+    protected boolean hasBeenModified = false;
     public LibreriaPersistenteAbstract(LibreriaAbstract lib) {
         this.libInMemoria = lib;
     }
@@ -33,4 +30,49 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
 
     protected abstract void persist();
 
+    @Override
+    public String salvaLibro(Libro l) {
+        if(l != null) {
+            libri.add(l);
+            aggiunte++;
+            return l.toString();
+        }
+        return null;
+    }
+    public boolean modificaLibro(Libro libro, String ISBN) {
+        if (libro == null || ISBN == null) return false;
+        int found = cercaLibroPerISBN(ISBN);
+        if(found == -1) return false;
+        libri.set(found, libro);
+        hasBeenModified = true;
+        persist();
+        return true;
+    }
+
+    public boolean eliminaLibro(Libro libro) {
+        if(libro == null) return false;
+        int found = cercaLibroPerISBN(libro.isbn());
+        if(found == -1) return false;
+        libri.remove(found);
+        hasBeenModified = true;
+        persist();
+        return true;
+    }
+    /**
+     * Restituisce l'indice in cui si trova, se presente, il libro identificato da ISBN passato in input.
+     * @param ISBN, il libro da cercare
+     * @return la posizione nella lista in cui si trova il libro se esiste, altrimenti -1
+     */
+    protected int cercaLibroPerISBN(String ISBN) {
+        int found = -1;
+        int cnt = 0;
+        for (Libro l : libri) {
+            if(l.isbn().equals(ISBN)) {
+                found = cnt;
+                break;
+            }
+            cnt++;
+        }
+        return found;
+    }
 }

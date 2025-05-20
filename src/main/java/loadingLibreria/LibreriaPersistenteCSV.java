@@ -18,7 +18,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	private BufferedReader br = null;
 	private PrintWriter pw = null;
 	private StringBuilder sb = null;
-
+	private List<Libro> nuoveAggiunte = new LinkedList<>();
 	public LibreriaPersistenteCSV(LibreriaAbstract lib) {
 		super(lib);
 		onInit();
@@ -64,10 +64,9 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	@Override
 	public String salvaLibro(Libro libro) {
 		if(libro != null) {
-			super.nuoveAggiunte.add(libro);
+			nuoveAggiunte.add(libro);
 			super.libri.add(libro);
-			agggiunte++;
-			System.out.println("MEMORIA SECONDARIA: "+super.libri);
+			aggiunte++;
 			persist();
 		}
 		return null;
@@ -78,30 +77,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		return nLinee();
 	}
 
-	/**
-	 * convertiInCSV
-	 * @param libro, il libro da convertire in una Stringa conforme allo standard CSV
-	 * @return la Stringa formattata in CSV che rappresenta il libro
-	 */
-	private String convertiInCSV(Libro libro) {
-		if(sb != null) {
-			sb.append(libro.getTitolo());
-			sb.append(",");
-			sb.append(libro.getAutore());
-			sb.append(",");
-			sb.append(libro.getISBN());
-			sb.append(",");
-			sb.append(libro.getGenere());
-			sb.append(",");
-			sb.append(libro.getValutazione());
-			sb.append(",");
-			sb.append(libro.getStato());
-			String ret = sb.toString();
-			sb.setLength(0);
-			return ret;
-		}
-		return null;
-	}
 
 	@Override
 	public List<Libro> leggiLibro(int size) throws IOException {
@@ -122,27 +97,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		return super.libri;
 	}
 
-	@Override
-	public boolean modificaLibro(Libro libro, String ISBN) {
-		if (libro == null || ISBN == null) return false;
-		int found = cercaLibroPerISBN(ISBN);
-		if(found == -1) return false;
-		super.libri.set(found, libro);
-		super.hasBeenModified = true;
-		persist();
-		return true;
-	}
-
-	@Override
-	public boolean eliminaLibro(Libro libro) {
-		if(libro == null) return false;
-		int found = cercaLibroPerISBN(libro.getISBN());
-		if(found == -1) return false;
-		super.libri.remove(found);
-		super.hasBeenModified = true;
-		persist();
-		return true;
-	}
 	private Libro convertiInLibro(String libro) {
 		String[] splitLibro = libro.split(",");
 		if(splitLibro.length < 6)
@@ -156,23 +110,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		return new Libro(titolo, autor, isbn, genere, valutazione, stato);
 	}
 
-	/**
-	 * Restituisce l'indice in cui si trova, se presente, il libro identificato da ISBN passato in input.
-	 * @param ISBN, il libro da cercare
-	 * @return la posizione nella lista in cui si trova il libro se esiste, altrimenti -1
-	 */
-	private int cercaLibroPerISBN(String ISBN) {
-		int found = -1;
-		int cnt = 0;
-		for (Libro l : super.libri) {
-			if(l.getISBN().equals(ISBN)) {
-				found = cnt;
-				break;
-			}
-			cnt++;
-		}
-		return found;
-	}
 	private int nLinee() {
 		// per ottimizzazione: apprendiamo il numero di linee del file solo la prima volta
 		if(super.size != -1)
@@ -212,15 +149,39 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 				throw new RuntimeException("Errore nel salvare i libri nel file", e);
 			}
 		}
-		if(agggiunte == 0) return;
+		if(aggiunte == 0) return;
 		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
-			for (Libro libro : super.nuoveAggiunte) {
-				agggiunte--;
+			for (Libro libro : nuoveAggiunte) {
+				aggiunte--;
 				writer.println(convertiInCSV(libro));
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("Errore nel salvare i libri nel file", e);
 		}
-		super.nuoveAggiunte.clear();
+		nuoveAggiunte.clear();
+	}
+	/**
+	 * convertiInCSV
+	 * @param libro, il libro da convertire in una Stringa conforme allo standard CSV
+	 * @return la Stringa formattata in CSV che rappresenta il libro
+	 */
+	private String convertiInCSV(Libro libro) {
+		if(sb != null) {
+			sb.append(libro.titolo());
+			sb.append(",");
+			sb.append(libro.autore());
+			sb.append(",");
+			sb.append(libro.isbn());
+			sb.append(",");
+			sb.append(libro.genere());
+			sb.append(",");
+			sb.append(libro.valutazione());
+			sb.append(",");
+			sb.append(libro.stato());
+			String ret = sb.toString();
+			sb.setLength(0);
+			return ret;
+		}
+		return null;
 	}
 }
