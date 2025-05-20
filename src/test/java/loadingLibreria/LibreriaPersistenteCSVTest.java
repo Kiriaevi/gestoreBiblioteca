@@ -17,13 +17,13 @@ public class LibreriaPersistenteCSVTest {
     @BeforeEach
     //FIXME
     public void setup() {
-        libreriaPersistenteCSV = new LibreriaPersistenteCSV(new LibreriaImpl("csv"));
+        libreriaPersistenteCSV = new LibreriaPersistenteCSV();
         libreriaPersistenteCSV.onInit();
     }
     @Test
     //FIXME
     public void initializationShouldBeSuccessful() {
-        LibreriaPersistenteCSV istanza = new LibreriaPersistenteCSV(new LibreriaImpl("csv"));
+        LibreriaPersistenteCSV istanza = new LibreriaPersistenteCSV();
         assertTrue(istanza.onInit());
     }
 

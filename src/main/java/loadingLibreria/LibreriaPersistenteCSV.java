@@ -3,6 +3,7 @@ package loadingLibreria;
 import java.io.*;
 
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	private PrintWriter pw = null;
 	private StringBuilder sb = null;
 	private List<Libro> nuoveAggiunte = new LinkedList<>();
-	public LibreriaPersistenteCSV(LibreriaAbstract lib) {
-		super(lib);
+	public LibreriaPersistenteCSV() {
+		super();
 		onInit();
 		super.size = this.getSize();
 	}
@@ -43,13 +44,12 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			System.out.println("Errore nell'inizializzazione del CSV: " + e.getMessage());
 			return false;
 		}
-		super.libri = super.libInMemoria.getLibreria();
 		return true;
 	}
 
 	//FIXME: nel file JSON non lancia eccezioni e qui si?
 	@Override
-	protected void onClose() {
+	protected void close() {
 		try {
 			if (br != null)
 				br.close();
@@ -83,7 +83,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		if(size < 0)
 			throw new IllegalArgumentException("La size non può essere negativa");
 		if(!super.libri.isEmpty())
-			return super.libri.stream().toList();
+			return super.libri;
 		List<String> libriInStringhe = new LinkedList<>();
 		for (int i = 0; i < size; i++) {
 			// se l'ingresso ricevuto `size` è più grande del numero di linee del file allora fermiamoci
@@ -92,8 +92,8 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			String book = br.readLine();
 			libriInStringhe.add(book);
 		}
-		List<Libro> ret =  libriInStringhe.stream().map(this::convertiInLibro).sorted(new OrdinamentoValutazione(false).ottieniComparatore()).toList();
-		super.libri.addAll(ret);
+		List<Libro> ret =  libriInStringhe.stream().map(this::convertiInLibro).toList();
+		super.libri = new ArrayList<>(ret);
 		return super.libri;
 	}
 

@@ -21,10 +21,10 @@ public class LibreriaImpl extends LibreriaAbstract {
 	protected void onInit(String type) {
         switch (type) {
             case "csv":
-                super.lib = new LibreriaPersistenteCSV(this);
+                super.lib = new LibreriaPersistenteCSV();
                 break;
             case "json":
-                super.lib = new LibreriaPersistenteJSON(this);
+                super.lib = new LibreriaPersistenteJSON();
                 break;
             default:
                 throw new IllegalArgumentException("Sistema compatibile solo con file CSV e JSON");

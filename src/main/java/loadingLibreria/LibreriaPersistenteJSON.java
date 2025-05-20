@@ -17,8 +17,8 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 
 	private final File file = new File("libri.json");
 	private final ObjectMapper mapper = new ObjectMapper();
-	public LibreriaPersistenteJSON(LibreriaAbstract lib) {
-		super(lib);
+	public LibreriaPersistenteJSON() {
+		super();
 		onInit();
 	}
 
@@ -38,7 +38,7 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 	}
 
 	@Override
-    protected void onClose() {
+    protected void close() {
 		System.out.println("Sistema in chiusura...");
 	}
 

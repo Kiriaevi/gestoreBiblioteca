@@ -10,12 +10,10 @@ import java.util.List;
  */
 public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente{
     protected List<Libro> libri = null;
-    protected LibreriaAbstract libInMemoria = null;
     protected int aggiunte = 0;
     protected int size = -1;
     protected boolean hasBeenModified = false;
-    public LibreriaPersistenteAbstract(LibreriaAbstract lib) {
-        this.libInMemoria = lib;
+    public LibreriaPersistenteAbstract() {
     }
     /**
      * Metodo per la gestione dell'inizializzazione della struttura persistente.
@@ -24,9 +22,10 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
     protected abstract boolean onInit();
     /**
      * Metodo per la gestione della chiusura della struttura persistente.
+     * Esempio: si può gestire la chiusura della connessione del database o di possibili file aperti.
      * @return true se la chiusura delle strutture persistenti viene effettuata con successo, false altrimenti
      */
-    protected abstract void onClose();
+    protected abstract void close();
 
     protected abstract void persist();
 
@@ -39,6 +38,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
         }
         return null;
     }
+    @Override
     public boolean modificaLibro(Libro libro, String ISBN) {
         if (libro == null || ISBN == null) return false;
         int found = cercaLibroPerISBN(ISBN);
@@ -48,7 +48,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
         persist();
         return true;
     }
-
+    @Override
     public boolean eliminaLibro(Libro libro) {
         if(libro == null) return false;
         int found = cercaLibroPerISBN(libro.isbn());
