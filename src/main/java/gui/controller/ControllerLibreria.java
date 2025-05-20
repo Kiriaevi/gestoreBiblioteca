@@ -19,7 +19,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * La classe ControllerLibreria funge da controller in un'architettura MVC
@@ -106,7 +105,7 @@ public class ControllerLibreria {
     private void modificaLibro(ActionEvent e) {
         Libro libroSorg = ottieniLibro((JButton) e.getSource());
         VistaModifica vistaModifica = new VistaModifica(vista, libro -> {
-            Command cmd = new CommandModificaLibro(libreria, libro, libroSorg.getISBN());
+            Command cmd = new CommandModificaLibro(libreria, libro, libroSorg.isbn());
             cmd.execute();
             aggiorna();
         }, libroSorg);

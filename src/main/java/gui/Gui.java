@@ -17,8 +17,7 @@ public class Gui {
             System.err.println("FlatLaf not supported");
         }
 
-        LibreriaAbstract libreria = new LibreriaImpl("csv");
-        libreria.loadAll();
+        LibreriaAbstract libreria = new LibreriaImpl("json");
         VistaLibreria v = new VistaLibreria();
         SwingUtilities.invokeLater(() -> v.setVisible(true));
         ControllerLibreria c = new ControllerLibreria(libreria, v);
