@@ -31,7 +31,7 @@ public class VistaAggiungi extends JDialog {
         valutazione = new JSpinner(new SpinnerNumberModel(0,0,5,1));
         statoField = new JComboBox<>(Stato.values());
 
-        JButton salva = getJButton(parent);
+        JButton salva = getJButton();
 
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         formPanel.setBackground(Color.WHITE);
@@ -64,7 +64,7 @@ public class VistaAggiungi extends JDialog {
         add(formPanel);
     }
 
-    private JButton getJButton(VistaLibreria parent) {
+    private JButton getJButton() {
         JButton salva = new JButton("Salva");
         salva.addActionListener(e -> {
             Libro l = recuperaDati();

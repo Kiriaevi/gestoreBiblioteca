@@ -1,6 +1,7 @@
 package gui.view;
 
 import entities.Libro;
+import entities.Query;
 import entities.Stato;
 
 import javax.swing.*;
@@ -10,20 +11,27 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
-public class VistaLibreria extends JFrame{
+public class VistaLibreria extends JFrame {
 
+    /* Impostazioni grafiche */
+    private final int cardWidth = 250, cardHeight = 190;
+    private final int MAX_COLUMNS = 3;
+    private final Color cardBackground = new Color(240, 240, 240);
+    /* Ricerca */
     private final JTextField searchField = new JTextField();
     private final JComboBox<String> authorCombo = new JComboBox<>();
-    private final int MAX_COLUMNS = 4;
     private final JComboBox<String> categoryCombo = new JComboBox<>();
     private final JComboBox<String> statusCombo = new JComboBox<>();
+    private final JButton searchButton = new JButton("Invia");
+    /* Pannello centrale, carte */
     private final JPanel cardsPanel = new JPanel();
     private final DefaultTableModel model;
     private final List<JButton> editBtns = new LinkedList<>();
     private final List<JButton> deleteBtns = new LinkedList<>();
-    private final JButton addBtn = new JButton("Aggiungi libro");
     private final HashMap<JButton, Libro> libroBottone = new HashMap<>();
     private Libro libroAttuale = null;
+    /* Panello finale, aggiunta libri */
+    private final JButton addBtn = new JButton("Aggiungi libro");
 
     public VistaLibreria() {
         super("Libreria");
@@ -43,7 +51,7 @@ public class VistaLibreria extends JFrame{
 
         // CENTER PANEL - Cards Grid
         cardsPanel.setLayout(new GridLayout(0, MAX_COLUMNS, 15, 15));
-        cardsPanel.setBackground(new Color(240, 240, 240));
+        cardsPanel.setBackground(cardBackground);
         JScrollPane scrollPane = new JScrollPane(cardsPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         add(scrollPane, BorderLayout.CENTER);
@@ -62,11 +70,23 @@ public class VistaLibreria extends JFrame{
             refreshCards();
         }
     }
+    public void  setSearchButtonListener(ActionListener listener) {
+        this.searchButton.addActionListener(listener);
+    }
+    public void  setSearchButtonText(String testo) {
+        this.searchButton.setText(testo);
+    }
+    public Query recuperaDatiDiRicerca() {
+        return new Query(
+                searchField.getText(),
+                (String) authorCombo.getSelectedItem(),
+                (String) categoryCombo.getSelectedItem(),
+                Stato.fromStringToStato((String)statusCombo.getSelectedItem()));
+    }
     public void setEditButtonListener(ActionListener listener) {
         for (JButton button : editBtns) {
             button.addActionListener(listener);
         }
-
     }
     // TODO: ridurre la ridondanza? editButton listener e deletebutton listener fanno la stessa cosa
     public void setDeleteButtonListener(ActionListener listener) {
@@ -77,6 +97,7 @@ public class VistaLibreria extends JFrame{
         addBtn.addActionListener(listener);
     }
     public void addBooks(Collection<Libro> libri) {
+        model.setRowCount(0);
         for (Libro l : libri) {
             model.addRow(new Object[] {
                     l.getTitolo(),
@@ -90,6 +111,27 @@ public class VistaLibreria extends JFrame{
         updateFilters();
         refreshCards();
     }
+    public Libro getLibroSelezionato(JButton sourceButton) {
+        return libroBottone.get(sourceButton);
+    }
+    public void pulisciMatrice() {
+        this.deleteBtns.clear();
+        this.editBtns.clear();
+        libroAttuale = null;
+        libroBottone.clear();
+    }
+    public void pulisciRicerca() {
+        searchField.setText("");
+        authorCombo.setSelectedIndex(0);
+        categoryCombo.setSelectedIndex(0);
+        statusCombo.setSelectedIndex(0);
+    }
+    public void libroAggiunto() {
+        JOptionPane.showMessageDialog(this, "Libro aggiunto");
+    }
+    public void mostraRisultatiRicerca(List<Libro> ret) {
+        addBooks(ret);
+    }
     private JPanel createFilterPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -102,7 +144,7 @@ public class VistaLibreria extends JFrame{
         statusCombo.setPreferredSize(new Dimension(120, 30));
 
         statusCombo.setModel(new DefaultComboBoxModel<>(
-                new String[]{"All", "DA LEGGERE", "LETTO", "IN LETTURA"}));
+                new String[]{"Qualsiasi", "DA LEGGERE", "LETTO", "IN LETTURA"}));
 
         gbc.gridx = 0;
         panel.add(new JLabel("Cerca:"), gbc);
@@ -120,20 +162,14 @@ public class VistaLibreria extends JFrame{
         panel.add(new JLabel("Stato:"), gbc);
         gbc.gridx = 7;
         panel.add(statusCombo, gbc);
+        gbc.gridx = 8;
+        panel.add(searchButton, gbc);
 
         return panel;
     }
-    public void libroAggiunto(Libro l) {
-        JOptionPane.showMessageDialog(this, "Libro aggiunto: " + l);
-    }
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        JButton toggleViewBtn = new JButton("Toggle View");
-
-
         panel.add(addBtn);
-        panel.add(toggleViewBtn);
-
         return panel;
     }
     private void refreshCards() {
@@ -172,7 +208,7 @@ public class VistaLibreria extends JFrame{
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout(5, 5));
 
-        Dimension cardSize = calculateCardSize();
+        Dimension cardSize = new Dimension(cardWidth, cardHeight);
         card.setPreferredSize(cardSize);
         card.setMaximumSize(cardSize);
 
@@ -242,12 +278,6 @@ public class VistaLibreria extends JFrame{
         card.add(inferiore, BorderLayout.SOUTH);
         return card;
     }
-    private Dimension calculateCardSize() {
-        int baseWidth = 250;
-        int baseHeight = 180;
-
-        return new Dimension(baseWidth, baseHeight);
-    }
     private JLabel createDetailLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -257,12 +287,12 @@ public class VistaLibreria extends JFrame{
         Vector<String> authors = new Vector<>();
         Vector<String> categories = new Vector<>();
 
-        authors.add("All");
-        categories.add("All");
+        authors.add("Qualsiasi");
+        categories.add("Qualsiasi");
 
         for (int i = 0; i < model.getRowCount(); i++) {
             String autore = (String) model.getValueAt(i, 1);
-            String genere = (String) model.getValueAt(i, 3);
+            String genere = (String) model.getValueAt(i, 2);
             if (!authors.contains(autore)) authors.add(autore);
             if (!categories.contains(genere)) categories.add(genere);
         }
@@ -270,20 +300,5 @@ public class VistaLibreria extends JFrame{
         authorCombo.setModel(new DefaultComboBoxModel<>(authors));
         categoryCombo.setModel(new DefaultComboBoxModel<>(categories));
     }
-    public void ricaricaLibri(Collection<Libro> libri) {
-        model.setRowCount(0);
-        addBooks(libri);
-        updateFilters();
-        refreshCards();
-    }
 
-    public Libro getLibroSelezionato(JButton sourceButton) {
-        return libroBottone.get(sourceButton);
-    }
-    public void pulisci() {
-        this.deleteBtns.clear();
-        this.editBtns.clear();
-        libroAttuale = null;
-        libroBottone.clear();
-    }
 }
