@@ -15,10 +15,11 @@ import java.util.List;
 
 public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 
-	private final File file = new File("libri.json");
+	private File file;
 	private final ObjectMapper mapper = new ObjectMapper();
-	public LibreriaPersistenteJSON() {
+	public LibreriaPersistenteJSON(String pathFile) {
 		super();
+		this.file = new File(pathFile);
 		onInit();
 	}
 
@@ -54,6 +55,8 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 
 	@Override
 	public List<Libro> leggiLibro(int size) {
+		if(size < 0)
+			throw new IllegalArgumentException("La size non può essere negativa");
 		List<Libro> ret;
         try {
             JsonNode root = mapper.readTree(file);

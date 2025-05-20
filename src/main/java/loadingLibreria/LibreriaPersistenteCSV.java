@@ -7,21 +7,20 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import comparators.OrdinamentoValutazione;
 import entities.Libro;
 import entities.Stato;
 import exceptions.DocumentoMalFormatoException;
-import libreriaInMemoria.LibreriaAbstract;
 
 public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 
-	private final String fileName = "libri.csv";
+	private String fileName = "libri.csv";
 	private BufferedReader br = null;
 	private PrintWriter pw = null;
 	private StringBuilder sb = null;
 	private List<Libro> nuoveAggiunte = new LinkedList<>();
-	public LibreriaPersistenteCSV() {
+	public LibreriaPersistenteCSV(String pathFile) {
 		super();
+		this.fileName = pathFile;
 		onInit();
 		super.size = this.getSize();
 	}
