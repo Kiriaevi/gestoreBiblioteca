@@ -12,6 +12,6 @@ public class FiltroISBN extends FiltroAbstract{
     @Override
     public boolean filtro(Libro libro) {
         return filtro.filtro(libro) &&
-                libro.getISBN().toUpperCase().contains(ISBN);
+                libro.isbn().toUpperCase().contains(ISBN);
     }
 }

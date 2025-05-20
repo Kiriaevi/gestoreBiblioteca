@@ -12,6 +12,6 @@ public class FiltroGenere extends FiltroAbstract{
     @Override
     public boolean filtro(Libro libro) {
         return filtro.filtro(libro) &&
-                libro.getGenere().contains(genere);
+                libro.genere().contains(genere);
     }
 }

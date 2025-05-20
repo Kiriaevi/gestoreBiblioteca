@@ -13,6 +13,6 @@ public class FiltroAutore extends FiltroAbstract{
     @Override
     public boolean filtro(Libro libro) {
         return filtro.filtro(libro) &&
-                libro.getAutore().toUpperCase().contains(autore);
+                libro.autore().toUpperCase().contains(autore);
     }
 }
