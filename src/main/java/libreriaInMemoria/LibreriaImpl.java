@@ -15,6 +15,7 @@ public class LibreriaImpl extends LibreriaAbstract {
     public LibreriaImpl(String type) {
         super();
         onInit(type);
+        loadAll();
     }
 	@Override
 	protected void onInit(String type) {

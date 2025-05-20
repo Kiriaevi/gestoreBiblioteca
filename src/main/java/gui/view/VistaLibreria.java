@@ -5,23 +5,10 @@ import entities.Query;
 import entities.Stato;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.util.List;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.*;
 
 public class VistaLibreria extends JFrame {
     private final int cardWidth = 250, cardHeight = 190;
@@ -239,31 +226,31 @@ public class VistaLibreria extends JFrame {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         card.setBackground(Color.WHITE);
 
-        JLabel titleLabel = new JLabel(libro.getTitolo());
+        JLabel titleLabel = new JLabel(libro.titolo());
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 
         JPanel detailsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
         detailsPanel.setBackground(Color.WHITE);
-        detailsPanel.add(createDetailLabel("Autore: " + libro.getAutore()));
-        detailsPanel.add(createDetailLabel("Genere: " + libro.getGenere()));
-        detailsPanel.add(createDetailLabel("ISBN: " + libro.getISBN()));
+        detailsPanel.add(createDetailLabel("Autore: " + libro.autore()));
+        detailsPanel.add(createDetailLabel("Genere: " + libro.genere()));
+        detailsPanel.add(createDetailLabel("ISBN: " + libro.isbn()));
 
         JPanel ratingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
         ratingPanel.setBackground(Color.WHITE);
         ratingPanel.add(new JLabel("Valutazione: "));
         for (int i = 1; i <= 5; i++) {
-            JLabel star = new JLabel(i <= libro.getValutazione() ? "★" : "☆");
-            star.setForeground(i <= libro.getValutazione() ? new Color(255, 215, 0) : Color.GRAY);
+            JLabel star = new JLabel(i <= libro.valutazione() ? "★" : "☆");
+            star.setForeground(i <= libro.valutazione() ? new Color(255, 215, 0) : Color.GRAY);
             star.setFont(new Font("SansSerif", Font.PLAIN, 16));
             ratingPanel.add(star);
         }
-        ratingPanel.add(new JLabel(String.format(" (%.1f)", (float) libro.getValutazione())));
+        ratingPanel.add(new JLabel(String.format(" (%.1f)", (float) libro.valutazione())));
         detailsPanel.add(ratingPanel);
 
-        JLabel statusLabel = new JLabel(String.valueOf(libro.getStato()));
+        JLabel statusLabel = new JLabel(String.valueOf(libro.stato()));
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
-        switch (libro.getStato()) {
+        switch (libro.stato()) {
             case LETTO -> statusLabel.setForeground(new Color(0, 128, 0));
             case IN_LETTURA -> statusLabel.setForeground(new Color(0, 0, 255));
             case DA_LEGGERE -> statusLabel.setForeground(new Color(255, 165, 0));
@@ -306,8 +293,8 @@ public class VistaLibreria extends JFrame {
         categories.add("Qualsiasi");
 
         for (Libro libro : listaLibri) {
-            if (!authors.contains(libro.getAutore())) authors.add(libro.getAutore());
-            if (!categories.contains(libro.getGenere())) categories.add(libro.getGenere());
+            if (!authors.contains(libro.autore())) authors.add(libro.autore());
+            if (!categories.contains(libro.genere())) categories.add(libro.genere());
         }
 
         authorCombo.setModel(new DefaultComboBoxModel<>(authors));
