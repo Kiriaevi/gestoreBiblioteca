@@ -30,6 +30,8 @@ public class ControllerLibreria {
     private final VistaLibreria vista;
     private Collection<Libro> libri = null;
     private boolean backHome = false;
+
+    private boolean ordinamentoAscendente = false;
     private Comparator<Libro> comparatore = new OrdinamentoValutazione(false).ottieniComparatore();
     public ControllerLibreria(LibreriaAbstract libreria, VistaLibreria vista) {
         this.libreria = libreria;
@@ -46,17 +48,15 @@ public class ControllerLibreria {
     private void ordinamento(String criterio) {
         switch (criterio) {
             case "autore":
-                this.comparatore = new OrdinamentoAutore(false).ottieniComparatore();
+                this.comparatore = new OrdinamentoAutore(ordinamentoAscendente).ottieniComparatore();
                 break;
             case "titolo":
-                this.comparatore = new OrdinamentoTitolo(false).ottieniComparatore();
-                break;
-            case "stato":
-                this.comparatore = new OrdinamentoValutazione(false).ottieniComparatore();
+                this.comparatore = new OrdinamentoTitolo(ordinamentoAscendente).ottieniComparatore();
                 break;
             default:
-                this.comparatore = new OrdinamentoValutazione(true).ottieniComparatore();
+                this.comparatore = new OrdinamentoValutazione(ordinamentoAscendente).ottieniComparatore();
         }
+        ordinamentoAscendente = !ordinamentoAscendente;
         vista.mostraRisultatiRicerca(libri.stream().sorted(comparatore).toList());
 
     }
