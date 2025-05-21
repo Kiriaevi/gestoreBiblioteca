@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import entities.Libro;
 import exceptions.DocumentoMalFormatoException;
 import exceptions.ErroreNellaCreazioneDelFile;
-import libreriaInMemoria.LibreriaAbstract;
 import java.io.File;
 
 import java.io.IOException;
@@ -19,6 +18,8 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 	private final ObjectMapper mapper = new ObjectMapper();
 	public LibreriaPersistenteJSON(String pathFile) {
 		super();
+		if(pathFile == null || pathFile.isEmpty())
+			throw new IllegalArgumentException("Devi impostare il filePath in ingresso");
 		this.file = new File(pathFile);
 		onInit();
 	}
@@ -28,15 +29,15 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 		if(!file.exists()) {
             try {
                 boolean isCreated = file.createNewFile();
-				if(!isCreated)
-					throw new ErroreNellaCreazioneDelFile("Non è stato possibile creare il file libri.json");
-				 mapper.createArrayNode();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+                if(!isCreated)
+                    throw new ErroreNellaCreazioneDelFile("Non è stato possibile creare il file libri.json");
+            mapper.writeValue(file, new ArrayList<>());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-		return true;
-	}
+    }
+    return true;
+}
 
 	@Override
     protected void close() {
@@ -46,7 +47,7 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 	@Override
 	protected void persist() {
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(file, libri);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(file, super.libri);
 			super.aggiunte = 0;
         } catch (IOException e) {
             throw new RuntimeException(e);

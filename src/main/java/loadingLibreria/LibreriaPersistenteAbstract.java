@@ -1,7 +1,6 @@
 package loadingLibreria;
 
 import entities.Libro;
-import libreriaInMemoria.LibreriaAbstract;
 
 import java.util.List;
 
@@ -31,6 +30,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
 
     @Override
     public String salvaLibro(Libro l) {
+        // per semplicità assumiamo che gli isbn siano diversi
         if(l != null) {
             libri.add(l);
             aggiunte++;
