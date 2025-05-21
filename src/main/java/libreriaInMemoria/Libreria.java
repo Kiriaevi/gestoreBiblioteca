@@ -19,6 +19,8 @@ public interface Libreria {
     /**
      * Recupera una collezione di libri dalla libreria con una dimensione massima specificata.
      * Se la dimensione supera il numero di libri disponibili, verranno restituiti tutti i libri.
+     * I libri restituiti provengono dalla RAM, se il file viene modificato e non viene richiamata la loadAll
+     * non si vedranno i libri aggiunti
      *
      * @param size il numero massimo di libri da recuperare; deve essere non negativo
      * @return una collezione di libri, limitata alla dimensione specificata

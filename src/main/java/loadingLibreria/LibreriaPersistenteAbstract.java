@@ -2,7 +2,9 @@ package loadingLibreria;
 
 import entities.Libro;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * LibreriaPersistenteAbstract
@@ -74,5 +76,8 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
             cnt++;
         }
         return found;
+    }
+    protected List<Libro> ordinaLibreria(List<Libro> libri, Comparator<Libro> comparator) {
+        return libri.stream().sorted(comparator).collect(Collectors.toList());
     }
 }

@@ -3,6 +3,7 @@ package loadingLibreria;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import comparators.OrdinamentoValutazione;
 import entities.Libro;
 import exceptions.DocumentoMalFormatoException;
 import exceptions.ErroreNellaCreazioneDelFile;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 
-	private File file;
+	private final File file;
 	private final ObjectMapper mapper = new ObjectMapper();
 	public LibreriaPersistenteJSON(String pathFile) {
 		super();
@@ -69,7 +70,7 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-		super.libri = new ArrayList<>(ret);
+		super.libri = super.ordinaLibreria(ret, new OrdinamentoValutazione(false).ottieniComparatore());
 		return super.libri;
     }
 	@Override
