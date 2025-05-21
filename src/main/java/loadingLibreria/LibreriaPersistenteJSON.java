@@ -70,7 +70,7 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-		super.libri = super.ordinaLibreria(ret, new OrdinamentoValutazione(false).ottieniComparatore());
+		super.libri = super.ordinaLibreria(ret, new OrdinamentoValutazione(true).ottieniComparatore());
 		return super.libri;
     }
 	@Override

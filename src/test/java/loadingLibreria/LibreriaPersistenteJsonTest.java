@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LibreriaPersistenteJsonTest {
 
-    private File testFile;
+    private static File testFile;
 
     @AfterEach
     void cleanUp() {
@@ -31,8 +31,9 @@ public class LibreriaPersistenteJsonTest {
         }
     }
     @BeforeAll
-    public static void setup() {
-        LibreriaPersistenteAbstract lib = new LibreriaPersistenteJSON("libri");
+    public static void setup() throws IOException {
+        testFile = Files.createTempFile("tmpLibri", "json").toFile();
+        LibreriaPersistenteAbstract lib = new LibreriaPersistenteJSON(testFile.getAbsolutePath());
         assertTrue(lib.onInit());
     }
     @Nested

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import comparators.OrdinamentoValutazione;
 import entities.Libro;
 import entities.Stato;
 import exceptions.DocumentoMalFormatoException;
@@ -31,6 +32,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			File file = new File(fileName);
 			if(!file.exists()) {
 				System.out.println("Il file non esiste, lo creo");
+				//FIXME: il file ha un nome? Viene messo da qualche parte? A che ci serve questo output?
 				file.createNewFile();
 			}
 			if (br == null)
@@ -92,7 +94,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			libriInStringhe.add(book);
 		}
 		List<Libro> ret =  libriInStringhe.stream().map(this::convertiInLibro).toList();
-		super.libri = new ArrayList<>(ret);
+		super.libri = super.ordinaLibreria(ret, new OrdinamentoValutazione(true).ottieniComparatore());
 		return super.libri;
 	}
 
@@ -152,6 +154,9 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
 			for (Libro libro : nuoveAggiunte) {
 				aggiunte--;
+				// per ottimizzazione avevamo messo un contatore che tiene conto di quanti libri abbiamo nel file
+				// siccome ora ne stiamo aggiungendo di nuovi andiamo ad incrementare questo contatore
+				super.size++;
 				writer.println(convertiInCSV(libro));
 			}
 		} catch (IOException e) {
