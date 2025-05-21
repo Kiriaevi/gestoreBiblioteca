@@ -22,7 +22,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
     /**
      * Metodo per la gestione della chiusura della struttura persistente.
      * Esempio: si può gestire la chiusura della connessione del database o di possibili file aperti.
-     * @return true se la chiusura delle strutture persistenti viene effettuata con successo, false altrimenti
+     *
      */
     protected abstract void close();
 
@@ -59,7 +59,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
         return true;
     }
     /**
-     * Restituisce l'indice in cui si trova, se presente, il libro identificato da ISBN passato in input.
+     * Restituisce l'indice in cui si trova, se presente, il libro identificato da ISBN passato in ingresso.
      * @param ISBN, il libro da cercare
      * @return la posizione nella lista in cui si trova il libro se esiste, altrimenti -1
      */
