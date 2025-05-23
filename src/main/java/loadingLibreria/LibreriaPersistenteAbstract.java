@@ -38,6 +38,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
         if(l != null) {
             libri.add(l);
             aggiunte++;
+            persist();
             return l.toString();
         }
         return null;
