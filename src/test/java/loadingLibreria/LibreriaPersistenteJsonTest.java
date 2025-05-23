@@ -96,7 +96,7 @@ public class LibreriaPersistenteJsonTest {
 
             LibreriaPersistenteAbstract lib = new LibreriaPersistenteJSON(testFile.getAbsolutePath());
             lib.leggiLibro(Integer.MAX_VALUE);
-            lib.salvaLibro(libro);
+            lib.aggiungiLibro(libro);
             lib.persist();
             List<Libro> libriDeserializzati = mapper.readValue(testFile, new TypeReference<>() {});
             // Se all'interno del JSON troviamo il libro da noi appena scritto allora il test è superato
