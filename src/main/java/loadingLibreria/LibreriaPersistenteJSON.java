@@ -18,9 +18,7 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 	private final File file;
 	private final ObjectMapper mapper = new ObjectMapper();
 	public LibreriaPersistenteJSON(String pathFile) {
-		super();
-		if(pathFile == null || pathFile.isEmpty())
-			throw new IllegalArgumentException("Devi impostare il filePath in ingresso");
+		super(pathFile);
 		this.file = new File(pathFile);
 		onInit();
 	}

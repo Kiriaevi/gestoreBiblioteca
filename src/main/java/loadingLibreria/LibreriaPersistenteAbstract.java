@@ -14,7 +14,9 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
     protected int aggiunte = 0;
     protected int size = -1;
     protected boolean hasBeenModified = false;
-    public LibreriaPersistenteAbstract() {
+    public LibreriaPersistenteAbstract(String pathFile) {
+        if(pathFile == null || pathFile.isEmpty())
+            throw new IllegalArgumentException("Devi impostare il filePath in ingresso");
     }
     /**
      * Metodo per la gestione dell'inizializzazione della struttura persistente.
@@ -31,7 +33,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
     protected abstract void persist();
 
     @Override
-    public String salvaLibro(Libro l) {
+    public String aggiungiLibro(Libro l) {
         // per semplicità assumiamo che gli isbn siano diversi
         if(l != null) {
             libri.add(l);

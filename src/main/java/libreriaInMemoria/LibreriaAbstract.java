@@ -8,7 +8,6 @@ import java.util.List;
 import comparators.OrdinamentoValutazione;
 import entities.Libro;
 import loadingLibreria.LibreriaPersistente;
-import loadingLibreria.LibreriaPersistenteAbstract;
 
 public abstract class LibreriaAbstract implements Libreria {
 
@@ -45,6 +44,6 @@ public abstract class LibreriaAbstract implements Libreria {
     }
     @Override
     public void aggiungiLibro(Libro l) {
-        lib.salvaLibro(l);
+        lib.aggiungiLibro(l);
     }
 }

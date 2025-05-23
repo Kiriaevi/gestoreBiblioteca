@@ -47,7 +47,7 @@ public interface LibreriaPersistente {
      * @return Una stringa che rappresenta l'oggetto sotto forma di stringa formattata secondo
      *         la specifica (CSV, JSON, ecc...)
      */
-    String salvaLibro(Libro libro);
+    String aggiungiLibro(Libro libro);
 
     /**
      * Restituisce il numero di libri totali presenti nella sorgente persistente.
