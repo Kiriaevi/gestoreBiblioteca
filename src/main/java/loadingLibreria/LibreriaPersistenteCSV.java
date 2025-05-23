@@ -14,13 +14,13 @@ import exceptions.DocumentoMalFormatoException;
 
 public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 
-	private String fileName = "libri.csv";
+	private String fileName;
 	private BufferedReader br = null;
 	private PrintWriter pw = null;
 	private StringBuilder sb = null;
 	private List<Libro> nuoveAggiunte = new LinkedList<>();
 	public LibreriaPersistenteCSV(String pathFile) {
-		super();
+		super(pathFile);
 		this.fileName = pathFile;
 		onInit();
 		super.size = this.getSize();
@@ -63,7 +63,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 
 	// FIXME: o salvi il singolo libro o salvi tutti i libri
 	@Override
-	public String salvaLibro(Libro libro) {
+	public String aggiungiLibro(Libro libro) {
 		if(libro != null) {
 			nuoveAggiunte.add(libro);
 			super.libri.add(libro);
@@ -83,7 +83,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	public List<Libro> leggiLibro(int size) throws IOException {
 		if(size < 0)
 			throw new IllegalArgumentException("La size non può essere negativa");
-		if(!super.libri.isEmpty())
+		if(super.libri != null && !super.libri.isEmpty())
 			return super.libri;
 		List<String> libriInStringhe = new LinkedList<>();
 		for (int i = 0; i < size; i++) {
@@ -146,6 +146,14 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			try(PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
 				for(Libro libro : super.libri)
 					writer.println(convertiInCSV(libro));
+				if(aggiunte == 0) return;
+				for (Libro libro : nuoveAggiunte) {
+					aggiunte--;
+					// per ottimizzazione avevamo messo un contatore che tiene conto di quanti libri abbiamo nel file
+					// siccome ora ne stiamo aggiungendo di nuovi andiamo ad incrementare questo contatore
+					super.size++;
+					writer.println(convertiInCSV(libro));
+				}
 			} catch (IOException e) {
 				throw new RuntimeException("Errore nel salvare i libri nel file", e);
 			}
