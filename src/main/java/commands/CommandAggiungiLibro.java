@@ -3,6 +3,8 @@ package commands;
 import entities.Libro;
 import libreria.memoria.LibreriaAbstract;
 
+import java.io.IOException;
+
 public class CommandAggiungiLibro extends CommandAbstract{
     private final Libro l;
     public CommandAggiungiLibro(LibreriaAbstract lib, Libro l) {
@@ -11,8 +13,12 @@ public class CommandAggiungiLibro extends CommandAbstract{
     }
 
     @Override
-    public void execute() {
-        super.libreria.aggiungiLibro(l);
-        System.out.println("Funziona: "+l);
+    public boolean execute() {
+        try {
+            super.libreria.aggiungiLibro(l);
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
     }
 }

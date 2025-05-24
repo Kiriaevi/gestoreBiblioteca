@@ -62,7 +62,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 
 	// FIXME: o salvi il singolo libro o salvi tutti i libri
 	@Override
-	public String aggiungiLibro(Libro libro) {
+	public String aggiungiLibro(Libro libro) throws IOException {
 		if(libro != null) {
 			nuoveAggiunte.add(libro);
 			super.libri.add(libro);
@@ -139,14 +139,12 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	 * @throws RuntimeException Se si verifica un errore di I/O durante l'accesso o la scrittura del file CSV.
 	 */
 	@Override
-	protected void persist() {
+	protected void persist() throws IOException {
 		if(hasBeenModified) {
 			hasBeenModified = false;
 			try(PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
 				for(Libro libro : super.libri)
 					writer.println(convertiInCSV(libro));
-			} catch (IOException e) {
-				throw new RuntimeException("Errore nel salvare i libri nel file", e);
 			}
 		}
 		if(!isBookAdded) return;

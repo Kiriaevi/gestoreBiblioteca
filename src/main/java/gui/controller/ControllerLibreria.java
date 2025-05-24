@@ -30,6 +30,7 @@ public class ControllerLibreria {
     private final VistaLibreria vista;
     private Collection<Libro> libri = null;
     private boolean backHome = false;
+    private boolean isAdded = false;
 
     private boolean ordinamentoAscendente = false;
     private Comparator<Libro> comparatore = new OrdinamentoValutazione(false).ottieniComparatore();
@@ -97,7 +98,7 @@ public class ControllerLibreria {
     private void aggiungiLibro() {
         VistaAggiungi vistaAggiungi = new VistaAggiungi(vista, libro -> {
             Command cmd = new CommandAggiungiLibro(libreria, libro);
-            cmd.execute();
+            this.isAdded = cmd.execute();
             postAggiuntaLibro();
         }, "Aggiungi libro");
         vistaAggiungi.setVisible(true);
@@ -123,7 +124,9 @@ public class ControllerLibreria {
         aggiungiListeners();
     }
     private void postAggiuntaLibro() {
-        vista.libroAggiunto();
+        String msg = this.isAdded ? "Libro aggiunto" : "ATTENZIONE! QUALCOSA È ANDATO STORTO";
+        vista.libroAggiunto(msg);
+        this.isAdded = false;
         vista.pulisciMatrice();
         popolaLibreria();
     }

@@ -35,15 +35,15 @@ public abstract class LibreriaAbstract implements Libreria {
         return libri.subList(0, size).stream().sorted(new OrdinamentoValutazione(true).ottieniComparatore()).toList();
     }
     @Override
-    public boolean modificaLibro(Libro l, String ISBN) {
+    public boolean modificaLibro(Libro l, String ISBN) throws IOException {
         return lib.modificaLibro(l, ISBN);
     }
     @Override
-    public boolean eliminaLibro(Libro l) {
+    public boolean eliminaLibro(Libro l) throws IOException {
         return lib.eliminaLibro(l);
     }
     @Override
-    public void aggiungiLibro(Libro l) {
+    public void aggiungiLibro(Libro l) throws IOException {
         lib.aggiungiLibro(l);
     }
 }

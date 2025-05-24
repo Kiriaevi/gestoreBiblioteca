@@ -3,6 +3,7 @@ package libreria.memoria;
 
 import entities.Libro;
 
+import java.io.IOException;
 import java.util.Collection;
 
 public interface Libreria {
@@ -34,7 +35,7 @@ public interface Libreria {
      * @param ISBN l'ISBN del libro esistente che deve essere modificato
      * @return true se la modifica ha avuto successo, false altrimenti
      */
-    boolean modificaLibro(Libro l, String ISBN);
+    boolean modificaLibro(Libro l, String ISBN) throws IOException;
 
     /**
      * Rimuove un libro specifico dalla libreria interna, se presente.
@@ -45,7 +46,7 @@ public interface Libreria {
      * @return true se il libro è stato rimosso con successo, false se il libro non era presente
      *         nella libreria o se l'operazione di rimozione non è stata possibile
      */
-    boolean eliminaLibro(Libro l);
+    boolean eliminaLibro(Libro l) throws IOException;
 
     /**
      * Aggiunge un nuovo libro alla libreria. Se il libro è già presente
@@ -55,6 +56,6 @@ public interface Libreria {
      * @param l il libro da aggiungere alla libreria; non può essere null
      * pre: il libro non deve già esistere nell'elemento persistente TODO
      */
-    void aggiungiLibro(Libro l);
+    void aggiungiLibro(Libro l) throws IOException;
 
 }

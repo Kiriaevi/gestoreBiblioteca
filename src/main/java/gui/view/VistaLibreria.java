@@ -148,8 +148,8 @@ public class VistaLibreria extends JFrame {
         statusCombo.setSelectedIndex(0);
     }
 
-    public void libroAggiunto() {
-        JOptionPane.showMessageDialog(this, "Libro aggiunto");
+    public void libroAggiunto(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
     }
 
     public void mostraRisultatiRicerca(Collection<Libro> ret) {

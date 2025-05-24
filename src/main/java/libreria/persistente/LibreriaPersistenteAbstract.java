@@ -2,6 +2,7 @@ package libreria.persistente;
 
 import entities.Libro;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,10 +31,10 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
      */
     protected abstract void close();
 
-    protected abstract void persist();
+    protected abstract void persist() throws IOException;
 
     @Override
-    public String aggiungiLibro(Libro l) {
+    public String aggiungiLibro(Libro l) throws IOException {
         // per semplicità assumiamo che gli isbn siano diversi
         if(l != null) {
             libri.add(l);
@@ -45,7 +46,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
         return null;
     }
     @Override
-    public boolean modificaLibro(Libro libro, String ISBN) {
+    public boolean modificaLibro(Libro libro, String ISBN) throws IOException {
         if (libro == null || ISBN == null) return false;
         int found = cercaLibroPerISBN(ISBN);
         if(found == -1) return false;
@@ -55,7 +56,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
         return true;
     }
     @Override
-    public boolean eliminaLibro(Libro libro) {
+    public boolean eliminaLibro(Libro libro) throws IOException {
         if(libro == null) return false;
         int found = cercaLibroPerISBN(libro.isbn());
         if(found == -1) return false;

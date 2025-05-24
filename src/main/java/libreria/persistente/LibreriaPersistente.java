@@ -27,7 +27,7 @@ public interface LibreriaPersistente {
      * pre: ISBN != null && Libro != null
      *
      */
-    boolean modificaLibro(Libro libro, String ISBN);
+    boolean modificaLibro(Libro libro, String ISBN) throws IOException;
     /**
      * Elimina un libro dalla libreria.
      * 
@@ -35,7 +35,7 @@ public interface LibreriaPersistente {
      * @return true se l'eliminazione è avvenuta con successo, false altrimenti.
      * pre: libro != null
      */
-    boolean eliminaLibro(Libro libro);
+    boolean eliminaLibro(Libro libro) throws IOException;
 
     /**
      * Salva un libro nella libreria persistente. Se l'operazione va a buon fine,
@@ -47,7 +47,7 @@ public interface LibreriaPersistente {
      * @return Una stringa che rappresenta l'oggetto sotto forma di stringa formattata secondo
      *         la specifica (CSV, JSON, ecc...)
      */
-    String aggiungiLibro(Libro libro);
+    String aggiungiLibro(Libro libro) throws IOException;
 
     /**
      * Restituisce il numero di libri totali presenti nella sorgente persistente.

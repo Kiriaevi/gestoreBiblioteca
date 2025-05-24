@@ -3,6 +3,8 @@ package commands;
 import entities.Libro;
 import libreria.memoria.LibreriaAbstract;
 
+import java.io.IOException;
+
 public class CommandModificaLibro extends CommandAbstract{
     private final Libro l;
     private final String ISBN;
@@ -13,7 +15,12 @@ public class CommandModificaLibro extends CommandAbstract{
     }
 
     @Override
-    public void execute() {
-        super.libreria.modificaLibro(l, ISBN);
+    public boolean execute() {
+        try {
+            super.libreria.modificaLibro(l, ISBN);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
     }
 }
