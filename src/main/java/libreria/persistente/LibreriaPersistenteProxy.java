@@ -1,4 +1,4 @@
-package loadingLibreria;
+package libreria.persistente;
 
 @Deprecated
 public class LibreriaPersistenteProxy {

@@ -1,4 +1,4 @@
-package libreriaInMemoria;
+package libreria.memoria;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -7,7 +7,7 @@ import java.util.List;
 
 import comparators.OrdinamentoValutazione;
 import entities.Libro;
-import loadingLibreria.LibreriaPersistente;
+import libreria.persistente.LibreriaPersistente;
 
 public abstract class LibreriaAbstract implements Libreria {
 

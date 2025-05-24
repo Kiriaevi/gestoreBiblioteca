@@ -1,4 +1,4 @@
-package loadingLibreria;
+package libreria.persistente;
 
 import entities.Libro;
 
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  */
 public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente{
     protected List<Libro> libri = null;
-    protected int aggiunte = 0;
+    protected boolean isBookAdded = false;
     protected int size = -1;
     protected boolean hasBeenModified = false;
     public LibreriaPersistenteAbstract(String pathFile) {
@@ -37,8 +37,9 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
         // per semplicità assumiamo che gli isbn siano diversi
         if(l != null) {
             libri.add(l);
-            aggiunte++;
+            isBookAdded = true;
             persist();
+            isBookAdded = false;
             return l.toString();
         }
         return null;

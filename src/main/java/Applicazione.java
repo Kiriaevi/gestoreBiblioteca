@@ -1,8 +1,8 @@
 import com.formdev.flatlaf.FlatLightLaf;
 import gui.controller.ControllerLibreria;
 import gui.view.VistaLibreria;
-import libreriaInMemoria.LibreriaAbstract;
-import libreriaInMemoria.LibreriaImpl;
+import libreria.memoria.LibreriaAbstract;
+import libreria.memoria.LibreriaImpl;
 
 import javax.swing.*;
 

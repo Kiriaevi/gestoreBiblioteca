@@ -1,4 +1,4 @@
-package loadingLibreria;
+package libreria.persistente;
 
 import entities.Libro;
 

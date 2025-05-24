@@ -1,9 +1,8 @@
-package loadingLibreria;
+package libreria.persistente;
 
 import java.io.*;
 
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -67,7 +66,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		if(libro != null) {
 			nuoveAggiunte.add(libro);
 			super.libri.add(libro);
-			aggiunte++;
+			super.isBookAdded = true;
 			persist();
 		}
 		return null;
@@ -146,22 +145,13 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			try(PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
 				for(Libro libro : super.libri)
 					writer.println(convertiInCSV(libro));
-				if(aggiunte == 0) return;
-				for (Libro libro : nuoveAggiunte) {
-					aggiunte--;
-					// per ottimizzazione avevamo messo un contatore che tiene conto di quanti libri abbiamo nel file
-					// siccome ora ne stiamo aggiungendo di nuovi andiamo ad incrementare questo contatore
-					super.size++;
-					writer.println(convertiInCSV(libro));
-				}
 			} catch (IOException e) {
 				throw new RuntimeException("Errore nel salvare i libri nel file", e);
 			}
 		}
-		if(aggiunte == 0) return;
+		if(!isBookAdded) return;
 		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
 			for (Libro libro : nuoveAggiunte) {
-				aggiunte--;
 				// per ottimizzazione avevamo messo un contatore che tiene conto di quanti libri abbiamo nel file
 				// siccome ora ne stiamo aggiungendo di nuovi andiamo ad incrementare questo contatore
 				super.size++;

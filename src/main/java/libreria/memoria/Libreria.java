@@ -1,8 +1,7 @@
-package libreriaInMemoria;
+package libreria.memoria;
 
 
 import entities.Libro;
-import loadingLibreria.LibreriaPersistente;
 
 import java.util.Collection;
 

@@ -1,7 +1,7 @@
-package libreriaInMemoria;
+package libreria.memoria;
 
-import loadingLibreria.LibreriaPersistenteCSV;
-import loadingLibreria.LibreriaPersistenteJSON;
+import libreria.persistente.LibreriaPersistenteCSV;
+import libreria.persistente.LibreriaPersistenteJSON;
 
 public class LibreriaImpl extends LibreriaAbstract {
 
@@ -26,8 +26,7 @@ public class LibreriaImpl extends LibreriaAbstract {
 	}
     @Override
 	protected void onClose() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'onClose'");
+        System.out.println("Disconnessione della libreria");
 	}
 
 }

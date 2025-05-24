@@ -1,4 +1,4 @@
-package loadingLibreria;
+package libreria.persistente;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -47,7 +47,7 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 	protected void persist() {
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(file, super.libri);
-			super.aggiunte = 0;
+			super.isBookAdded = true;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

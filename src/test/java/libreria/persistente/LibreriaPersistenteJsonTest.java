@@ -1,4 +1,4 @@
-package loadingLibreria;
+package libreria.persistente;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

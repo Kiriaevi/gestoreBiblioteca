@@ -1,7 +1,7 @@
 package commands;
 
 import entities.Libro;
-import libreriaInMemoria.LibreriaAbstract;
+import libreria.memoria.LibreriaAbstract;
 
 public class CommandRimuoviLibro extends CommandAbstract{
     private final Libro l;

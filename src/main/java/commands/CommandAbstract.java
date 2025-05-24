@@ -1,6 +1,6 @@
 package commands;
 
-import libreriaInMemoria.LibreriaAbstract;
+import libreria.memoria.LibreriaAbstract;
 
 public abstract class CommandAbstract implements Command{
     protected final LibreriaAbstract libreria;

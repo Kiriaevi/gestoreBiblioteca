@@ -12,7 +12,7 @@ import entities.Query;
 import gui.view.VistaAggiungi;
 import gui.view.VistaLibreria;
 import gui.view.VistaModifica;
-import libreriaInMemoria.LibreriaAbstract;
+import libreria.memoria.LibreriaAbstract;
 import ricerca.*;
 
 import javax.swing.*;
