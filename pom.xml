@@ -72,7 +72,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>gui.Gui</mainClass>
+                    <mainClass>Applicazione</mainClass>
                 </configuration>
             </plugin>
         </plugins>
