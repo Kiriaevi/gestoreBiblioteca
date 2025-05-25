@@ -11,6 +11,7 @@ public class VistaModifica extends VistaAggiungi{
         super.setTitoloField(l.titolo());
         super.setAutoreField(l.autore());
         super.setIsbnField(l.isbn());
+        super.setValutazione(l.valutazione());
         super.setGenereField(l.genere());
         super.setStatoField(l.stato());
     }

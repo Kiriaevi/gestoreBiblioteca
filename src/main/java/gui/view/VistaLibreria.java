@@ -1,5 +1,6 @@
 package gui.view;
 
+import Utility.Utility;
 import entities.Libro;
 import entities.Query;
 import entities.Stato;
@@ -76,22 +77,17 @@ public class VistaLibreria extends JFrame {
     }
 
     public void setAutoreOnClickListener(ActionListener actionEvent) {
-        this.bottoniOrdinamento.get("ordinamentoAutore").addActionListener(actionEvent);
+        JButton bottone = bottoniOrdinamento.get("ordinamentoAutore");
+        bottone.addActionListener(actionEvent);
     }
     public void setTitoloOnClickListener(ActionListener actionEvent) {
-        this.bottoniOrdinamento.get("ordinamentoTitolo").addActionListener(actionEvent);
+        JButton bottone = bottoniOrdinamento.get("ordinamentoTitolo");
+        bottone.addActionListener(actionEvent);
     }
     public void setStatoOnClickListener(ActionListener actionEvent) {
-        this.bottoniOrdinamento.get("ordinamentoStato").addActionListener(actionEvent);
+        JButton bottone = bottoniOrdinamento.get("ordinamentoTitolo");
+        bottone.addActionListener(actionEvent);
     }
-    @Override
-    public void setExtendedState(int state) {
-        super.setExtendedState(state);
-        if ((state & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-            refreshCards();
-        }
-    }
-
     public void setPaginazioneBtnNext(ActionListener listener) {
         paginazioneBtns[1].addActionListener(listener);
     }
@@ -106,28 +102,44 @@ public class VistaLibreria extends JFrame {
         this.searchButton.setText(testo);
     }
 
-    public Query recuperaDatiDiRicerca() {
-        return new Query(
-                searchField.getText(),
-                authorField.getText(),
-                categoryField.getText(),
-                Stato.fromStringToStato((String) statusCombo.getSelectedItem()));
-    }
-
     public void setEditButtonListener(ActionListener listener) {
         for (JButton button : editBtns) {
+            for(ActionListener al : button.getActionListeners())
+                button.removeActionListener(al);
             button.addActionListener(listener);
         }
     }
 
     public void setDeleteButtonListener(ActionListener listener) {
-        for (JButton button : deleteBtns)
+        for (JButton button : deleteBtns) {
+            for(ActionListener al : button.getActionListeners())
+                button.removeActionListener(al);
             button.addActionListener(listener);
+        }
     }
 
     public void setAddButtonListener(ActionListener listener) {
+        for(ActionListener al : addBtn.getActionListeners())
+            addBtn.removeActionListener(al);
         addBtn.addActionListener(listener);
     }
+
+    @Override
+    public void setExtendedState(int state) {
+        super.setExtendedState(state);
+        if ((state & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+            refreshCards();
+        }
+    }
+
+    public Query recuperaDatiDiRicerca() {
+        return new Query(
+                searchField.getText(),
+                authorField.getText(),
+                categoryField.getText(),
+                Utility.fromStringToStato((String) statusCombo.getSelectedItem()));
+    }
+
 
     public void addBooks(Collection<Libro> libri) {
         listaLibri.clear();
@@ -298,4 +310,8 @@ public class VistaLibreria extends JFrame {
     }
 
 
+    public void enablePaginationButtons(boolean b) {
+        paginazioneBtns[0].setEnabled(b);
+        paginazioneBtns[1].setEnabled(b);
+    }
 }

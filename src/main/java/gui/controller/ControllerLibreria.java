@@ -82,6 +82,7 @@ public class ControllerLibreria {
             vista.mostraRisultatiRicerca(libri.stream().filter(filtro::filtro).toList());
             vista.pulisciRicerca();
             backHome = false;
+            vista.enablePaginationButtons(true);
             return;
         }
 
@@ -96,6 +97,7 @@ public class ControllerLibreria {
 
         libri = ricercaLibri(filtro);
         vista.setSearchButtonText("Torna alla Home");
+        vista.enablePaginationButtons(false);
         vista.mostraRisultatiRicerca(libri);
         backHome = true;
     }
