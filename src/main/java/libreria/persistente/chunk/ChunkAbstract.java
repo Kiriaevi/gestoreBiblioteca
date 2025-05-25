@@ -19,10 +19,13 @@ public abstract class ChunkAbstract implements Chunk{
         size = lib.getSize();
         if(richiesta.equals(Pagina.ULTIMA)) {
            int paginaFinale = Math.floorDiv(size, CHUNK_SIZE);
+           pagina = paginaFinale;
             return recuperaChunk(paginaFinale);
         }
-        if(richiesta.equals(Pagina.PRIMA))
+        if(richiesta.equals(Pagina.PRIMA)) {
+            pagina = 0;
             return recuperaChunk(0);
+        }
 
         if(richiesta.equals(Pagina.PRECEDENTE) && pagina == 0)
             return recuperaChunk(pagina);
