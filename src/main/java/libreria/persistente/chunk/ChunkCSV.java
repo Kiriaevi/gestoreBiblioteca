@@ -6,9 +6,10 @@ import entities.Pagina;
 import libreria.persistente.LibreriaPersistenteAbstract;
 import ricerca.Filtro;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +29,23 @@ public class ChunkCSV extends ChunkAbstract{
         leggiChunk(inizio, fine, ret);
         return Utility.convertiLibroDaCSV(ret);
     }
+
+    public void riscritturaCompletaDelFile(Libro libroDaEliminare) throws IOException {
+
+        Chunk c = new ChunkCSV(fileName, lib);
+        List<Libro> libri = c.leggi(Pagina.CORRENTE);
+        File tmpFile = new File("tmp_"+fileName);
+        try(PrintWriter writer = new PrintWriter(new FileWriter(tmpFile))) {
+            while(!libri.isEmpty()) {
+                for(Libro libro : libri)
+                    if(libroDaEliminare != null && !libro.equals(libroDaEliminare))
+                        writer.println(Utility.convertiInCSV(libro));
+                libri = c.leggi(Pagina.PROSSIMA);
+            }
+        }
+        Files.move(tmpFile.toPath(), Path.of(fileName), StandardCopyOption.REPLACE_EXISTING);
+    }
+
     @Override
     public Collection<Libro> cerca(Filtro f) {
         List<Libro> ret = new LinkedList<>();

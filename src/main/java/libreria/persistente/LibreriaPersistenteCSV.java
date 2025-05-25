@@ -26,7 +26,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	private PrintWriter pw = null;
 	private StringBuilder sb = null;
 	private List<Libro> nuoveAggiunte = new LinkedList<>();
-	private final ChunkAbstract chunk;
+	private final ChunkCSV chunk;
 	public LibreriaPersistenteCSV(String pathFile) {
 		super(pathFile);
 		this.fileName = pathFile;
@@ -137,7 +137,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	protected void persist() throws IOException {
 		if(hasBeenModified) {
 			hasBeenModified = false;
-			riscritturaCompletaDelFile();
+			chunk.riscritturaCompletaDelFile(libroDaEliminare);
 		}
 		if(!isBookAdded) return;
 		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
@@ -145,7 +145,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 				// per ottimizzazione avevamo messo un contatore che tiene conto di quanti libri abbiamo nel file
 				// siccome ora ne stiamo aggiungendo di nuovi andiamo ad incrementare questo contatore
 				super.size++;
-				writer.println(convertiInCSV(libro));
+				writer.println(Utility.convertiInCSV(libro));
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("Errore nel salvare i libri nel file", e);
@@ -153,43 +153,5 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		nuoveAggiunte.clear();
 	}
 
-	private void riscritturaCompletaDelFile() throws IOException {
-		Chunk c = new ChunkCSV(fileName, this);
-		List<Libro> libri = c.leggi(Pagina.CORRENTE);
-		File tmpFile = new File("tmp_"+fileName);
-		try(PrintWriter writer = new PrintWriter(new FileWriter(tmpFile))) {
-			while(!libri.isEmpty()) {
-				for(Libro libro : libri)
-					if(libroDaEliminare != null && !libro.equals(libroDaEliminare))
-						writer.println(convertiInCSV(libro));
-				libri = c.leggi(Pagina.PROSSIMA);
-			}
-		}
-		Files.move(tmpFile.toPath(), Path.of(fileName), StandardCopyOption.REPLACE_EXISTING);
-	}
 
-	/**
-	 * convertiInCSV
-	 * @param libro, il libro da convertire in una Stringa conforme allo standard CSV
-	 * @return la Stringa formattata in CSV che rappresenta il libro
-	 */
-	private String convertiInCSV(Libro libro) {
-		if(sb != null) {
-			sb.append(libro.titolo());
-			sb.append(",");
-			sb.append(libro.autore());
-			sb.append(",");
-			sb.append(libro.isbn());
-			sb.append(",");
-			sb.append(libro.genere());
-			sb.append(",");
-			sb.append(libro.valutazione());
-			sb.append(",");
-			sb.append(Utility.fromStatoToString(libro.stato()));
-			String ret = sb.toString();
-			sb.setLength(0);
-			return ret;
-		}
-		return null;
-	}
 }

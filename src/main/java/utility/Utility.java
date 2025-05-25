@@ -51,4 +51,24 @@ public class Utility {
             return "IN LETTURA";
         else return "LETTO";
     }
+    /**
+     * convertiInCSV
+     * @param libro, il libro da convertire in una Stringa conforme allo standard CSV
+     * @return la Stringa formattata in CSV che rappresenta il libro
+     */
+    public static String convertiInCSV(Libro libro) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(libro.titolo());
+        sb.append(",");
+        sb.append(libro.autore());
+        sb.append(",");
+        sb.append(libro.isbn());
+        sb.append(",");
+        sb.append(libro.genere());
+        sb.append(",");
+        sb.append(libro.valutazione());
+        sb.append(",");
+        sb.append(Utility.fromStatoToString(libro.stato()));
+        return sb.toString();
+    }
 }
