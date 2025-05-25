@@ -46,10 +46,13 @@ public class ControllerLibreria {
         this.vista.setAutoreOnClickListener(e -> ordinamento("autore"));
         this.vista.setTitoloOnClickListener(e -> ordinamento("titolo"));
         this.vista.setStatoOnClickListener(e -> ordinamento("stato"));
-        this.vista.setPaginazioneBtnNext(e -> elaboraPagina(Pagina.PROSSIMA));
-        this.vista.setPaginazioneBtnPrevious(e -> elaboraPagina(Pagina.PRECEDENTE));
+        this.vista.setPaginazioneBtnNext(e -> elaboraPagina(Pagina.PROSSIMA), false);
+        this.vista.setPaginazioneBtnPrevious(e -> elaboraPagina(Pagina.PRECEDENTE), false);
+        this.vista.setPaginazioneBtnNext(e -> elaboraPagina(Pagina.ULTIMA), true);
+        this.vista.setPaginazioneBtnPrevious(e -> elaboraPagina(Pagina.PRIMA), true);
         popolaLibreria();
     }
+
     private void ordinamento(String criterio) {
         switch (criterio) {
             case "autore":

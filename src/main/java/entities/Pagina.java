@@ -1,5 +1,5 @@
 package entities;
 
 public enum Pagina {
-    PROSSIMA, PRECEDENTE, CORRENTE
+    PROSSIMA, PRECEDENTE, CORRENTE, ULTIMA, PRIMA
 }

@@ -1,9 +1,8 @@
 package gui.view;
 
-import Utility.Utility;
+import utility.Utility;
 import entities.Libro;
 import entities.Query;
-import entities.Stato;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -27,7 +26,7 @@ public class VistaLibreria extends JFrame {
     private final HashMap<JButton, Libro> libroBottone = new HashMap<>();
     private final JButton addBtn = new JButton("Aggiungi libro");
     private final List<Libro> listaLibri = new ArrayList<>();
-    private final JButton[] paginazioneBtns = new JButton[2];
+    private final JButton[] paginazioneBtns = new JButton[4];
     HashMap<String, JButton> bottoniOrdinamento = new HashMap<>();
 
     public VistaLibreria() {
@@ -70,6 +69,8 @@ public class VistaLibreria extends JFrame {
         // paginazione
         paginazioneBtns[0] = new JButton("<");
         paginazioneBtns[1] = new JButton(">");
+        paginazioneBtns[2] = new JButton("<<");
+        paginazioneBtns[3] = new JButton(">>");
 
         add(centerPanel, BorderLayout.CENTER);
         add(createButtonPanel(), BorderLayout.SOUTH);
@@ -88,11 +89,17 @@ public class VistaLibreria extends JFrame {
         JButton bottone = bottoniOrdinamento.get("ordinamentoTitolo");
         bottone.addActionListener(actionEvent);
     }
-    public void setPaginazioneBtnNext(ActionListener listener) {
-        paginazioneBtns[1].addActionListener(listener);
+    public void setPaginazioneBtnNext(ActionListener listener, boolean isLast) {
+        if(!isLast)
+            paginazioneBtns[1].addActionListener(listener);
+        else
+            paginazioneBtns[3].addActionListener(listener);
     }
-    public void setPaginazioneBtnPrevious(ActionListener listener) {
-        paginazioneBtns[0].addActionListener(listener);
+    public void setPaginazioneBtnPrevious(ActionListener listener, boolean isFirst) {
+        if(!isFirst)
+            paginazioneBtns[0].addActionListener(listener);
+        else
+            paginazioneBtns[2].addActionListener(listener);
     }
     public void setSearchButtonListener(ActionListener listener) {
         this.searchButton.addActionListener(listener);
@@ -211,12 +218,22 @@ public class VistaLibreria extends JFrame {
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        panel.add(paginazioneBtns[0]);
+        panel.setBorder(new EmptyBorder(2, 5, 15, 5));
+
+        panel.add(paginazioneBtns[0]);                     // <<
+        panel.add(Box.createRigidArea(new Dimension(5, 0)));
+
+        panel.add(paginazioneBtns[2]);                     // <
         panel.add(Box.createHorizontalGlue());
+
         panel.add(addBtn);
         panel.add(Box.createHorizontalGlue());
-        panel.add(paginazioneBtns[1]);
-        panel.setBorder(new EmptyBorder(2, 5, 15, 5));
+
+        panel.add(paginazioneBtns[3]);                     // >
+        panel.add(Box.createRigidArea(new Dimension(5, 0)));
+
+        panel.add(paginazioneBtns[1]);                     // >>
+
         return panel;
     }
 
@@ -314,4 +331,5 @@ public class VistaLibreria extends JFrame {
         paginazioneBtns[0].setEnabled(b);
         paginazioneBtns[1].setEnabled(b);
     }
+
 }
