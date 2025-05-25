@@ -3,13 +3,19 @@ package libreria.persistente;
 import java.io.*;
 
 import java.io.FileReader;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import Utility.Utility;
 import comparators.OrdinamentoValutazione;
 import entities.Libro;
+import entities.Pagina;
 import entities.Stato;
 import exceptions.DocumentoMalFormatoException;
+import libreria.persistente.chunk.ChunkAbstract;
+import libreria.persistente.chunk.ChunkCSV;
+import ricerca.Filtro;
 
 public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 
@@ -18,9 +24,11 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	private PrintWriter pw = null;
 	private StringBuilder sb = null;
 	private List<Libro> nuoveAggiunte = new LinkedList<>();
+	private final ChunkAbstract chunk;
 	public LibreriaPersistenteCSV(String pathFile) {
 		super(pathFile);
 		this.fileName = pathFile;
+		chunk = new ChunkCSV(pathFile, this);
 		onInit();
 		super.size = this.getSize();
 	}
@@ -59,7 +67,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			throw new RuntimeException(e);
 		}
 	}
-
 	// FIXME: o salvi il singolo libro o salvi tutti i libri
 	@Override
 	public String aggiungiLibro(Libro libro) throws IOException {
@@ -71,50 +78,20 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		}
 		return null;
 	}
-
 	@Override
 	public int getSize() {
 		return nLinee();
 	}
-
-
 	@Override
-	public List<Libro> leggiLibro(int size) throws IOException {
-		if(size < 0)
-			throw new IllegalArgumentException("La size non può essere negativa");
-		if(super.libri != null && !super.libri.isEmpty())
-			return super.libri;
-		List<String> libriInStringhe = new LinkedList<>();
-		try(BufferedReader bfr = new BufferedReader(new FileReader(fileName))){
-			for (int i = 0; i < size; i++) {
-				// se l'ingresso ricevuto `size` è più grande del numero di linee del file allora fermiamoci
-				if(super.size <= i)
-					break;
-				String book = bfr.readLine();
-				libriInStringhe.add(book);
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		List<Libro> ret =  libriInStringhe.stream().map(this::convertiInLibro).toList();
-		libriInStringhe.clear();
+	public List<Libro> leggiLibro(Pagina richiesta) throws IOException {
+		List<Libro> ret = chunk.leggi(richiesta);
 		super.libri = super.ordinaLibreria(ret, new OrdinamentoValutazione(true).ottieniComparatore());
 		return super.libri;
 	}
-
-	private Libro convertiInLibro(String libro) {
-		String[] splitLibro = libro.split(",");
-		if(splitLibro.length < 6)
-			throw new DocumentoMalFormatoException("Il documento passato non è correttamente formattato, dovrebbero esserci 6 campi!");
-		String titolo = splitLibro[0];
-		String autor = splitLibro[1];
-		String isbn = splitLibro[2];
-		String genere = splitLibro[3];
-		int valutazione = Integer.parseInt(splitLibro[4]);
-		Stato stato = splitLibro[5].isEmpty() ? Stato.DA_LEGGERE : Stato.valueOf(splitLibro[5]);
-		return new Libro(titolo, autor, isbn, genere, valutazione, stato);
+	@Override
+	public Collection<Libro> cerca(Filtro f) {
+		return chunk.cerca(f);
 	}
-
 	private int nLinee() {
 		// per ottimizzazione: apprendiamo il numero di linee del file solo la prima volta
 		if(super.size != -1)
@@ -123,7 +100,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			int cnt = 0;
 			while(brLines.readLine() != null)
 				cnt++;
-			System.out.println(cnt);
 			return cnt;
 		} catch (IOException e) {
 			throw new RuntimeException(e);

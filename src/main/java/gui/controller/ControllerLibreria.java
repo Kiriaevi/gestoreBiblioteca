@@ -8,6 +8,7 @@ import comparators.OrdinamentoAutore;
 import comparators.OrdinamentoTitolo;
 import comparators.OrdinamentoValutazione;
 import entities.Libro;
+import entities.Pagina;
 import entities.Query;
 import gui.view.VistaAggiungi;
 import gui.view.VistaLibreria;
@@ -19,6 +20,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.LinkedList;
 
 /**
  * La classe ControllerLibreria funge da controller in un'architettura MVC
@@ -44,6 +46,8 @@ public class ControllerLibreria {
         this.vista.setAutoreOnClickListener(e -> ordinamento("autore"));
         this.vista.setTitoloOnClickListener(e -> ordinamento("titolo"));
         this.vista.setStatoOnClickListener(e -> ordinamento("stato"));
+        this.vista.setPaginazioneBtnNext(e -> elaboraPagina(Pagina.PROSSIMA));
+        this.vista.setPaginazioneBtnPrevious(e -> elaboraPagina(Pagina.PRECEDENTE));
         popolaLibreria();
     }
     private void ordinamento(String criterio) {
@@ -83,18 +87,23 @@ public class ControllerLibreria {
 
         if (q.titolo() != null && !q.titolo().trim().isEmpty())
             filtro = new FiltroTitolo(filtro, q.titolo());
-        if (q.autore() != null && !q.autore().equals("Qualsiasi"))
+        if (q.autore() != null && !q.autore().trim().isEmpty())
             filtro = new FiltroAutore(filtro, q.autore());
-        if (q.categoria() != null && !q.categoria().equals("Qualsiasi"))
+        if (q.categoria() != null && !q.categoria().trim().isEmpty())
             filtro = new FiltroGenere(filtro, q.categoria());
         if (q.stato() != null)
             filtro = new FiltroStato(filtro, q.stato());
 
-        libri = libri.stream().filter(filtro::filtro).sorted(comparatore).toList();
+        libri = ricercaLibri(filtro);
         vista.setSearchButtonText("Torna alla Home");
         vista.mostraRisultatiRicerca(libri);
         backHome = true;
     }
+
+    private Collection<Libro> ricercaLibri(Filtro filtro) {
+        return libreria.cerca(filtro).stream().sorted(this.comparatore).toList();
+    }
+
     private void aggiungiLibro() {
         VistaAggiungi vistaAggiungi = new VistaAggiungi(vista, libro -> {
             Command cmd = new CommandAggiungiLibro(libreria, libro);
@@ -108,7 +117,7 @@ public class ControllerLibreria {
         VistaModifica vistaModifica = new VistaModifica(vista, libro -> {
             Command cmd = new CommandModificaLibro(libreria, libro, libroSorg.isbn());
             cmd.execute();
-            aggiorna();
+            aggiorna(true);
         }, libroSorg);
         vistaModifica.setVisible(true);
     }
@@ -116,7 +125,7 @@ public class ControllerLibreria {
         Libro libroSorg = ottieniLibro((JButton) e.getSource());
         Command cmd = new CommandRimuoviLibro(libreria, libroSorg);
         cmd.execute();
-        aggiorna();
+        aggiorna(true);
     }
     private void popolaLibreria() {
         libri = ottieniLibriDallaLibreria();
@@ -133,9 +142,10 @@ public class ControllerLibreria {
     private Libro ottieniLibro(JButton bottone) {
         return vista.getLibroSelezionato(bottone);
     }
-    private void aggiorna() {
+    private void aggiorna(boolean isCrud) {
         vista.pulisciMatrice();
-        libri = ottieniLibriDallaLibreria();
+        if(isCrud)
+            libri = ottieniLibriDallaLibreria();
         vista.addBooks(libri);
         aggiungiListeners();
     }
@@ -145,6 +155,10 @@ public class ControllerLibreria {
         vista.setDeleteButtonListener(this::eliminaLibro);
     }
     private Collection<Libro> ottieniLibriDallaLibreria() {
-        return libreria.getLibri(Integer.MAX_VALUE).stream().sorted(this.comparatore).toList();
+        return libreria.getLibri(Pagina.CORRENTE).stream().sorted(this.comparatore).toList();
+    }
+    private void elaboraPagina(Pagina richiesta) {
+        this.libri = libreria.getLibri(richiesta).stream().sorted(this.comparatore).toList();
+        aggiorna(false);
     }
 }

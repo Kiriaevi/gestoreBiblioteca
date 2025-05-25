@@ -1,8 +1,10 @@
 package libreria.persistente;
 
 import entities.Libro;
+import ricerca.Filtro;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,5 +86,8 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
     }
     protected List<Libro> ordinaLibreria(List<Libro> libri, Comparator<Libro> comparator) {
         return libri.stream().sorted(comparator).collect(Collectors.toList());
+    }
+    public Collection<Libro> cerca(Filtro f) {
+        return libri.stream().filter(f::filtro).toList();
     }
 }

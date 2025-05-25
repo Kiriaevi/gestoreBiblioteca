@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import comparators.OrdinamentoValutazione;
 import entities.Libro;
+import entities.Pagina;
 import exceptions.DocumentoMalFormatoException;
 import exceptions.ErroreNellaCreazioneDelFile;
 import java.io.File;
@@ -12,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import entities.Pagina.*;
 
 public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 
@@ -54,9 +57,7 @@ public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
     }
 
 	@Override
-	public List<Libro> leggiLibro(int size) {
-		if(size < 0)
-			throw new IllegalArgumentException("La size non può essere negativa");
+	public List<Libro> leggiLibro(Pagina richiesta) {
 		List<Libro> ret;
         try {
             JsonNode root = mapper.readTree(file);

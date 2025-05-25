@@ -1,6 +1,7 @@
 package libreria.persistente;
 
 import entities.Libro;
+import entities.Pagina;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,10 +15,10 @@ public interface LibreriaPersistente {
     /**
      * Legge un numero specifico di libri da una sorgente persistente.
      * 
-     * @param size Il numero di libri da leggere.
-     * pre: size >= 0 && < numero di elementi (libri) presenti in memoria secondaria
+     * @param
+     * : size >= 0 && < numero di elementi (libri) presenti in memoria secondaria
      */
-    List<Libro> leggiLibro(int size) throws IOException;
+    List<Libro> leggiLibro(Pagina richiesta) throws IOException;
     /**
      * Modifica le informazioni di un libro esistente. 
      *
