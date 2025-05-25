@@ -18,13 +18,12 @@ public abstract class ChunkAbstract implements Chunk{
     @Override
     public List<Libro> leggi(Pagina richiesta) {
         size = lib.getSize();
-        int inizio = pagina * CHUNK_SIZE;
-        if(inizio > size) {
-            pagina--;
-            return List.of();
-        }
         if(richiesta.equals(Pagina.PRECEDENTE) && pagina == 0)
             return recuperaChunk(pagina);
+        int inizio = pagina * CHUNK_SIZE;
+        if(inizio > size && richiesta.equals(Pagina.PROSSIMA)) {
+            return List.of();
+        }
         switch (richiesta) {
             case CORRENTE: break;
             case PRECEDENTE: pagina--; break;

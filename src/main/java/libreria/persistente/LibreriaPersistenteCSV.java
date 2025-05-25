@@ -13,6 +13,7 @@ import entities.Libro;
 import entities.Pagina;
 import entities.Stato;
 import exceptions.DocumentoMalFormatoException;
+import jdk.jshell.execution.Util;
 import libreria.persistente.chunk.ChunkAbstract;
 import libreria.persistente.chunk.ChunkCSV;
 import ricerca.Filtro;
@@ -158,7 +159,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			sb.append(",");
 			sb.append(libro.valutazione());
 			sb.append(",");
-			sb.append(libro.stato());
+			sb.append(Utility.fromStatoToString(libro.stato()));
 			String ret = sb.toString();
 			sb.setLength(0);
 			return ret;

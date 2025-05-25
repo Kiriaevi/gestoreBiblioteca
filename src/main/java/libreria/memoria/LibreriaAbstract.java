@@ -34,8 +34,6 @@ public abstract class LibreriaAbstract implements Libreria {
     }
     @Override
     public Collection<Libro> getLibri(Pagina richiesta) {
-        if(richiesta.equals(Pagina.CORRENTE))
-            return libri;
         loadAll(richiesta);
         return libri;
     }
