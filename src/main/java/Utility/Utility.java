@@ -20,6 +20,7 @@ public class Utility {
             throw new IllegalArgumentException("Ogni chunk può essere grande al MASSIMO 20");
         List<Libro> ret = new ArrayList<>();
         for(String l : libri) {
+            if(l == null) continue;
             String[] splitLibro = l.split(",");
             if(splitLibro.length < 6)
                 throw new DocumentoMalFormatoException("Il documento passato non è correttamente formattato, dovrebbero esserci 6 campi!");
@@ -28,9 +29,26 @@ public class Utility {
             String isbn = splitLibro[2];
             String genere = splitLibro[3];
             int valutazione = Integer.parseInt(splitLibro[4]);
-            Stato stato = splitLibro[5].isEmpty() ? Stato.DA_LEGGERE : Stato.valueOf(splitLibro[5]);
+            Stato stato = splitLibro[5].isEmpty() ? Stato.DA_LEGGERE : fromStringToStato(splitLibro[5]);
             ret.add(new Libro(titolo, autor, isbn, genere, valutazione, stato));
         }
         return Collections.unmodifiableList(ret);
+    }
+    public static Stato fromStringToStato(String input) {
+        String s = input.toUpperCase();
+        if(s.equals("DA LEGGERE"))
+            return Stato.DA_LEGGERE;
+        if (s.equals("IN LETTURA"))
+            return Stato.IN_LETTURA;
+        if(s.equals("LETTO"))
+            return Stato.LETTO;
+        return null;
+    }
+    public static String fromStatoToString(Stato input) {
+        if(input.equals(Stato.DA_LEGGERE))
+            return "DA LEGGERE";
+        if(input.equals(Stato.IN_LETTURA))
+            return "IN LETTURA";
+        else return "LETTO";
     }
 }
