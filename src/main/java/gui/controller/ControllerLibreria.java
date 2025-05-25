@@ -117,7 +117,7 @@ public class ControllerLibreria {
     private void modificaLibro(ActionEvent e) {
         Libro libroSorg = ottieniLibro((JButton) e.getSource());
         VistaModifica vistaModifica = new VistaModifica(vista, libro -> {
-            Command cmd = new CommandModificaLibro(libreria, libro, libroSorg.isbn());
+            Command cmd = new CommandModificaLibro(libreria, libro, libroSorg);
             cmd.execute();
             aggiorna(true);
         }, libroSorg);

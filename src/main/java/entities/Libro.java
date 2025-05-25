@@ -1,6 +1,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public record Libro(String titolo, String autore, String isbn, String genere, int valutazione, Stato stato) implements Serializable {
     public Libro(String titolo, String autore, String isbn, String genere, int valutazione, Stato stato) {
@@ -22,5 +23,17 @@ public record Libro(String titolo, String autore, String isbn, String genere, in
                 ", valutazione=" + valutazione +
                 ", stato=" + stato +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Libro libro = (Libro) o;
+        return Objects.equals(isbn, libro.isbn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(isbn);
     }
 }

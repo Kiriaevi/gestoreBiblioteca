@@ -6,18 +6,18 @@ import libreria.memoria.LibreriaAbstract;
 import java.io.IOException;
 
 public class CommandModificaLibro extends CommandAbstract{
-    private final Libro l;
-    private final String ISBN;
-    public CommandModificaLibro(LibreriaAbstract libreria, Libro l, String ISBN) {
+    private final Libro libroDaAggiungere;
+    private final Libro libroDaEliminare;
+    public CommandModificaLibro(LibreriaAbstract libreria, Libro libroDaAggiungere, Libro libroDaEliminare) {
         super(libreria);
-        this.l = l;
-        this.ISBN = ISBN;
+        this.libroDaAggiungere = libroDaAggiungere;
+        this.libroDaEliminare = libroDaEliminare;
     }
 
     @Override
     public boolean execute() {
         try {
-            super.libreria.modificaLibro(l, ISBN);
+            super.libreria.modificaLibro(libroDaAggiungere, libroDaEliminare);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

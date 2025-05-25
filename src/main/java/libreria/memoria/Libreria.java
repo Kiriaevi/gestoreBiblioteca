@@ -36,7 +36,7 @@ public interface Libreria {
      * @param ISBN l'ISBN del libro esistente che deve essere modificato
      * @return true se la modifica ha avuto successo, false altrimenti
      */
-    boolean modificaLibro(Libro l, String ISBN) throws IOException;
+    boolean modificaLibro(Libro libroDaAggiungere, Libro libroDaEliminare) throws IOException;
 
     /**
      * Rimuove un libro specifico dalla libreria interna, se presente.

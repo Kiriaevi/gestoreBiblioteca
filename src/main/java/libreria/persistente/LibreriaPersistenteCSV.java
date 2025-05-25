@@ -3,6 +3,10 @@ package libreria.persistente;
 import java.io.*;
 
 import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +18,7 @@ import entities.Pagina;
 import entities.Stato;
 import exceptions.DocumentoMalFormatoException;
 import jdk.jshell.execution.Util;
+import libreria.persistente.chunk.Chunk;
 import libreria.persistente.chunk.ChunkAbstract;
 import libreria.persistente.chunk.ChunkCSV;
 import ricerca.Filtro;
@@ -80,6 +85,18 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		return null;
 	}
 	@Override
+	public boolean modificaLibro(Libro libro, String ISBN) throws IOException {
+		if (libro == null || ISBN == null) return false;
+		int found = cercaLibroPerISBN(ISBN);
+		if(found == -1) return false;
+		libri.set(found, libro);
+		nuoveAggiunte.add(libro);
+		hasBeenModified = true;
+		persist();
+		nuoveAggiunte.remove(libro);
+		return true;
+	}
+	@Override
 	public int getSize() {
 		return nLinee();
 	}
@@ -124,10 +141,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	protected void persist() throws IOException {
 		if(hasBeenModified) {
 			hasBeenModified = false;
-			try(PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
-				for(Libro libro : super.libri)
-					writer.println(convertiInCSV(libro));
-			}
+			riscritturaCompletaDelFile();
 		}
 		if(!isBookAdded) return;
 		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
@@ -142,6 +156,22 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		}
 		nuoveAggiunte.clear();
 	}
+
+	private void riscritturaCompletaDelFile() throws IOException {
+		Chunk c = new ChunkCSV(fileName, this);
+		List<Libro> libri = c.leggi(Pagina.CORRENTE);
+		File tmpFile = new File("tmp_"+fileName);
+		try(PrintWriter writer = new PrintWriter(new FileWriter(tmpFile))) {
+			while(!libri.isEmpty()) {
+				for(Libro libro : libri)
+					if(libroDaEliminare != null && !libro.equals(libroDaEliminare))
+						writer.println(convertiInCSV(libro));
+				libri = c.leggi(Pagina.PROSSIMA);
+			}
+		}
+		Files.move(tmpFile.toPath(), Path.of(fileName), StandardCopyOption.REPLACE_EXISTING);
+	}
+
 	/**
 	 * convertiInCSV
 	 * @param libro, il libro da convertire in una Stringa conforme allo standard CSV

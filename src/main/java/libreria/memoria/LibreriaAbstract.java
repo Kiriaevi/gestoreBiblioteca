@@ -38,11 +38,13 @@ public abstract class LibreriaAbstract implements Libreria {
         return libri;
     }
     @Override
-    public boolean modificaLibro(Libro l, String ISBN) throws IOException {
-        return lib.modificaLibro(l, ISBN);
+    public boolean modificaLibro(Libro libroDaAggiungere, Libro libroDaEliminare) throws IOException {
+        lib.setLibroDaEliminare(libroDaEliminare);
+        return lib.modificaLibro(libroDaAggiungere, libroDaEliminare.isbn());
     }
     @Override
     public boolean eliminaLibro(Libro l) throws IOException {
+        lib.setLibroDaEliminare(l);
         return lib.eliminaLibro(l);
     }
     @Override

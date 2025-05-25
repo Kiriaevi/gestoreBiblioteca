@@ -17,6 +17,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
     protected boolean isBookAdded = false;
     protected int size = -1;
     protected boolean hasBeenModified = false;
+    protected Libro libroDaEliminare = null;
     protected LibreriaPersistenteAbstract(String pathFile) {
         if(pathFile == null || pathFile.isEmpty())
             throw new IllegalArgumentException("Devi impostare il filePath in ingresso");
@@ -89,5 +90,8 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
     }
     public Collection<Libro> cerca(Filtro f) {
         return libri.stream().filter(f::filtro).toList();
+    }
+    public void setLibroDaEliminare(Libro l) {
+        this.libroDaEliminare = l;
     }
 }
