@@ -1,10 +1,12 @@
 package gui.view;
 
+import Utility.Utility;
 import entities.Libro;
 import entities.Query;
 import entities.Stato;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.*;
@@ -14,8 +16,8 @@ public class VistaLibreria extends JFrame {
     private final int MAX_COLUMNS = 3;
 
     private final JTextField searchField = new JTextField();
-    private final JComboBox<String> authorCombo = new JComboBox<>();
-    private final JComboBox<String> categoryCombo = new JComboBox<>();
+    private final JTextField authorField = new JTextField();
+    private final JTextField categoryField = new JTextField();
     private final JComboBox<String> statusCombo = new JComboBox<>();
     private final JButton searchButton = new JButton("Invia");
 
@@ -25,6 +27,7 @@ public class VistaLibreria extends JFrame {
     private final HashMap<JButton, Libro> libroBottone = new HashMap<>();
     private final JButton addBtn = new JButton("Aggiungi libro");
     private final List<Libro> listaLibri = new ArrayList<>();
+    private final JButton[] paginazioneBtns = new JButton[2];
     HashMap<String, JButton> bottoniOrdinamento = new HashMap<>();
 
     public VistaLibreria() {
@@ -64,30 +67,33 @@ public class VistaLibreria extends JFrame {
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
+        // paginazione
+        paginazioneBtns[0] = new JButton("<");
+        paginazioneBtns[1] = new JButton(">");
+
         add(centerPanel, BorderLayout.CENTER);
         add(createButtonPanel(), BorderLayout.SOUTH);
-
-        updateFilters();
         refreshCards();
     }
 
     public void setAutoreOnClickListener(ActionListener actionEvent) {
-        this.bottoniOrdinamento.get("ordinamentoAutore").addActionListener(actionEvent);
+        JButton bottone = bottoniOrdinamento.get("ordinamentoAutore");
+        bottone.addActionListener(actionEvent);
     }
     public void setTitoloOnClickListener(ActionListener actionEvent) {
-        this.bottoniOrdinamento.get("ordinamentoTitolo").addActionListener(actionEvent);
+        JButton bottone = bottoniOrdinamento.get("ordinamentoTitolo");
+        bottone.addActionListener(actionEvent);
     }
     public void setStatoOnClickListener(ActionListener actionEvent) {
-        this.bottoniOrdinamento.get("ordinamentoStato").addActionListener(actionEvent);
+        JButton bottone = bottoniOrdinamento.get("ordinamentoTitolo");
+        bottone.addActionListener(actionEvent);
     }
-    @Override
-    public void setExtendedState(int state) {
-        super.setExtendedState(state);
-        if ((state & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-            refreshCards();
-        }
+    public void setPaginazioneBtnNext(ActionListener listener) {
+        paginazioneBtns[1].addActionListener(listener);
     }
-
+    public void setPaginazioneBtnPrevious(ActionListener listener) {
+        paginazioneBtns[0].addActionListener(listener);
+    }
     public void setSearchButtonListener(ActionListener listener) {
         this.searchButton.addActionListener(listener);
     }
@@ -96,33 +102,48 @@ public class VistaLibreria extends JFrame {
         this.searchButton.setText(testo);
     }
 
-    public Query recuperaDatiDiRicerca() {
-        return new Query(
-                searchField.getText(),
-                (String) authorCombo.getSelectedItem(),
-                (String) categoryCombo.getSelectedItem(),
-                Stato.fromStringToStato((String) statusCombo.getSelectedItem()));
-    }
-
     public void setEditButtonListener(ActionListener listener) {
         for (JButton button : editBtns) {
+            for(ActionListener al : button.getActionListeners())
+                button.removeActionListener(al);
             button.addActionListener(listener);
         }
     }
 
     public void setDeleteButtonListener(ActionListener listener) {
-        for (JButton button : deleteBtns)
+        for (JButton button : deleteBtns) {
+            for(ActionListener al : button.getActionListeners())
+                button.removeActionListener(al);
             button.addActionListener(listener);
+        }
     }
 
     public void setAddButtonListener(ActionListener listener) {
+        for(ActionListener al : addBtn.getActionListeners())
+            addBtn.removeActionListener(al);
         addBtn.addActionListener(listener);
     }
+
+    @Override
+    public void setExtendedState(int state) {
+        super.setExtendedState(state);
+        if ((state & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+            refreshCards();
+        }
+    }
+
+    public Query recuperaDatiDiRicerca() {
+        return new Query(
+                searchField.getText(),
+                authorField.getText(),
+                categoryField.getText(),
+                Utility.fromStringToStato((String) statusCombo.getSelectedItem()));
+    }
+
 
     public void addBooks(Collection<Libro> libri) {
         listaLibri.clear();
         listaLibri.addAll(libri);
-        updateFilters();
         refreshCards();
     }
 
@@ -138,8 +159,8 @@ public class VistaLibreria extends JFrame {
 
     public void pulisciRicerca() {
         searchField.setText("");
-        authorCombo.setSelectedIndex(0);
-        categoryCombo.setSelectedIndex(0);
+        authorField.setText("");
+        categoryField.setText("");
         statusCombo.setSelectedIndex(0);
     }
 
@@ -158,8 +179,8 @@ public class VistaLibreria extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         searchField.setPreferredSize(new Dimension(150, 30));
-        authorCombo.setPreferredSize(new Dimension(120, 30));
-        categoryCombo.setPreferredSize(new Dimension(120, 30));
+        authorField.setPreferredSize(new Dimension(120, 30));
+        categoryField.setPreferredSize(new Dimension(120, 30));
         statusCombo.setPreferredSize(new Dimension(120, 30));
 
         statusCombo.setModel(new DefaultComboBoxModel<>(
@@ -172,11 +193,11 @@ public class VistaLibreria extends JFrame {
         gbc.gridx = 2;
         panel.add(new JLabel("Autore:"), gbc);
         gbc.gridx = 3;
-        panel.add(authorCombo, gbc);
+        panel.add(authorField, gbc);
         gbc.gridx = 4;
         panel.add(new JLabel("Genere:"), gbc);
         gbc.gridx = 5;
-        panel.add(categoryCombo, gbc);
+        panel.add(categoryField, gbc);
         gbc.gridx = 6;
         panel.add(new JLabel("Stato:"), gbc);
         gbc.gridx = 7;
@@ -188,8 +209,14 @@ public class VistaLibreria extends JFrame {
     }
 
     private JPanel createButtonPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.add(paginazioneBtns[0]);
+        panel.add(Box.createHorizontalGlue());
         panel.add(addBtn);
+        panel.add(Box.createHorizontalGlue());
+        panel.add(paginazioneBtns[1]);
+        panel.setBorder(new EmptyBorder(2, 5, 15, 5));
         return panel;
     }
 
@@ -282,20 +309,9 @@ public class VistaLibreria extends JFrame {
         return label;
     }
 
-    private void updateFilters() {
-        Vector<String> authors = new Vector<>();
-        Vector<String> categories = new Vector<>();
 
-        authors.add("Qualsiasi");
-        categories.add("Qualsiasi");
-
-        for (Libro libro : listaLibri) {
-            if (!authors.contains(libro.autore())) authors.add(libro.autore());
-            if (!categories.contains(libro.genere())) categories.add(libro.genere());
-        }
-
-        authorCombo.setModel(new DefaultComboBoxModel<>(authors));
-        categoryCombo.setModel(new DefaultComboBoxModel<>(categories));
+    public void enablePaginationButtons(boolean b) {
+        paginazioneBtns[0].setEnabled(b);
+        paginazioneBtns[1].setEnabled(b);
     }
-
 }

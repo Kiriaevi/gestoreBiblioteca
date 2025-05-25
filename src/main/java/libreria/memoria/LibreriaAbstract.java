@@ -7,11 +7,14 @@ import java.util.List;
 
 import comparators.OrdinamentoValutazione;
 import entities.Libro;
+import entities.Pagina;
 import libreria.persistente.LibreriaPersistente;
+import libreria.persistente.LibreriaPersistenteAbstract;
+import ricerca.Filtro;
 
 public abstract class LibreriaAbstract implements Libreria {
 
-    protected LibreriaPersistente lib = null;
+    protected LibreriaPersistenteAbstract lib = null;
     protected List<Libro> libri = new LinkedList<>();
     protected final String nomeStruturaPersistente;
     public LibreriaAbstract(String n) {
@@ -22,20 +25,17 @@ public abstract class LibreriaAbstract implements Libreria {
     protected abstract void onInit(String type);
     protected abstract void onClose();
     @Override
-    public void loadAll() {
+    public void loadAll(Pagina richiesta) {
         try {
-            libri = lib.leggiLibro(Integer.MAX_VALUE);
+            libri = lib.leggiLibro(richiesta);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
     @Override
-    public Collection<Libro> getLibri(int size) {
-        if (size < 0)
-            throw new IllegalArgumentException("size non può essere un valore negativo");
-        if(size > lib.getSize())
-            return libri.stream().sorted(new OrdinamentoValutazione(true).ottieniComparatore()).toList();
-        return libri.subList(0, size).stream().sorted(new OrdinamentoValutazione(true).ottieniComparatore()).toList();
+    public Collection<Libro> getLibri(Pagina richiesta) {
+        loadAll(richiesta);
+        return libri;
     }
     @Override
     public boolean modificaLibro(Libro l, String ISBN) throws IOException {
@@ -48,5 +48,8 @@ public abstract class LibreriaAbstract implements Libreria {
     @Override
     public void aggiungiLibro(Libro l) throws IOException {
         lib.aggiungiLibro(l);
+    }
+    public Collection<Libro> cerca(Filtro f) {
+        return lib.cerca(f);
     }
 }

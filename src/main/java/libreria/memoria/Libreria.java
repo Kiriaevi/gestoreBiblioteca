@@ -2,6 +2,7 @@ package libreria.memoria;
 
 
 import entities.Libro;
+import entities.Pagina;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -14,7 +15,7 @@ public interface Libreria {
      *
      * @throws RuntimeException se si verifica un errore durante la lettura dei dati
      */
-    void loadAll();
+    void loadAll(Pagina richiesta);
 
     /**
      * Recupera una collezione di libri dalla libreria con una dimensione massima specificata.
@@ -26,7 +27,7 @@ public interface Libreria {
      * @return una collezione di libri, limitata alla dimensione specificata
      * @throws IllegalArgumentException se il parametro size è negativo
      */
-    Collection<Libro> getLibri(int size);
+    Collection<Libro> getLibri(Pagina richiesta);
 
     /**
      * Modifica le informazioni di un libro esistente nella libreria, identificandolo tramite l'ISBN.

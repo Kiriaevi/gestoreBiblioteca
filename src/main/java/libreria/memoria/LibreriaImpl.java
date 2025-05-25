@@ -1,5 +1,6 @@
 package libreria.memoria;
 
+import entities.Pagina;
 import libreria.persistente.LibreriaPersistenteCSV;
 import libreria.persistente.LibreriaPersistenteJSON;
 
@@ -8,7 +9,7 @@ public class LibreriaImpl extends LibreriaAbstract {
     public LibreriaImpl(String type, String n) {
         super(n);
         onInit(type);
-        loadAll();
+        loadAll(Pagina.CORRENTE);
     }
 	@Override
 	protected void onInit(String type) {

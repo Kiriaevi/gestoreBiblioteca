@@ -97,6 +97,5 @@ public class VistaAggiungi extends JDialog {
     public void setValutazione(int valutazione) {
         this.valutazione.setValue(valutazione);
     }
-    public void setStatoField(Stato stato) {
-    }
+    public void setStatoField(Stato stato) { this.statoField.setSelectedItem(stato);}
 }
