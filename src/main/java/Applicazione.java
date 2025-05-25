@@ -15,7 +15,7 @@ public class Applicazione {
             System.err.println("FlatLaf not supported");
         }
 
-        LibreriaAbstract libreria = new LibreriaImpl("json");
+        LibreriaAbstract libreria = new LibreriaImpl("csv", "testLibri");
         VistaLibreria v = new VistaLibreria();
         SwingUtilities.invokeLater(() -> v.setVisible(true));
         ControllerLibreria c = new ControllerLibreria(libreria, v);

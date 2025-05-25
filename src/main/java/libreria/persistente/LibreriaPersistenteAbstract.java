@@ -15,7 +15,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
     protected boolean isBookAdded = false;
     protected int size = -1;
     protected boolean hasBeenModified = false;
-    public LibreriaPersistenteAbstract(String pathFile) {
+    protected LibreriaPersistenteAbstract(String pathFile) {
         if(pathFile == null || pathFile.isEmpty())
             throw new IllegalArgumentException("Devi impostare il filePath in ingresso");
     }

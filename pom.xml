@@ -32,7 +32,14 @@
             <artifactId>flatlaf</artifactId>
             <version>3.2</version>
         </dependency>
+        <!-- BENCHMARK -->
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>1.37</version>
+        </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <!-- Crea un JAR con tutte le dipendenze -->

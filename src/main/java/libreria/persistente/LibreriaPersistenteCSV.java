@@ -85,14 +85,19 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		if(super.libri != null && !super.libri.isEmpty())
 			return super.libri;
 		List<String> libriInStringhe = new LinkedList<>();
-		for (int i = 0; i < size; i++) {
-			// se l'ingresso ricevuto `size` è più grande del numero di linee del file allora fermiamoci
-			if(super.size <= i)
-				break;
-			String book = br.readLine();
-			libriInStringhe.add(book);
+		try(BufferedReader bfr = new BufferedReader(new FileReader(fileName))){
+			for (int i = 0; i < size; i++) {
+				// se l'ingresso ricevuto `size` è più grande del numero di linee del file allora fermiamoci
+				if(super.size <= i)
+					break;
+				String book = bfr.readLine();
+				libriInStringhe.add(book);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 		List<Libro> ret =  libriInStringhe.stream().map(this::convertiInLibro).toList();
+		libriInStringhe.clear();
 		super.libri = super.ordinaLibreria(ret, new OrdinamentoValutazione(true).ottieniComparatore());
 		return super.libri;
 	}

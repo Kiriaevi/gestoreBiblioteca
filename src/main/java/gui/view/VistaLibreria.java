@@ -11,9 +11,7 @@ import java.util.*;
 import java.util.List;
 
 public class VistaLibreria extends JFrame {
-    private final int cardWidth = 250, cardHeight = 190;
     private final int MAX_COLUMNS = 3;
-    private final Color cardBackground = new Color(240, 240, 240);
 
     private final JTextField searchField = new JTextField();
     private final JComboBox<String> authorCombo = new JComboBox<>();
@@ -25,18 +23,15 @@ public class VistaLibreria extends JFrame {
     private final List<JButton> editBtns = new LinkedList<>();
     private final List<JButton> deleteBtns = new LinkedList<>();
     private final HashMap<JButton, Libro> libroBottone = new HashMap<>();
-    private Libro libroAttuale = null;
     private final JButton addBtn = new JButton("Aggiungi libro");
     private final List<Libro> listaLibri = new ArrayList<>();
     HashMap<String, JButton> bottoniOrdinamento = new HashMap<>();
-
-    private boolean ordineDiscendente = false;
 
     public VistaLibreria() {
         super("Libreria");
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(400, 400);
+        setSize(1280, 800);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
@@ -63,6 +58,7 @@ public class VistaLibreria extends JFrame {
         centerPanel.add(headerPanel, BorderLayout.NORTH);
 
         cardsPanel.setLayout(new GridLayout(0, MAX_COLUMNS, 15, 15));
+        Color cardBackground = new Color(240, 240, 240);
         cardsPanel.setBackground(cardBackground);
         JScrollPane scrollPane = new JScrollPane(cardsPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -137,7 +133,6 @@ public class VistaLibreria extends JFrame {
     public void pulisciMatrice() {
         this.deleteBtns.clear();
         this.editBtns.clear();
-        libroAttuale = null;
         libroBottone.clear();
     }
 
@@ -218,6 +213,8 @@ public class VistaLibreria extends JFrame {
 
     private JPanel createBookCard(Libro libro) {
         JPanel card = new JPanel(new BorderLayout(5, 5));
+        int cardWidth = 250;
+        int cardHeight = 190;
         card.setPreferredSize(new Dimension(cardWidth, cardHeight));
         card.setMaximumSize(new Dimension(cardWidth, cardHeight));
 

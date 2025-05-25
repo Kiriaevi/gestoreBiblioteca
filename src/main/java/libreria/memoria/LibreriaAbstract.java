@@ -13,7 +13,11 @@ public abstract class LibreriaAbstract implements Libreria {
 
     protected LibreriaPersistente lib = null;
     protected List<Libro> libri = new LinkedList<>();
-    public LibreriaAbstract() {
+    protected final String nomeStruturaPersistente;
+    public LibreriaAbstract(String n) {
+        if(n.isEmpty())
+            throw new IllegalArgumentException("Non hai passato un libro valido");
+        this.nomeStruturaPersistente = n;
     }
     protected abstract void onInit(String type);
     protected abstract void onClose();
@@ -24,7 +28,6 @@ public abstract class LibreriaAbstract implements Libreria {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("IN MEMORIA: "+this.libri);
     }
     @Override
     public Collection<Libro> getLibri(int size) {
