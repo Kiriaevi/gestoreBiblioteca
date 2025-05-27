@@ -8,6 +8,7 @@ import libreria.persistente.chunk.ChunkAbstract;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Utility {
     /**
@@ -71,4 +72,14 @@ public class Utility {
         sb.append(Utility.fromStatoToString(libro.stato()));
         return sb.toString();
     }
+
+    public static String generaISBNRandom() {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 13; i++) {
+            sb.append(random.nextInt(10));
+        }
+        return sb.toString();
+    }
+
 }
