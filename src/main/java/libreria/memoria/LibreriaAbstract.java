@@ -37,18 +37,24 @@ public abstract class LibreriaAbstract implements Libreria {
     }
     @Override
     public boolean modificaLibro(Libro libroDaAggiungere, Libro libroDaEliminare) throws IOException {
-        if(bookExists(libroDaAggiungere.isbn())) return false;
+        // Se abbiamo modificato l'ISBN allora controlla che quello nuovo non sia già presente in libreria
+        if(libroDaAggiungere != null && libroDaEliminare != null &&
+                !libroDaAggiungere.isbn().equals(libroDaEliminare.isbn())
+                && bookExists(libroDaAggiungere.isbn())) return false;
+
         lib.setLibroDaEliminare(libroDaEliminare);
         return lib.modificaLibro(libroDaAggiungere, libroDaEliminare.isbn());
     }
     @Override
     public boolean eliminaLibro(Libro l) throws IOException {
+        // il libro da eliminare deve esistere
+        if(l != null && !bookExists(l.isbn())) return false;
         lib.setLibroDaEliminare(l);
         return lib.eliminaLibro(l);
     }
     @Override
     public boolean aggiungiLibro(Libro l) throws IOException {
-        if(bookExists(l.isbn())) return false;
+        if(l != null && bookExists(l.isbn())) return false;
         lib.aggiungiLibro(l);
         return true;
     }

@@ -15,10 +15,9 @@ public class CommandRimuoviLibro extends CommandAbstract{
     @Override
     public boolean execute() {
         try {
-            super.libreria.eliminaLibro(l);
+            return super.libreria.eliminaLibro(l);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return true;
     }
 }

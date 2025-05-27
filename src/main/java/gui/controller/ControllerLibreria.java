@@ -20,7 +20,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.LinkedList;
 
 /**
  * La classe ControllerLibreria funge da controller in un'architettura MVC
@@ -32,7 +31,7 @@ public class ControllerLibreria {
     private final VistaLibreria vista;
     private Collection<Libro> libri = null;
     private boolean backHome = false;
-    private boolean isAdded = false;
+    private boolean isSuccessful = false;
 
     private boolean ordinamentoAscendente = false;
     private Comparator<Libro> comparatore = new OrdinamentoValutazione(false).ottieniComparatore();
@@ -112,7 +111,7 @@ public class ControllerLibreria {
     private void aggiungiLibro() {
         VistaAggiungi vistaAggiungi = new VistaAggiungi(vista, libro -> {
             Command cmd = new CommandAggiungiLibro(libreria, libro);
-            this.isAdded = cmd.execute();
+            this.isSuccessful = cmd.execute();
             postAggiuntaLibro();
         }, "Aggiungi libro");
         vistaAggiungi.setVisible(true);
@@ -121,8 +120,10 @@ public class ControllerLibreria {
         Libro libroSorg = ottieniLibro((JButton) e.getSource());
         VistaModifica vistaModifica = new VistaModifica(vista, libro -> {
             Command cmd = new CommandModificaLibro(libreria, libro, libroSorg);
-            this.isAdded = cmd.execute();
-            postAggiuntaLibro();
+            this.isSuccessful = cmd.execute();
+            mostraDialog(this.isSuccessful ? "Libro modificato con successo!" :
+                    "IL LIBRO SELEZIONATO NON È PRESENTE NELL'ARCHIVIO");
+            this.isSuccessful = false;
             aggiorna(true);
         }, libroSorg);
         vistaModifica.setVisible(true);
@@ -130,7 +131,10 @@ public class ControllerLibreria {
     private void eliminaLibro(ActionEvent e) {
         Libro libroSorg = ottieniLibro((JButton) e.getSource());
         Command cmd = new CommandRimuoviLibro(libreria, libroSorg);
-        cmd.execute();
+        this.isSuccessful = cmd.execute();
+        mostraDialog(this.isSuccessful ? "Libro eliminato con successo!" :
+                "IL LIBRO SELEZIONATO NON È PRESENTE NELL'ARCHIVIO");
+        this.isSuccessful = false;
         aggiorna(true);
     }
     private void popolaLibreria() {
@@ -139,12 +143,16 @@ public class ControllerLibreria {
         aggiungiListeners();
     }
     private void postAggiuntaLibro() {
-        String msg = this.isAdded ? "Libro aggiunto" :
-                "ATTENZIONE! QUALCOSA È ANDATO STORTO, ASSICURATI DI NON AVER INSERITO DUE LIBRI CON LO STESSO ISBN";
-        vista.libroAggiunto(msg);
-        this.isAdded = false;
+        mostraDialog(this.isSuccessful ? "Libro aggiunto"
+                : "ASSICURATI CHE NON ESISTA UN LIBRO CON LON LO STESSO ISBN ");
+        this.isSuccessful = false;
         vista.pulisciMatrice();
         popolaLibreria();
+    }
+    private void mostraDialog(String msg) {
+        String text = this.isSuccessful ? msg :
+                "ATTENZIONE! QUALCOSA È ANDATO STORTO, "+msg;
+        vista.libroAggiunto(text);
     }
     private Libro ottieniLibro(JButton bottone) {
         return vista.getLibroSelezionato(bottone);

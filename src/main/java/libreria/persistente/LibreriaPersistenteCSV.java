@@ -89,7 +89,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		nuoveAggiunte.add(libro);
 		hasBeenModified = true;
 		persist();
-		nuoveAggiunte.remove(libro);
 		return true;
 	}
 	@Override
