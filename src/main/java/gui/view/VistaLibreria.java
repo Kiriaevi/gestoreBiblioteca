@@ -29,6 +29,7 @@ public class VistaLibreria extends JFrame {
     private final JButton[] paginazioneBtns = new JButton[4];
     HashMap<String, JButton> bottoniOrdinamento = new HashMap<>();
 
+
     public VistaLibreria() {
         super("Libreria");
 
@@ -233,7 +234,6 @@ public class VistaLibreria extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(5, 0)));
 
         panel.add(paginazioneBtns[1]);                     // >>
-
         return panel;
     }
 

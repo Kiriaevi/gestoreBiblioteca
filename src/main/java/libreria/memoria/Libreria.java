@@ -18,25 +18,23 @@ public interface Libreria {
     void loadAll(Pagina richiesta);
 
     /**
-     * Recupera una collezione di libri dalla libreria con una dimensione massima specificata.
-     * Se la dimensione supera il numero di libri disponibili, verranno restituiti tutti i libri.
-     * I libri restituiti provengono dalla RAM, se il file viene modificato e non viene richiamata la loadAll
-     * non si vedranno i libri aggiunti
+     * Recupera una collezione di libri dalla libreria in base alla pagina richiesta.
      *
-     * @param size il numero massimo di libri da recuperare; deve essere non negativo
-     * @return una collezione di libri, limitata alla dimensione specificata
-     * @throws IllegalArgumentException se il parametro size è negativo
+     * @param richiesta l'oggetto Pagina che stabilisce quale chunk leggere, (CORRENTE, PROSSIMA, PRECEDENTE, ULTIMA, PRIMA).
+     * @return una collezione di libri corrispondente alla pagina richiesta
+     * @throws IllegalArgumentException se i parametri di paginazione non sono validi
      */
     Collection<Libro> getLibri(Pagina richiesta);
 
     /**
-     * Modifica le informazioni di un libro esistente nella libreria, identificandolo tramite l'ISBN.
+     * Modifica le informazioni di un libro esistente nella libreria.
      *
-     * @param l    il libro con le nuove informazioni da aggiornare
-     * @param ISBN l'ISBN del libro esistente che deve essere modificato
+     * @param nuovoLibro    il libro con le nuove informazioni da aggiornare
+     * @param vecchioLibro  il libro esistente che deve essere modificato
      * @return true se la modifica ha avuto successo, false altrimenti
+     * @throws IOException in caso di errori durante l'operazione di modifica
      */
-    boolean modificaLibro(Libro libroDaAggiungere, Libro libroDaEliminare) throws IOException;
+    boolean modificaLibro(Libro nuovoLibro, Libro vecchioLibro) throws IOException;
 
     /**
      * Rimuove un libro specifico dalla libreria interna, se presente.
@@ -55,7 +53,6 @@ public interface Libreria {
      * in base all'implementazione concreta.
      *
      * @param l il libro da aggiungere alla libreria; non può essere null
-     * pre: il libro non deve già esistere nell'elemento persistente TODO
      */
     void aggiungiLibro(Libro l) throws IOException;
 
