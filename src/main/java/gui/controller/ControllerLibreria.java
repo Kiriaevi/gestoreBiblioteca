@@ -30,9 +30,8 @@ public class ControllerLibreria {
     private  final LibreriaAbstract libreria;
     private final VistaLibreria vista;
     private Collection<Libro> libri = null;
-    private boolean backHome = false;
     private boolean isSuccessful = false;
-
+    private boolean isSearching = false;
     private boolean ordinamentoAscendente = false;
     private Comparator<Libro> comparatore = new OrdinamentoValutazione(false).ottieniComparatore();
     public ControllerLibreria(LibreriaAbstract libreria, VistaLibreria vista) {
@@ -74,19 +73,17 @@ public class ControllerLibreria {
      *
      */
     private void cercaLibro(ActionEvent actionEvent) {
+        if(isSearching) {
+            isSearching = false;
+            libri = ottieniLibriDallaLibreria();
+            vista.pulisciRicerca();
+            postRicerca();
+            return;
+        }
         Query q = vista.recuperaDatiDiRicerca();
         Filtro filtro = new FiltroBase();
 
         //TODO: SE AGGIUNGI VIRGOLETTE NON CERCA ', FARE ESCAPING DEI CARATTERI
-        if(backHome) {
-            libri = ottieniLibriDallaLibreria();
-            vista.setSearchButtonText("Cerca");
-            vista.mostraRisultatiRicerca(libri.stream().filter(filtro::filtro).toList());
-            vista.pulisciRicerca();
-            backHome = false;
-            vista.enablePaginationButtons(true);
-            return;
-        }
 
         if (q.titolo() != null && !q.titolo().trim().isEmpty())
             filtro = new FiltroTitolo(filtro, q.titolo());
@@ -98,10 +95,15 @@ public class ControllerLibreria {
             filtro = new FiltroStato(filtro, q.stato());
 
         libri = ricercaLibri(filtro);
-        vista.setSearchButtonText("Torna alla Home");
-        vista.enablePaginationButtons(false);
+        isSearching = true;
+        postRicerca();
+    }
+
+    private void postRicerca() {
+        vista.setSearchButtonText(isSearching ? "Torna alla Home" : "Cerca");
+        vista.enablePaginationButtons(!isSearching);
         vista.mostraRisultatiRicerca(libri);
-        backHome = true;
+        aggiungiListeners();
     }
 
     private Collection<Libro> ricercaLibri(Filtro filtro) {
@@ -126,6 +128,7 @@ public class ControllerLibreria {
             this.isSuccessful = false;
             aggiorna(true);
         }, libroSorg);
+        postCrud();
         vistaModifica.setVisible(true);
     }
     private void eliminaLibro(ActionEvent e) {
@@ -135,6 +138,7 @@ public class ControllerLibreria {
         mostraDialog(this.isSuccessful ? "Libro eliminato con successo!" :
                 "IL LIBRO SELEZIONATO NON È PRESENTE NELL'ARCHIVIO");
         this.isSuccessful = false;
+        postCrud();
         aggiorna(true);
     }
     private void popolaLibreria() {
@@ -142,7 +146,14 @@ public class ControllerLibreria {
         vista.addBooks(libri);
         aggiungiListeners();
     }
+    private void postCrud() {
+        if(isSearching) {
+            isSearching = false;
+            postRicerca();
+        }
+    }
     private void postAggiuntaLibro() {
+        postCrud();
         mostraDialog(this.isSuccessful ? "Libro aggiunto"
                 : "ASSICURATI CHE NON ESISTA UN LIBRO CON LON LO STESSO ISBN ");
         this.isSuccessful = false;

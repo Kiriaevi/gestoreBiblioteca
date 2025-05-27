@@ -330,6 +330,8 @@ public class VistaLibreria extends JFrame {
     public void enablePaginationButtons(boolean b) {
         paginazioneBtns[0].setEnabled(b);
         paginazioneBtns[1].setEnabled(b);
+        paginazioneBtns[2].setEnabled(b);
+        paginazioneBtns[3].setEnabled(b);
     }
 
 }
