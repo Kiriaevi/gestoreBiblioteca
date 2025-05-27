@@ -53,7 +53,16 @@ public interface Libreria {
      * in base all'implementazione concreta.
      *
      * @param l il libro da aggiungere alla libreria; non può essere null
+     * @return
      */
-    void aggiungiLibro(Libro l) throws IOException;
+    boolean aggiungiLibro(Libro l) throws IOException;
+
+    /**
+     * Verifica se un libro con il dato codice ISBN esiste nella libreria.
+     *
+     * @param ISBN il codice ISBN del libro da verificare; non può essere null o vuoto
+     * @return true se il libro con il codice ISBN specificato esiste, false altrimenti
+     */
+    boolean bookExists(String ISBN);
 
 }

@@ -15,10 +15,9 @@ public class CommandAggiungiLibro extends CommandAbstract{
     @Override
     public boolean execute() {
         try {
-            super.libreria.aggiungiLibro(l);
+            return super.libreria.aggiungiLibro(l);
         } catch (IOException e) {
-            return false;
+            throw new RuntimeException(e);
         }
-        return true;
     }
 }

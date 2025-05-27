@@ -121,7 +121,8 @@ public class ControllerLibreria {
         Libro libroSorg = ottieniLibro((JButton) e.getSource());
         VistaModifica vistaModifica = new VistaModifica(vista, libro -> {
             Command cmd = new CommandModificaLibro(libreria, libro, libroSorg);
-            cmd.execute();
+            this.isAdded = cmd.execute();
+            postAggiuntaLibro();
             aggiorna(true);
         }, libroSorg);
         vistaModifica.setVisible(true);
@@ -138,7 +139,8 @@ public class ControllerLibreria {
         aggiungiListeners();
     }
     private void postAggiuntaLibro() {
-        String msg = this.isAdded ? "Libro aggiunto" : "ATTENZIONE! QUALCOSA È ANDATO STORTO";
+        String msg = this.isAdded ? "Libro aggiunto" :
+                "ATTENZIONE! QUALCOSA È ANDATO STORTO, ASSICURATI DI NON AVER INSERITO DUE LIBRI CON LO STESSO ISBN";
         vista.libroAggiunto(msg);
         this.isAdded = false;
         vista.pulisciMatrice();

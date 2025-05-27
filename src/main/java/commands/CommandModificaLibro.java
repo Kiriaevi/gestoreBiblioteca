@@ -17,10 +17,9 @@ public class CommandModificaLibro extends CommandAbstract{
     @Override
     public boolean execute() {
         try {
-            super.libreria.modificaLibro(libroDaAggiungere, libroDaEliminare);
+           return super.libreria.modificaLibro(libroDaAggiungere, libroDaEliminare);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return true;
     }
 }
