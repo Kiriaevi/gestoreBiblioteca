@@ -5,10 +5,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import comparators.OrdinamentoValutazione;
 import entities.Libro;
 import entities.Pagina;
-import libreria.persistente.LibreriaPersistente;
 import libreria.persistente.LibreriaPersistenteAbstract;
 import ricerca.Filtro;
 
@@ -39,6 +37,7 @@ public abstract class LibreriaAbstract implements Libreria {
     }
     @Override
     public boolean modificaLibro(Libro libroDaAggiungere, Libro libroDaEliminare) throws IOException {
+        if(bookExists(libroDaAggiungere.isbn())) return false;
         lib.setLibroDaEliminare(libroDaEliminare);
         return lib.modificaLibro(libroDaAggiungere, libroDaEliminare.isbn());
     }
@@ -48,8 +47,14 @@ public abstract class LibreriaAbstract implements Libreria {
         return lib.eliminaLibro(l);
     }
     @Override
-    public void aggiungiLibro(Libro l) throws IOException {
+    public boolean aggiungiLibro(Libro l) throws IOException {
+        if(bookExists(l.isbn())) return false;
         lib.aggiungiLibro(l);
+        return true;
+    }
+    @Override
+    public boolean bookExists(String ISBN) {
+        return lib.cercaLibroPerISBN(ISBN) != -1;
     }
     public Collection<Libro> cerca(Filtro f) {
         return lib.cerca(f);

@@ -73,7 +73,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
      * @param ISBN, il libro da cercare
      * @return la posizione nella lista in cui si trova il libro se esiste, altrimenti -1
      */
-    protected int cercaLibroPerISBN(String ISBN) {
+    public int cercaLibroPerISBN(String ISBN) {
         int found = -1;
         int cnt = 0;
         for (Libro l : libri) {

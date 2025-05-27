@@ -93,6 +93,10 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		return true;
 	}
 	@Override
+	public int cercaLibroPerISBN(String ISBN) {
+		return chunk.cercaLibroPerISBN(ISBN);
+	}
+	@Override
 	public int getSize() {
 		return nLinee();
 	}

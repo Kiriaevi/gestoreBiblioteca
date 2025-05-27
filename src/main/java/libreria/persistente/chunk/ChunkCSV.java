@@ -30,21 +30,6 @@ public class ChunkCSV extends ChunkAbstract{
         return Utility.convertiLibroDaCSV(ret);
     }
 
-    public void riscritturaCompletaDelFile(Libro libroDaEliminare) throws IOException {
-
-        Chunk c = new ChunkCSV(fileName, lib);
-        List<Libro> libri = c.leggi(Pagina.CORRENTE);
-        File tmpFile = new File("tmp_"+fileName);
-        try(PrintWriter writer = new PrintWriter(new FileWriter(tmpFile))) {
-            while(!libri.isEmpty()) {
-                for(Libro libro : libri)
-                    if(libroDaEliminare != null && !libro.equals(libroDaEliminare))
-                        writer.println(Utility.convertiInCSV(libro));
-                libri = c.leggi(Pagina.PROSSIMA);
-            }
-        }
-        Files.move(tmpFile.toPath(), Path.of(fileName), StandardCopyOption.REPLACE_EXISTING);
-    }
 
     @Override
     public Collection<Libro> cerca(Filtro f) {
@@ -77,5 +62,38 @@ public class ChunkCSV extends ChunkAbstract{
         }
         return true;
     }
+    public int cercaLibroPerISBN(String ISBN) {
+        ChunkAbstract c = new ChunkCSV(fileName,lib);
+        List<Libro> libri = leggiSequenzialmente(c);
+        while(!libri.isEmpty()) {
+            int cnt = 0;
+            for(Libro l : libri) {
+                if(l.isbn().equals(ISBN))
+                    return cnt;
+                cnt++;
+            }
+            libri = leggiSequenzialmente(c);
+        }
+        return -1;
+    }
+    public void riscritturaCompletaDelFile(Libro libroDaEliminare) throws IOException {
 
+        ChunkAbstract c = new ChunkCSV(fileName, lib);
+        List<Libro> libri = leggiSequenzialmente(c);
+        File tmpFile = new File("tmp_"+fileName);
+        try(PrintWriter writer = new PrintWriter(new FileWriter(tmpFile))) {
+            while(!libri.isEmpty()) {
+                for(Libro libro : libri)
+                    if(libroDaEliminare != null && !libro.equals(libroDaEliminare))
+                        writer.println(Utility.convertiInCSV(libro));
+                libri = leggiSequenzialmente(c);
+            }
+        }
+        Files.move(tmpFile.toPath(), Path.of(fileName), StandardCopyOption.REPLACE_EXISTING);
+    }
+    private List<Libro> leggiSequenzialmente(ChunkAbstract c) {
+        List<Libro> ret = c.leggi(Pagina.CORRENTE);
+        c.pagina++;
+        return ret;
+    }
 }
