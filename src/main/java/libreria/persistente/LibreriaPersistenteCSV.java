@@ -16,9 +16,6 @@ import ricerca.Filtro;
 public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 
 	private String fileName;
-	private BufferedReader br = null;
-	private PrintWriter pw = null;
-	private StringBuilder sb = null;
 	private List<Libro> nuoveAggiunte = new LinkedList<>();
 	private final ChunkCSV chunk;
 	public LibreriaPersistenteCSV(String pathFile) {
@@ -38,12 +35,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 				//FIXME: il file ha un nome? Viene messo da qualche parte? A che ci serve questo output?
 				file.createNewFile();
 			}
-			if (br == null)
-				br = new BufferedReader(new FileReader(file));
-			//if(pw == null)
-			//	pw = new PrintWriter(new FileWriter(file, true), true);
-			if(sb == null)
-				sb = new StringBuilder();
 		} catch (IOException e) {
 			System.out.println("Errore nell'inizializzazione del CSV: " + e.getMessage());
 			return false;
@@ -53,17 +44,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 
 	//FIXME: nel file JSON non lancia eccezioni e qui si?
 	@Override
-	protected void close() {
-		try {
-			if (br != null)
-				br.close();
-			if (pw !=null)
-				pw.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	// FIXME: o salvi il singolo libro o salvi tutti i libri
+	protected void close() {}
 	@Override
 	public String aggiungiLibro(Libro libro) throws IOException {
 		if(libro != null) {
@@ -103,20 +84,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	public Collection<Libro> cerca(Filtro f) {
 		return chunk.cerca(f);
 	}
-	private int nLinee() {
-		// per ottimizzazione: apprendiamo il numero di linee del file solo la prima volta
-		if(super.size != -1)
-			return super.size;
-		try(BufferedReader brLines = new BufferedReader(new FileReader(fileName))) {
-			int cnt = 0;
-			while(brLines.readLine() != null)
-				cnt++;
-			return cnt;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	/**
 	 * Salva i dati della libreria persistente su un file CSV.
 	 * Se i libri sono stati modificati o eliminati il file attuale viene sovrascritto con
@@ -140,7 +107,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
 			for (Libro libro : nuoveAggiunte) {
 				// per ottimizzazione avevamo messo un contatore che tiene conto di quanti libri abbiamo nel file
-				// siccome ora ne stiamo aggiungendo di nuovi andiamo ad incrementare questo contatore
+				// siccome ora ne stiamo aggiungendo di nuovi andiamo a incrementare questo contatore
 				super.size++;
 				writer.println(Utility.convertiInCSV(libro));
 			}
@@ -149,6 +116,20 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		}
 		nuoveAggiunte.clear();
 	}
+	private int nLinee() {
+		// per ottimizzazione: apprendiamo il numero di linee del file solo la prima volta
+		if(super.size != -1)
+			return super.size;
+		try(BufferedReader brLines = new BufferedReader(new FileReader(fileName))) {
+			int cnt = 0;
+			while(brLines.readLine() != null)
+				cnt++;
+			return cnt;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 
 
 }

@@ -20,11 +20,26 @@ public class ChunkCSV extends ChunkAbstract{
     }
     @Override
     protected List<Libro> recuperaChunk(int pagina) {
-        LinkedList<String> ret = new LinkedList<>();
         int inizio = pagina * CHUNK_SIZE;
         int fine = Math.min(inizio + CHUNK_SIZE, size);
-        leggiChunk(inizio, fine, ret);
-        return Utility.convertiLibroDaCSV(ret);
+        return Utility.convertiLibroDaCSV(leggiChunk(inizio,fine));
+    }
+    private List<String> leggiChunk(int inizio, int fine) {
+        LinkedList<String> ret = new LinkedList<>();
+        int cnt = 0;
+        try(BufferedReader bfr = new BufferedReader(new FileReader(fileName))){
+            for (int i = 0; i < fine; i++) {
+                if(cnt < inizio) {
+                    cnt++;
+                    bfr.readLine();
+                    continue;
+                }
+                ret.add(bfr.readLine());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return ret;
     }
 
     @Override
@@ -40,23 +55,6 @@ public class ChunkCSV extends ChunkAbstract{
             }
         }
         return ret;
-    }
-    private boolean leggiChunk(int inizio, int fine, LinkedList<String> ret) {
-        int cnt = 0;
-        try(BufferedReader bfr = new BufferedReader(new FileReader(fileName))){
-            //TODO: controllare se l'ultimo libro viene letto (fine)
-            for (int i = 0; i < fine; i++) {
-                if(cnt < inizio) {
-                    cnt++;
-                    bfr.readLine();
-                    continue;
-                }
-                ret.add(bfr.readLine());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return true;
     }
     public void riscritturaCompletaDelFile(Libro libroDaEliminare) throws IOException {
 
