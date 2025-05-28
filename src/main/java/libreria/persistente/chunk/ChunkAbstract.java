@@ -10,9 +10,11 @@ public abstract class ChunkAbstract implements Chunk{
     protected int pagina = 0;
     public final static int CHUNK_SIZE = 24;
     protected int size = -1;
-    protected LibreriaPersistenteAbstract lib;
-    public ChunkAbstract(LibreriaPersistenteAbstract lib) {
+    protected final LibreriaPersistenteAbstract lib;
+    protected final String fileName;
+    public ChunkAbstract(LibreriaPersistenteAbstract lib, String filename) {
         this.lib = lib;
+        this.fileName = filename;
     }
     @Override
     public List<Libro> leggi(Pagina richiesta) {
@@ -41,6 +43,21 @@ public abstract class ChunkAbstract implements Chunk{
         return recuperaChunk(pagina);
     }
 
+    public int cercaLibroPerISBN(String ISBN) {
+        ChunkAbstract c = new ChunkCSV(fileName,lib);
+        List<Libro> libri = leggiSequenzialmente(c);
+        while(!libri.isEmpty()) {
+            int cnt = 0;
+            for(Libro l : libri) {
+                if(l.isbn().equals(ISBN))
+                    return cnt;
+                cnt++;
+            }
+            libri = leggiSequenzialmente(c);
+        }
+        return -1;
+    }
     protected abstract List<Libro> recuperaChunk(int pagina);
+    protected abstract List<Libro> leggiSequenzialmente(ChunkAbstract c);
 
 }

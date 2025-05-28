@@ -3,19 +3,13 @@ package libreria.persistente;
 import java.io.*;
 
 import java.io.FileReader;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
 import utility.Utility;
 import comparators.OrdinamentoValutazione;
 import entities.Libro;
 import entities.Pagina;
-import libreria.persistente.chunk.Chunk;
-import libreria.persistente.chunk.ChunkAbstract;
 import libreria.persistente.chunk.ChunkCSV;
 import ricerca.Filtro;
 
@@ -100,7 +94,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		return nLinee();
 	}
 	@Override
-	public List<Libro> leggiLibro(Pagina richiesta) throws IOException {
+	public List<Libro> leggiLibro(Pagina richiesta) {
 		List<Libro> ret = chunk.leggi(richiesta);
 		super.libri = super.ordinaLibreria(ret, new OrdinamentoValutazione(true).ottieniComparatore());
 		return super.libri;

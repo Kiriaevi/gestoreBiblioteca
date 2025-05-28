@@ -15,11 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ChunkCSV extends ChunkAbstract{
-    private final String fileName;
     public ChunkCSV(String filename, LibreriaPersistenteAbstract lib) {
-        super(lib);
-        this.fileName = filename;
-        this.lib = lib;
+        super(lib, filename);
     }
     @Override
     protected List<Libro> recuperaChunk(int pagina) {
@@ -29,7 +26,6 @@ public class ChunkCSV extends ChunkAbstract{
         leggiChunk(inizio, fine, ret);
         return Utility.convertiLibroDaCSV(ret);
     }
-
 
     @Override
     public Collection<Libro> cerca(Filtro f) {
@@ -45,7 +41,7 @@ public class ChunkCSV extends ChunkAbstract{
         }
         return ret;
     }
-    public boolean leggiChunk(int inizio, int fine, LinkedList<String> ret) {
+    private boolean leggiChunk(int inizio, int fine, LinkedList<String> ret) {
         int cnt = 0;
         try(BufferedReader bfr = new BufferedReader(new FileReader(fileName))){
             //TODO: controllare se l'ultimo libro viene letto (fine)
@@ -62,20 +58,6 @@ public class ChunkCSV extends ChunkAbstract{
         }
         return true;
     }
-    public int cercaLibroPerISBN(String ISBN) {
-        ChunkAbstract c = new ChunkCSV(fileName,lib);
-        List<Libro> libri = leggiSequenzialmente(c);
-        while(!libri.isEmpty()) {
-            int cnt = 0;
-            for(Libro l : libri) {
-                if(l.isbn().equals(ISBN))
-                    return cnt;
-                cnt++;
-            }
-            libri = leggiSequenzialmente(c);
-        }
-        return -1;
-    }
     public void riscritturaCompletaDelFile(Libro libroDaEliminare) throws IOException {
 
         ChunkAbstract c = new ChunkCSV(fileName, lib);
@@ -91,7 +73,14 @@ public class ChunkCSV extends ChunkAbstract{
         }
         Files.move(tmpFile.toPath(), Path.of(fileName), StandardCopyOption.REPLACE_EXISTING);
     }
-    private List<Libro> leggiSequenzialmente(ChunkAbstract c) {
+
+    /**
+     * Legge la pagina corrente e manda avanti il cursore.
+     * @param c, l'oggetto chunk che possiede le informazioni sul file in lettura
+     * @return Lista di libri letti dal chunk alla pagina corrente
+     */
+    @Override
+    protected List<Libro> leggiSequenzialmente(ChunkAbstract c) {
         List<Libro> ret = c.leggi(Pagina.CORRENTE);
         c.pagina++;
         return ret;
