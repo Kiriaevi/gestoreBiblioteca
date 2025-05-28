@@ -4,9 +4,9 @@ import commands.Command;
 import commands.CommandAggiungiLibro;
 import commands.CommandModificaLibro;
 import commands.CommandRimuoviLibro;
-import comparators.OrdinamentoAutore;
-import comparators.OrdinamentoTitolo;
-import comparators.OrdinamentoValutazione;
+import ordering.OrdinamentoAutore;
+import ordering.OrdinamentoTitolo;
+import ordering.OrdinamentoValutazione;
 import entities.Libro;
 import entities.Pagina;
 import entities.Query;
@@ -81,9 +81,15 @@ public class ControllerLibreria {
             return;
         }
         Query q = vista.recuperaDatiDiRicerca();
-        Filtro filtro = new FiltroBase();
+        Filtro filtro = getFiltro(q);
 
-        //TODO: SE AGGIUNGI VIRGOLETTE NON CERCA ', FARE ESCAPING DEI CARATTERI
+        libri = ricercaLibri(filtro);
+        isSearching = true;
+        postRicerca();
+    }
+
+    private Filtro getFiltro(Query q) {
+        Filtro filtro = new FiltroBase();
 
         if (q.titolo() != null && !q.titolo().trim().isEmpty())
             filtro = new FiltroTitolo(filtro, q.titolo());
@@ -93,12 +99,11 @@ public class ControllerLibreria {
             filtro = new FiltroGenere(filtro, q.categoria());
         if (q.stato() != null)
             filtro = new FiltroStato(filtro, q.stato());
-
-        libri = ricercaLibri(filtro);
-        isSearching = true;
-        postRicerca();
+        return filtro;
     }
-
+    private Collection<Libro> ricercaLibri(Filtro filtro) {
+        return libreria.cerca(filtro).stream().sorted(this.comparatore).toList();
+    }
     private void postRicerca() {
         vista.setSearchButtonText(isSearching ? "Torna alla Home" : "Cerca");
         vista.enablePaginationButtons(!isSearching);
@@ -106,9 +111,6 @@ public class ControllerLibreria {
         aggiungiListeners();
     }
 
-    private Collection<Libro> ricercaLibri(Filtro filtro) {
-        return libreria.cerca(filtro).stream().sorted(this.comparatore).toList();
-    }
 
     private void aggiungiLibro() {
         VistaAggiungi vistaAggiungi = new VistaAggiungi(vista, libro -> {

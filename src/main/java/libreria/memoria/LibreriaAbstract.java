@@ -63,6 +63,7 @@ public abstract class LibreriaAbstract implements Libreria {
         return lib.cercaLibroPerISBN(ISBN) != -1;
     }
     public Collection<Libro> cerca(Filtro f) {
+        if(f == null) throw new IllegalArgumentException("Il filtro non è stato inizializzato");
         return lib.cerca(f);
     }
 }

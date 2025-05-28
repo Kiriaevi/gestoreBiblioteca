@@ -3,7 +3,7 @@ package libreria.persistente;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import comparators.OrdinamentoValutazione;
+import ordering.OrdinamentoValutazione;
 import entities.Libro;
 import entities.Pagina;
 import exceptions.DocumentoMalFormatoException;
@@ -13,8 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import entities.Pagina.*;
 
 public class LibreriaPersistenteJSON extends LibreriaPersistenteAbstract{
 

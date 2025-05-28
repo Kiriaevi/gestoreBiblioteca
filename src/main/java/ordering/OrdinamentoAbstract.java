@@ -1,4 +1,4 @@
-package comparators;
+package ordering;
 
 import entities.Libro;
 

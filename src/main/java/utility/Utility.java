@@ -13,12 +13,8 @@ import java.util.Random;
 public class Utility {
     /**
      * Il metodo di utility converte un array di libri in formato stringa in CSV.
-     * pre: libri è un array di dimensione al massimo pari a CHUNK_SIZE (default 20), ogni libro è non nullo
-     * post: una lista immutabile contenente 20 libri.
      */
     public static List<Libro> convertiLibroDaCSV(List<String> libri) {
-        if(libri.size() > ChunkAbstract.CHUNK_SIZE)
-            throw new IllegalArgumentException("Ogni chunk può essere grande al MASSIMO 20");
         List<Libro> ret = new ArrayList<>();
         for(String l : libri) {
             if(l == null) continue;
