@@ -11,7 +11,7 @@ public record Libro(String titolo, String autore, String isbn, String genere, in
         this.autore = autore.isEmpty() ? "Autore sconosciuto" : autore;
         this.isbn = isbn.isEmpty() ? Utility.generaISBNRandom() : isbn;
         this.genere = genere.isEmpty() ? "Genere non impostato" : genere;
-        this.valutazione = Math.max(valutazione, 0);
+        this.valutazione = valutazione > 5 ? 5 : Math.max(valutazione, 0);
         this.stato = stato == null ? Stato.DA_LEGGERE : stato;
     }
 
