@@ -43,7 +43,7 @@ public class VistaLibreria extends JFrame {
 
         bottoniOrdinamento.put("ordinamentoTitolo", new JButton("Titolo"));
         bottoniOrdinamento.put("ordinamentoAutore", new JButton("Autore"));
-        bottoniOrdinamento.put("ordinamentoStato", new JButton("Valutazione"));
+        bottoniOrdinamento.put("ordinamentoValutazione", new JButton("Valutazione"));
         // HEADER PANEL - Custom clickable headers
         JPanel headerPanel = new JPanel(new GridLayout(1, 3));
         for (String s : bottoniOrdinamento.keySet()) {
@@ -86,8 +86,8 @@ public class VistaLibreria extends JFrame {
         JButton bottone = bottoniOrdinamento.get("ordinamentoTitolo");
         bottone.addActionListener(actionEvent);
     }
-    public void setStatoOnClickListener(ActionListener actionEvent) {
-        JButton bottone = bottoniOrdinamento.get("ordinamentoTitolo");
+    public void setValutazioneOnCLickListener(ActionListener actionEvent) {
+        JButton bottone = bottoniOrdinamento.get("ordinamentoValutazione");
         bottone.addActionListener(actionEvent);
     }
     public void setPaginazioneBtnNext(ActionListener listener, boolean isLast) {

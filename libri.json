@@ -1,169 +1,354 @@
-[ {
-  "titolo" : "I colori dell’anima",
-  "autore" : "Francesco Moretti",
-  "isbn" : "646-4-41178-7",
-  "genere" : "Fantascienza",
-  "valutazione" : 5,
-  "stato" : "IN_LETTURA"
-}, {
-  "titolo" : "Viaggio nella nebbia",
-  "autore" : "Luca Bianchi",
-  "isbn" : "908-6-34337-4",
-  "genere" : "Storico",
-  "valutazione" : 4,
-  "stato" : "DA_LEGGERE"
-}, {
-  "titolo" : "Il custode della memoria",
-  "autore" : "Anna De Luca",
-  "isbn" : "510-1-47389-4",
-  "genere" : "Giallo",
-  "valutazione" : 4,
-  "stato" : "LETTO"
-}, {
-  "titolo" : "Trame di ghiaccio",
-  "autore" : "Luca Bianchi",
-  "isbn" : "878-6-10422-5",
-  "genere" : "Storico",
-  "valutazione" : 4,
-  "stato" : "DA_LEGGERE"
-}, {
-  "titolo" : "La chiave del tempo",
-  "autore" : "Giulia Fontana",
-  "isbn" : "924-9-19280-4",
-  "genere" : "Saggio",
-  "valutazione" : 4,
-  "stato" : "LETTO"
-}, {
-  "titolo" : "Nebbia sul lago",
-  "autore" : "Giulia Fontana",
-  "isbn" : "508-1-59366-1",
-  "genere" : "Narrativa",
-  "valutazione" : 4,
-  "stato" : "LETTO"
-}, {
-  "titolo" : "La biblioteca dei sogni",
-  "autore" : "Giovanni Verdi",
-  "isbn" : "438-9-11007-4",
-  "genere" : "Romantico",
-  "valutazione" : 4,
-  "stato" : "DA_LEGGERE"
-}, {
-  "titolo" : "Verso l’infinito",
-  "autore" : "Giulia Fontana",
-  "isbn" : "511-4-35086-6",
-  "genere" : "Fantasy",
-  "valutazione" : 4,
-  "stato" : "DA_LEGGERE"
-}, {
-  "titolo" : "L'ombra del passato",
-  "autore" : "Maria Rossi",
-  "isbn" : "681-5-15584-2",
-  "genere" : "Narrativa",
-  "valutazione" : 3,
-  "stato" : "IN_LETTURA"
-}, {
-  "titolo" : "La voce del bosco",
-  "autore" : "Giulia Fontana",
-  "isbn" : "531-5-43106-8",
-  "genere" : "Fantasy",
-  "valutazione" : 3,
-  "stato" : "IN_LETTURA"
-}, {
-  "titolo" : "Il figlio della luna",
-  "autore" : "Paolo Conti",
-  "isbn" : "941-1-41526-2",
-  "genere" : "Storico",
-  "valutazione" : 3,
-  "stato" : "DA_LEGGERE"
-}, {
-  "titolo" : "Il mistero della torre",
-  "autore" : "Francesco Moretti",
-  "isbn" : "636-3-77866-7",
-  "genere" : "Thriller",
-  "valutazione" : 3,
-  "stato" : "IN_LETTURA"
-}, {
-  "titolo" : "Il labirinto di specchi",
-  "autore" : "Laura Neri",
-  "isbn" : "931-1-48508-8",
-  "genere" : "Narrativa",
-  "valutazione" : 2,
-  "stato" : "LETTO"
-}, {
-  "titolo" : "Il faro silenzioso",
-  "autore" : "Laura Neri",
-  "isbn" : "499-7-40499-4",
-  "genere" : "Storico",
-  "valutazione" : 2,
-  "stato" : "IN_LETTURA"
-}, {
-  "titolo" : "Cronache di un mondo sommerso",
-  "autore" : "Giovanni Verdi",
-  "isbn" : "713-9-95617-8",
-  "genere" : "Saggio",
-  "valutazione" : 2,
-  "stato" : "IN_LETTURA"
-}, {
-  "titolo" : "La città delle luci",
-  "autore" : "Anna De Luca",
-  "isbn" : "282-1-39247-8",
-  "genere" : "Fantasy",
-  "valutazione" : 2,
-  "stato" : "DA_LEGGERE"
-}, {
-  "titolo" : "Il giardino segreto",
-  "autore" : "Laura Neri",
-  "isbn" : "410-3-31193-7",
-  "genere" : "Biografia",
-  "valutazione" : 2,
-  "stato" : "IN_LETTURA"
-}, {
-  "titolo" : "Il sentiero dei ricordi",
-  "autore" : "Francesco Moretti",
-  "isbn" : "710-8-60874-9",
-  "genere" : "Fantascienza",
-  "valutazione" : 2,
-  "stato" : "LETTO"
-}, {
-  "titolo" : "Ombre nella pioggia",
-  "autore" : "Giulia Fontana",
-  "isbn" : "957-9-38389-5",
-  "genere" : "Fantasy",
-  "valutazione" : 2,
-  "stato" : "LETTO"
-}, {
-  "titolo" : "Anime perdute",
-  "autore" : "Anna De Luca",
-  "isbn" : "583-9-75548-3",
-  "genere" : "Romantico",
-  "valutazione" : 1,
-  "stato" : "LETTO"
-}, {
-  "titolo" : "Oltre il confine",
-  "autore" : "Anna De Luca",
-  "isbn" : "205-6-13435-4",
-  "genere" : "Storico",
-  "valutazione" : 1,
-  "stato" : "IN_LETTURA"
-}, {
-  "titolo" : "Il canto della fenice",
-  "autore" : "Elena Bruno",
-  "isbn" : "898-8-25339-2",
-  "genere" : "Fantasy",
-  "valutazione" : 1,
-  "stato" : "IN_LETTURA"
-}, {
-  "titolo" : "L’eco delle montagne",
-  "autore" : "Luca Bianchi",
-  "isbn" : "995-9-28771-8",
-  "genere" : "Fantascienza",
-  "valutazione" : 0,
-  "stato" : "IN_LETTURA"
-}, {
-  "titolo" : "Il manoscritto perduto",
-  "autore" : "Maria Rossi",
-  "isbn" : "400-5-81683-4",
-  "genere" : "Storico",
-  "valutazione" : 0,
-  "stato" : "LETTO"
-} ]
+[
+  {
+    "titolo": "L’eco delle montagne",
+    "autore": "Luca Bianchi",
+    "isbn": "995-9-28771-8",
+    "genere": "Fantascienza",
+    "valutazione": 0,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Anime perdute",
+    "autore": "Anna De Luca",
+    "isbn": "583-9-75548-3",
+    "genere": "Romantico",
+    "valutazione": 1,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "Oltre il confine",
+    "autore": "Anna De Luca",
+    "isbn": "205-6-13435-4",
+    "genere": "Storico",
+    "valutazione": 1,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Il canto della fenice",
+    "autore": "Elena Bruno",
+    "isbn": "898-8-25339-2",
+    "genere": "Fantasy",
+    "valutazione": 1,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Il labirinto di specchi",
+    "autore": "Laura Neri",
+    "isbn": "931-1-48508-8",
+    "genere": "Narrativa",
+    "valutazione": 2,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "Il faro silenzioso",
+    "autore": "Laura Neri",
+    "isbn": "499-7-40499-4",
+    "genere": "Storico",
+    "valutazione": 2,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Cronache di un mondo sommerso",
+    "autore": "Giovanni Verdi",
+    "isbn": "713-9-95617-8",
+    "genere": "Saggio",
+    "valutazione": 2,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "La città delle luci",
+    "autore": "Anna De Luca",
+    "isbn": "282-1-39247-8",
+    "genere": "Fantasy",
+    "valutazione": 2,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "Il giardino segreto",
+    "autore": "Laura Neri",
+    "isbn": "410-3-31193-7",
+    "genere": "Biografia",
+    "valutazione": 2,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Il sentiero dei ricordi",
+    "autore": "Francesco Moretti",
+    "isbn": "710-8-60874-9",
+    "genere": "Fantascienza",
+    "valutazione": 2,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "Ombre nella pioggia",
+    "autore": "Giulia Fontana",
+    "isbn": "957-9-38389-5",
+    "genere": "Fantasy",
+    "valutazione": 2,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "L'ombra del passato",
+    "autore": "Maria Rossi",
+    "isbn": "681-5-15584-2",
+    "genere": "Narrativa",
+    "valutazione": 3,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "La voce del bosco",
+    "autore": "Giulia Fontana",
+    "isbn": "531-5-43106-8",
+    "genere": "Fantasy",
+    "valutazione": 3,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Il figlio della luna",
+    "autore": "Paolo Conti",
+    "isbn": "941-1-41526-2",
+    "genere": "Storico",
+    "valutazione": 3,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "Il mistero della torre",
+    "autore": "Francesco Moretti",
+    "isbn": "636-3-77866-7",
+    "genere": "Thriller",
+    "valutazione": 3,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Viaggio nella nebbia",
+    "autore": "Luca Bianchi",
+    "isbn": "908-6-34337-4",
+    "genere": "Storico",
+    "valutazione": 4,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "Il custode della memoria",
+    "autore": "Anna De Luca",
+    "isbn": "510-1-47389-4",
+    "genere": "Giallo",
+    "valutazione": 4,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "Trame di ghiaccio",
+    "autore": "Luca Bianchi",
+    "isbn": "878-6-10422-5",
+    "genere": "Storico",
+    "valutazione": 4,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "La chiave del tempo",
+    "autore": "Giulia Fontana",
+    "isbn": "924-9-19280-4",
+    "genere": "Saggio",
+    "valutazione": 4,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "Nebbia sul lago",
+    "autore": "Giulia Fontana",
+    "isbn": "508-1-59366-1",
+    "genere": "Narrativa",
+    "valutazione": 4,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "La biblioteca dei sogni",
+    "autore": "Giovanni Verdi",
+    "isbn": "438-9-11007-4",
+    "genere": "Romantico",
+    "valutazione": 4,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "Verso l’infinito",
+    "autore": "Giulia Fontana",
+    "isbn": "511-4-35086-6",
+    "genere": "Fantasy",
+    "valutazione": 4,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "I colori dell’anima",
+    "autore": "Francesco Moretti",
+    "isbn": "646-4-41178-7",
+    "genere": "Fantascienza",
+    "valutazione": 5,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Sogni di vetro",
+    "autore": "Elisa Marino",
+    "isbn": "327-2-98765-3",
+    "genere": "Fantascienza",
+    "valutazione": 5,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "Il segreto delle onde",
+    "autore": "Marco Santini",
+    "isbn": "542-8-26498-1",
+    "genere": "Narrativa",
+    "valutazione": 5,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Cuore d’inverno",
+    "autore": "Sara Galli",
+    "isbn": "729-1-35467-0",
+    "genere": "Romantico",
+    "valutazione": 5,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "Il sentiero nascosto",
+    "autore": "Alessandro Russo",
+    "isbn": "418-4-13298-5",
+    "genere": "Storico",
+    "valutazione": 5,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "La danza delle ombre",
+    "autore": "Francesca Bianco",
+    "isbn": "634-7-84712-9",
+    "genere": "Thriller",
+    "valutazione": 5,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "Nel silenzio del tempo",
+    "autore": "Matteo Ferrari",
+    "isbn": "295-3-47589-2",
+    "genere": "Saggio",
+    "valutazione": 5,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "Oceano di stelle",
+    "autore": "Chiara Greco",
+    "isbn": "803-6-21847-8",
+    "genere": "Fantasy",
+    "valutazione": 5,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Il codice del destino",
+    "autore": "Lorenzo Bassi",
+    "isbn": "917-9-76453-6",
+    "genere": "Giallo",
+    "valutazione": 5,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "Voci dal passato",
+    "autore": "Giada Conti",
+    "isbn": "384-1-69875-3",
+    "genere": "Narrativa",
+    "valutazione": 5,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "Il labirinto delle verità",
+    "autore": "Andrea Fontana",
+    "isbn": "562-2-48719-4",
+    "genere": "Mistero",
+    "valutazione": 5,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Luce d’autunno",
+    "autore": "Elena Moretti",
+    "isbn": "711-5-39086-7",
+    "genere": "Romantico",
+    "valutazione": 5,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "I guardiani del crepuscolo",
+    "autore": "Matilde Riva",
+    "isbn": "639-8-23458-0",
+    "genere": "Fantascienza",
+    "valutazione": 5,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Il rifugio degli angeli",
+    "autore": "Federico De Luca",
+    "isbn": "874-4-56231-5",
+    "genere": "Storico",
+    "valutazione": 5,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "Sussurri nella notte",
+    "autore": "Alice Romano",
+    "isbn": "405-9-10398-2",
+    "genere": "Thriller",
+    "valutazione": 5,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "Oltre il silenzio",
+    "autore": "Daniele Greco",
+    "isbn": "293-7-81724-3",
+    "genere": "Narrativa",
+    "valutazione": 5,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Le ombre del passato",
+    "autore": "Valentina Galli",
+    "isbn": "718-3-65429-8",
+    "genere": "Giallo",
+    "valutazione": 5,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "Il viaggio di luna",
+    "autore": "Simone Marchetti",
+    "isbn": "526-6-48970-4",
+    "genere": "Fantasy",
+    "valutazione": 5,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Il canto del corvo",
+    "autore": "Rosa Ferri",
+    "isbn": "842-1-90734-6",
+    "genere": "Storico",
+    "valutazione": 5,
+    "stato": "DA LEGGERE"
+  },
+  {
+    "titolo": "I segreti del vento",
+    "autore": "Matteo Leone",
+    "isbn": "310-5-23659-7",
+    "genere": "Saggio",
+    "valutazione": 5,
+    "stato": "LETTO"
+  },
+  {
+    "titolo": "La leggenda dei cinque",
+    "autore": "Giulia Santoro",
+    "isbn": "764-8-32516-1",
+    "genere": "Fantascienza",
+    "valutazione": 5,
+    "stato": "IN LETTURA"
+  },
+  {
+    "titolo": "Il manoscritto perduto",
+    "autore": "Maria Rossi",
+    "isbn": "400-5-81683-4",
+    "genere": "Storico",
+    "valutazione": 0,
+    "stato": "LETTO"
+  }
+]

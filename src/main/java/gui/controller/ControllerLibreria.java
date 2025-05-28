@@ -43,7 +43,7 @@ public class ControllerLibreria {
         this.vista.setSearchButtonListener(this::cercaLibro);
         this.vista.setAutoreOnClickListener(e -> ordinamento("autore"));
         this.vista.setTitoloOnClickListener(e -> ordinamento("titolo"));
-        this.vista.setStatoOnClickListener(e -> ordinamento("stato"));
+        this.vista.setValutazioneOnCLickListener(e -> ordinamento("valutazione"));
         this.vista.setPaginazioneBtnNext(e -> elaboraPagina(Pagina.PROSSIMA), false);
         this.vista.setPaginazioneBtnPrevious(e -> elaboraPagina(Pagina.PRECEDENTE), false);
         this.vista.setPaginazioneBtnNext(e -> elaboraPagina(Pagina.ULTIMA), true);
@@ -59,6 +59,7 @@ public class ControllerLibreria {
             case "titolo":
                 this.comparatore = new OrdinamentoTitolo(ordinamentoAscendente).ottieniComparatore();
                 break;
+
             default:
                 this.comparatore = new OrdinamentoValutazione(ordinamentoAscendente).ottieniComparatore();
         }
@@ -126,7 +127,7 @@ public class ControllerLibreria {
             Command cmd = new CommandModificaLibro(libreria, libro, libroSorg);
             this.isSuccessful = cmd.execute();
             mostraDialog(this.isSuccessful ? "Libro modificato con successo!" :
-                    "IL LIBRO SELEZIONATO NON È PRESENTE NELL'ARCHIVIO");
+                    "È GIÀ PRESENTE UN LIBRO CON QUESTO ISBN");
             this.isSuccessful = false;
             aggiorna(true);
         }, libroSorg);
