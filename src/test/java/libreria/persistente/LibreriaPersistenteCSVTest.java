@@ -1,6 +1,7 @@
 package libreria.persistente;
 
 import entities.Libro;
+import entities.Pagina;
 import entities.Stato;
 import exceptions.DocumentoMalFormatoException;
 import org.junit.jupiter.api.Test;
@@ -52,39 +53,17 @@ class LibreriaPersistenteCSVTest {
 
     @Nested
     class TestPerLeOperazioniCRUD {
-        @ParameterizedTest
-        @ValueSource(ints = {-20, Integer.MAX_VALUE, 0})
-        void booksShouldBeReadBasedOnQnt(int qnt) throws IOException {
+        @Test
+        void bookShouldBeRead() throws IOException {
             testFile = Files.createTempFile("test", ".csv").toFile();
             Libro libro = new Libro("Il nome della rosa", "Eco", "12121-1313-1", "Storico", 3, Stato.LETTO);
-
-            if(qnt != 0) {
-                try (PrintWriter writer = new PrintWriter(testFile)) {
-                    writer.println(convertToCSVLine(libro));
-                }
+            try (PrintWriter writer = new PrintWriter(testFile)) {
+                writer.println(convertToCSVLine(libro));
             }
-
             LibreriaPersistenteAbstract lib = new LibreriaPersistenteCSV(testFile.getAbsolutePath());
-
-            if(qnt < 0) {
-               // assertThrowsExactly(IllegalArgumentException.class, () -> lib.leggiLibro(qnt));
-            }
-
-            if(qnt > 0) {
-                try {
-                    //lib.leggiLibro(qnt);
-                } catch (DocumentoMalFormatoException e) {
-                    fail("Il file CSV dovrebbe essere leggibile: " + e.getMessage());
-                }
-            }
-
-            if (qnt >= lib.getSize()) {
-              //  assertEquals(lib.getSize(), lib.leggiLibro(qnt).size());
-            }
-
-            if(qnt == 0) {
-               // assertEquals(0, lib.leggiLibro(qnt).size());
-            }
+            lib.leggiLibro(Pagina.CORRENTE);
+            assertTrue(lib.libri.contains(libro));
+            assertNull(lib.aggiungiLibro(null));
         }
 
         @Test
@@ -98,13 +77,13 @@ class LibreriaPersistenteCSVTest {
             }
 
             LibreriaPersistenteAbstract lib = new LibreriaPersistenteCSV(testFile.getAbsolutePath());
-          //  lib.leggiLibro(Integer.MAX_VALUE);
+            lib.leggiLibro(Pagina.CORRENTE);
             lib.aggiungiLibro(libro);
-            lib.persist();
 
             List<String> lines = Files.readAllLines(testFile.toPath());
             assertTrue(lines.contains(convertToCSVLine(libro)));
         }
+
     }
 
     @Nested
@@ -117,7 +96,9 @@ class LibreriaPersistenteCSVTest {
             }
 
             LibreriaPersistenteCSV lib = new LibreriaPersistenteCSV(testFile.getAbsolutePath());
-            //assertThrows(DocumentoMalFormatoException.class, () -> lib.leggiLibro(1));
+            lib.leggiLibro(Pagina.CORRENTE);
+            // dato che aggiungiamo solo un libro e questo è pure malformato allora mi aspetto che venga creata una lista vuota
+            assertEquals(0, lib.libri.size());
         }
     }
 

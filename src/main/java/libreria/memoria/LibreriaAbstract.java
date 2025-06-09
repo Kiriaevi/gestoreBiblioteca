@@ -17,7 +17,7 @@ public abstract class LibreriaAbstract implements Libreria {
     protected final String nomeStruturaPersistente;
     public LibreriaAbstract(String n) {
         if(n.isEmpty())
-            throw new IllegalArgumentException("Non hai passato un libro valido");
+            throw new IllegalArgumentException("Non hai passato un nome libreria non valida");
         this.nomeStruturaPersistente = n;
     }
     protected abstract void onInit(String type);
@@ -37,9 +37,9 @@ public abstract class LibreriaAbstract implements Libreria {
     }
     @Override
     public boolean modificaLibro(Libro libroDaAggiungere, Libro libroDaEliminare) throws IOException {
+        if(libroDaAggiungere == null || libroDaEliminare == null) return false;
         // Se abbiamo modificato l'ISBN allora controlla che quello nuovo non sia già presente in libreria
-        if(libroDaAggiungere != null && libroDaEliminare != null &&
-                !libroDaAggiungere.isbn().equals(libroDaEliminare.isbn())
+        if(!libroDaAggiungere.isbn().equals(libroDaEliminare.isbn())
                 && bookExists(libroDaAggiungere.isbn())) return false;
 
         lib.setLibroDaEliminare(libroDaEliminare);
@@ -47,19 +47,22 @@ public abstract class LibreriaAbstract implements Libreria {
     }
     @Override
     public boolean eliminaLibro(Libro l) throws IOException {
+        if(l == null) return false;
         // il libro da eliminare deve esistere
-        if(l != null && !bookExists(l.isbn())) return false;
+        if(!bookExists(l.isbn())) return false;
         lib.setLibroDaEliminare(l);
         return lib.eliminaLibro(l);
     }
     @Override
     public boolean aggiungiLibro(Libro l) throws IOException {
         if(l != null && bookExists(l.isbn())) return false;
+        if(l == null) return false;
         lib.aggiungiLibro(l);
         return true;
     }
     @Override
     public boolean bookExists(String ISBN) {
+        if(ISBN == null) return false;
         return lib.cercaLibroPerISBN(ISBN) != -1;
     }
     public Collection<Libro> cerca(Filtro f) {

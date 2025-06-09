@@ -15,8 +15,8 @@ import ricerca.Filtro;
 
 public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 
-	private String fileName;
-	private List<Libro> nuoveAggiunte = new LinkedList<>();
+	private final String fileName;
+	private final List<Libro> nuoveAggiunte = new LinkedList<>();
 	private final ChunkCSV chunk;
 	public LibreriaPersistenteCSV(String pathFile) {
 		super(pathFile);
@@ -80,6 +80,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		super.libri = super.ordinaLibreria(ret, new OrdinamentoValutazione(true).ottieniComparatore());
 		return super.libri;
 	}
+
 	@Override
 	public Collection<Libro> cerca(Filtro f) {
 		return chunk.cerca(f);

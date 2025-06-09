@@ -2,9 +2,6 @@ package utility;
 
 import entities.Libro;
 import entities.Stato;
-import exceptions.DocumentoMalFormatoException;
-import libreria.persistente.chunk.ChunkAbstract;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,8 +16,9 @@ public class Utility {
         for(String l : libri) {
             if(l == null) continue;
             String[] splitLibro = l.split(",");
+            // Decido di ignorare le righe malformate, evitando così un'eccezione
             if(splitLibro.length < 6)
-                throw new DocumentoMalFormatoException("Il documento passato non è correttamente formattato, dovrebbero esserci 6 campi!");
+                continue;
             String titolo = splitLibro[0];
             String autor = splitLibro[1];
             String isbn = splitLibro[2];
@@ -54,19 +52,18 @@ public class Utility {
      * @return la Stringa formattata in CSV che rappresenta il libro
      */
     public static String convertiInCSV(Libro libro) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(libro.titolo());
-        sb.append(",");
-        sb.append(libro.autore());
-        sb.append(",");
-        sb.append(libro.isbn());
-        sb.append(",");
-        sb.append(libro.genere());
-        sb.append(",");
-        sb.append(libro.valutazione());
-        sb.append(",");
-        sb.append(Utility.fromStatoToString(libro.stato()));
-        return sb.toString();
+        String sb = libro.titolo() +
+                "," +
+                libro.autore() +
+                "," +
+                libro.isbn() +
+                "," +
+                libro.genere() +
+                "," +
+                libro.valutazione() +
+                "," +
+                Utility.fromStatoToString(libro.stato());
+        return sb;
     }
 
     public static String generaISBNRandom() {

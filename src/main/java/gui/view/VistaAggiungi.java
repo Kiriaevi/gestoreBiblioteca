@@ -8,12 +8,12 @@ import java.awt.*;
 import java.util.function.Consumer;
 
 public class VistaAggiungi extends JDialog {
-    private JTextField titoloField;
-    private JTextField autoreField;
-    private JTextField isbnField;
-    private JTextField genereField;
-    private JSpinner valutazione;
-    private JComboBox<Stato> statoField;
+    private final JTextField titoloField;
+    private final JTextField autoreField;
+    private final JTextField isbnField;
+    private final JTextField genereField;
+    private final JSpinner valutazione;
+    private final JComboBox<Stato> statoField;
     private final Consumer<Libro> onSalvaCallback;
 
     public VistaAggiungi(VistaLibreria parent, Consumer<Libro> onSalvaCallback, String titolo) {
