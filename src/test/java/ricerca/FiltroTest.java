@@ -1,4 +1,4 @@
-package libreria.ricerca;
+package ricerca;
 
 import entities.Libro;
 import entities.Stato;
