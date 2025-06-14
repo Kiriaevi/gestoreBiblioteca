@@ -32,7 +32,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 			File file = new File(fileName);
 			if(!file.exists()) {
 				System.out.println("Il file non esiste, lo creo");
-				//FIXME: il file ha un nome? Viene messo da qualche parte? A che ci serve questo output?
 				file.createNewFile();
 			}
 		} catch (IOException e) {
@@ -42,7 +41,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		return true;
 	}
 
-	//FIXME: nel file JSON non lancia eccezioni e qui si?
 	@Override
 	protected void close() {}
 	@Override
@@ -85,19 +83,7 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 	public Collection<Libro> cerca(Filtro f) {
 		return chunk.cerca(f);
 	}
-	/**
-	 * Salva i dati della libreria persistente su un file CSV.
-	 * Se i libri sono stati modificati o eliminati il file attuale viene sovrascritto con
-	 * il contenuto aggiornato dei libri. Se sono stati aggiunti file allora questi vengono appesi
-	 *
-	 *
-	 * Il metodo verifica se vi sono stati cambiamenti nei dati della libreria (tramite il flag `hasBeenModified`).
-	 * Se sono presenti modifiche si effettua una sovrascrittura totale.
-	 * Per le nuove aggiunte registrate, il metodo aggiorna il file CSV in modalità di
-	 * accodamento, aggiungendo esclusivamente i dati dei nuovi libri.
-	 *
-	 * @throws RuntimeException Se si verifica un errore di I/O durante l'accesso o la scrittura del file CSV.
-	 */
+
 	@Override
 	protected void persist() throws IOException {
 		if(hasBeenModified) {
@@ -107,8 +93,6 @@ public class LibreriaPersistenteCSV extends LibreriaPersistenteAbstract{
 		if(!isBookAdded) return;
 		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
 			for (Libro libro : nuoveAggiunte) {
-				// per ottimizzazione avevamo messo un contatore che tiene conto di quanti libri abbiamo nel file
-				// siccome ora ne stiamo aggiungendo di nuovi andiamo a incrementare questo contatore
 				super.size++;
 				writer.println(Utility.convertiInCSV(libro));
 			}

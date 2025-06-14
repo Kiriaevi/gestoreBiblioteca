@@ -46,10 +46,13 @@ public class Utility {
             return "IN LETTURA";
         else return "LETTO";
     }
+
     /**
-     * convertiInCSV
-     * @param libro, il libro da convertire in una Stringa conforme allo standard CSV
-     * @return la Stringa formattata in CSV che rappresenta il libro
+     * Converte l'oggetto Libro fornito in una stringa formattata in CSV, dove ogni campo del Libro
+     * è separato da virgole.
+     *
+     * @param libro l'oggetto Libro da convertire in una stringa formattata CSV
+     * @return una stringa formattata come CSV che rappresenta i dettagli dell'oggetto Libro fornito
      */
     public static String convertiInCSV(Libro libro) {
         String sb = libro.titolo() +

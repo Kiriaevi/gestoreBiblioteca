@@ -29,7 +29,7 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
     protected abstract boolean onInit();
     /**
      * Metodo per la gestione della chiusura della struttura persistente.
-     * Esempio: si può gestire la chiusura della connessione del database o di possibili file aperti.
+     * Esempio: si può gestire la chiusura della connessione del database.
      *
      */
     protected abstract void close();
@@ -67,10 +67,13 @@ public abstract class LibreriaPersistenteAbstract implements LibreriaPersistente
         persist();
         return true;
     }
+
     /**
-     * Restituisce l'indice in cui si trova, se presente, il libro identificato da ISBN passato in ingresso.
-     * @param ISBN, il libro da cercare
-     * @return la posizione nella lista in cui si trova il libro se esiste, altrimenti -1
+     * Cerca un libro nella libreria utilizzando il suo ISBN.
+     *
+     * @param ISBN l'ISBN del libro da cercare. Non deve essere null.
+     * @return l'indice del libro trovato nella lista dei libri se esiste,
+     *         altrimenti restituisce -1 se il libro non è presente.
      */
     public int cercaLibroPerISBN(String ISBN) {
         int found = -1;

@@ -9,16 +9,17 @@ import java.util.Collection;
 
 public interface Libreria {
     /**
-     * Carica tutti i libri dalla libreria persistente e li memorizza nella lista interna.
-     * Questo metodo legge i dati della libreria da una fonte persistente configurata
-     * (es. file CSV o JSON) e li memorizza in memoria per ulteriori operazioni.
+     * Carica tutti i libri appartenenti alla pagina specificata interna al sistema di persistenza.
+     * La pagina specificata determina il blocco di dati da caricare, che può essere
+     * una delle seguenti opzioni: CORRENTE, PROSSIMA, PRECEDENTE, ULTIMA, PRIMA.
      *
-     * @throws RuntimeException se si verifica un errore durante la lettura dei dati
+     * @param richiesta l'oggetto Pagina che stabilisce quale blocco di dati caricare
+     *                  (CORRENTE, PROSSIMA, PRECEDENTE, ULTIMA, PRIMA)
      */
     void loadAll(Pagina richiesta);
 
     /**
-     * Recupera una collezione di libri dalla libreria in base alla pagina richiesta.
+     * Recupera una collezione di libri dalla lista in memoria in base alla pagina richiesta.
      *
      * @param richiesta l'oggetto Pagina che stabilisce quale chunk leggere, (CORRENTE, PROSSIMA, PRECEDENTE, ULTIMA, PRIMA).
      * @return una collezione di libri corrispondente alla pagina richiesta
@@ -27,19 +28,23 @@ public interface Libreria {
     Collection<Libro> getLibri(Pagina richiesta);
 
     /**
-     * Modifica le informazioni di un libro esistente nella libreria.
+     * Modifica le informazioni di un libro nella libreria con il contenuto di un altro libro.
+     * L'operazione si compone di una rimozione del libro esistente e dell'aggiunta del nuovo libro.
+     * Se l'ISBN del libro modificato differisce da quello originale, viene controllato che non esistano duplicati
+     * con lo stesso ISBN prima di procedere con l'operazione.
      *
-     * @param nuovoLibro    il libro con le nuove informazioni da aggiornare
-     * @param vecchioLibro  il libro esistente che deve essere modificato
-     * @return true se la modifica ha avuto successo, false altrimenti
-     * @throws IOException in caso di errori durante l'operazione di modifica
+     * @param nuovoLibro il nuovo libro che sostituirà il vecchio libro; non può essere null
+     * @param vecchioLibro il libro da sostituire nella libreria; non può essere null
+     * @return true se l'operazione è stata completata con successo, false altrimenti (ad esempio in caso di duplicati ISBN
+     *         o se i parametri forniti sono null)
+     * @throws IOException se si verifica un errore durante l'accesso al sistema di persistenza
      */
     boolean modificaLibro(Libro nuovoLibro, Libro vecchioLibro) throws IOException;
 
     /**
-     * Rimuove un libro specifico dalla libreria interna, se presente.
+     * Rimuove un libro dalla libreria, se presente.
      * Il libro da eliminare viene identificato dall'oggetto passato come parametro.
-     * Se il libro non è presente nella libreria, non verrà effettuata alcuna modifica.
+     * Se il libro non è presente nella libreria, non verrà effettuata alcuna modifica e viene restituito false.
      *
      * @param l il libro da rimuovere dalla libreria; non può essere null
      * @return true se il libro è stato rimosso con successo, false se il libro non era presente
@@ -48,12 +53,13 @@ public interface Libreria {
     boolean eliminaLibro(Libro l) throws IOException;
 
     /**
-     * Aggiunge un nuovo libro alla libreria. Se il libro è già presente
-     * in base all'ISBN, l'operazione potrebbe non avere effetto,
-     * in base all'implementazione concreta.
+     * Aggiunge un libro alla libreria se non è già presente.
+     * Il metodo verifica se il libro con lo stesso ISBN esiste già nella libreria e, in caso contrario,
+     * procede ad aggiungerlo.
      *
-     * @param l il libro da aggiungere alla libreria; non può essere null
-     * @return
+     * @param l il libro da aggiungere; non può essere null e il suo ISBN non deve essere già presente nella libreria
+     * @return true se il libro è stato aggiunto con successo, false se il libro è già presente o se l'operazione fallisce
+     * @throws IOException se si verifica un errore durante l'accesso al sistema di persistenza
      */
     boolean aggiungiLibro(Libro l) throws IOException;
 

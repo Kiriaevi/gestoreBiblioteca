@@ -12,11 +12,14 @@ import java.util.List;
  * Fornisce metodi per leggere i libri e gestire le operazioni di caricamento.
  */
 public interface LibreriaPersistente {
+
     /**
-     * Legge un numero specifico di libri da una sorgente persistente.
-     * 
-     * @param
-     * : size >= 0 && < numero di elementi (libri) presenti in memoria secondaria
+     * Legge una lista di libri dalla sorgente persistente in base alla pagina richiesta.
+     *
+     * @param richiesta la pagina specificata da leggere, uno dei valori definiti nell'enum Pagina
+     *                  (e.g., PROSSIMA, PRECEDENTE, CORRENTE, ULTIMA, PRIMA).
+     * @return una lista di oggetti Libro che rappresentano i libri letti dalla sorgente persistente.
+     * @throws IOException se si verifica un errore durante l'accesso o la lettura dalla sorgente persistente.
      */
     List<Libro> leggiLibro(Pagina richiesta) throws IOException;
     /**
@@ -25,7 +28,6 @@ public interface LibreriaPersistente {
      * @param libro il libro modificato
      * @param ISBN L'ISBN del libro da modificare.
      * @return true se la modifica è avvenuta con successo, false altrimenti.
-     * pre: ISBN != null && Libro != null
      *
      */
     boolean modificaLibro(Libro libro, String ISBN) throws IOException;
@@ -34,19 +36,17 @@ public interface LibreriaPersistente {
      * 
      * @param libro Il libro da eliminare.
      * @return true se l'eliminazione è avvenuta con successo, false altrimenti.
-     * pre: libro != null
      */
     boolean eliminaLibro(Libro libro) throws IOException;
 
     /**
-     * Salva un libro nella libreria persistente. Se l'operazione va a buon fine,
-     * restituisce una stringa che rappresenta il libro passato in input e formattato
-     * secondo la specifica.
+     * Aggiunge un libro alla libreria persistente.
+     * Questo metodo salva il libro nella libreria e aggiorna il file persistente per mantenerne la coerenza.
      *
-     * @param libro Il libro da salvare nella libreria persistente.
-     *              Deve contenere informazioni valide e complete.
-     * @return Una stringa che rappresenta l'oggetto sotto forma di stringa formattata secondo
-     *         la specifica (CSV, JSON, ecc...)
+     * @param libro il libro da aggiungere. Non deve essere null.
+     * @return una stringa contenente il risultato dell'operazione,
+     *         oppure null se l'operazione non ha prodotto messaggi significativi.
+     * @throws IOException se si verifica un errore durante l'accesso o la scrittura dei dati nel file persistente.
      */
     String aggiungiLibro(Libro libro) throws IOException;
 
