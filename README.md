@@ -40,4 +40,5 @@ The various operations are being designed by the principles of design patterns s
 - Maven 3.x
 
 
+<img width="2172" height="1638" alt="GUI Library Manager" src="https://github.com/user-attachments/assets/57be8015-10a9-4f61-9c68-8b6bfedd514f" />
 
